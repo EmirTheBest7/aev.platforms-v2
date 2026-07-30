@@ -30,84 +30,89 @@
 ```
 aliev.io/
 
-├── platform/                    # The ALIEV.IO operating system layer
-│   ├── auth/                    # Authentication
-│   ├── database/                # Database engine
-│   ├── routing/                 # Request routing
-│   ├── security/                # Security layer
-│   ├── permissions/             # User permissions
-│   ├── sessions/                # Session management
-│   ├── application-loader/      # Loads applications
-│   ├── registry/                # Available apps registry
-│   └── helpers/
+├── apps/                       # Main user-facing platform modules
+│   ├── social/                 # Profiles, timeline, posts, communities
+│   ├── messenger/              # Private messages and communication
+│   ├── forum/                  # Discussions and communities
+│   ├── store/                  # Marketplace and products
+│   ├── wallet/                 # Payments and user finances
+│   ├── studio/                 # User content creation
+│   └── terminal/               # Developer playground and mini-app launcher
 │
-├── apps/                        # Installable ALIEV.IO applications
+├── core/                       # Shared platform engine
+│   ├── auth/                   # Authentication
+│   ├── users/                  # User management
+│   ├── database/               # Database layer
+│   ├── security/               # Security services
+│   ├── routing/                # Application routing
+│   ├── permissions/            # Roles and access control
+│   ├── validation/             # Input validation
+│   ├── cache/                  # Cache system
+│   ├── logging/                # Logs
+│   └── helpers/                # Shared utilities
 │
-│   ├── terminal/                # Main command interface
-│   │   ├── commands/
-│   │   ├── views/
-│   │   └── assets/
+├── api/                        # Backend communication layer
+│   ├── v1/                     # Public API version 1
+│   ├── internal/               # Internal services
+│   └── terminal/               # Terminal app API
 │
-│   ├── pacman/                  # Game application
-│   │   ├── app.json
-│   │   ├── src/
-│   │   ├── assets/
-│   │   └── README.md
+├── website/                    # Public company pages
+│   ├── home/                   # Landing page
+│   ├── careers/                # Jobs
+│   ├── contact/                # Contact pages
+│   ├── legal/                  # Legal documents
+│   ├── investors/              # Investor information
+│   └── downloads/              # Public downloads
 │
-│   ├── wallet/                  # Wallet application
-│   │   ├── app.json
-│   │   ├── src/
-│   │   └── assets/
+├── resources/                  # Shared frontend resources
+│   ├── views/                  # Templates
+│   ├── css/                    # Styles
+│   ├── js/                     # JavaScript
+│   ├── images/                 # Shared images
+│   ├── icons/                  # Icons
+│   ├── fonts/                  # Fonts
+│   └── languages/              # Translations
 │
-│   ├── messenger/
-│   ├── store/
-│   ├── qr/
-│   └── ...
+├── public/                     # Public web root
+│   └── build/                  # Compiled frontend files
 │
-├── api/
-│   ├── v1/
-│   ├── internal/
-│   └── docs/
-│
-├── resources/                   # Shared UI resources
-│   ├── templates/
-│   ├── css/
-│   ├── js/
-│   ├── fonts/
-│   └── images/
-│
-├── storage/                     # Runtime data
-│   ├── uploads/
+├── storage/                    # Runtime data (not committed)
+│   ├── uploads/                # User files
 │   ├── cache/
+│   ├── sessions/
 │   ├── logs/
-│   └── sessions/
+│   └── temporary/
 │
 ├── database/
 │   ├── migrations/
 │   ├── seeds/
 │   └── schema/
 │
-├── config/
+├── config/                     # Configuration files
 │
-├── scripts/
+├── scripts/                    # Automation
 │   ├── cron/
-│   ├── deploy/
-│   └── generators/
+│   ├── maintenance/
+│   └── deployment/
 │
-├── docs/
+├── tests/                      # Automated testing
+│
+├── docker/                     # Development environment
+│
+├── docs/                       # Documentation
 │   ├── architecture.md
-│   ├── app-development.md
+│   ├── database.md
 │   ├── security.md
-│   └── api.md
+│   ├── api.md
+│   └── decisions/
 │
-├── tests/
-├── docker/
-├── .github/
-
+├── .github/                    # GitHub automation
+│   └── workflows/
+│
 ├── README.md
 ├── CLAUDE.md
 ├── CONTRIBUTING.md
 ├── SECURITY.md
-└── CHANGELOG.md
-
+├── CHANGELOG.md
+└── .gitignore
 ```
