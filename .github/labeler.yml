@@ -1,0 +1,54 @@
+# =============================================================================
+# PR Labeler Configuration
+# =============================================================================
+# Purpose:
+#   Automatically applies labels to pull requests based on which paths they
+#   modify. Used by workflows/labeler.yml (actions/labeler). Keeps triage
+#   fast as the project grows across core/, api/, apps/, database/.
+#
+# Syntax: each top-level key is a label name; the value is a list of glob
+# patterns (using the v5 "any/all" changed-files syntax).
+# =============================================================================
+
+core:
+  - changed-files:
+      - any-glob-to-any-file: "core/**"
+
+core-auth:
+  - changed-files:
+      - any-glob-to-any-file: "core/auth/**"
+
+api:
+  - changed-files:
+      - any-glob-to-any-file: "api/**"
+
+apps:
+  - changed-files:
+      - any-glob-to-any-file: "apps/**"
+
+database:
+  - changed-files:
+      - any-glob-to-any-file: "database/**"
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/workflows/**"
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "docs/**"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "composer.json"
+          - "composer.lock"
+
+docker:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Dockerfile"
+          - "docker-compose*.yml"
+          - "**/Dockerfile"

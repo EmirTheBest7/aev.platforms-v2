@@ -1,0 +1,69 @@
+name: "Feature Request"
+description: "Suggest a new feature or enhancement for ALIEV.IO V2"
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Please describe the problem
+        you're trying to solve, not just the solution — this helps us
+        evaluate alternatives and design the best fit.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem / Motivation"
+      description: "What problem does this feature solve? Why is it needed?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "Describe the solution you'd like to see."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: "Any alternative solutions or features you've considered."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Affected Area"
+      multiple: true
+      options:
+        - "core (platform engine)"
+        - "api (API layer)"
+        - "apps (platform applications)"
+        - "database"
+        - "CI/CD (.github)"
+        - "Documentation"
+        - "Other"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional Context"
+      description: "Mockups, references, related issues, or anything else relevant."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have searched existing issues/discussions to make sure this isn't a duplicate."
+          required: true

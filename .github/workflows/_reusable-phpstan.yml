@@ -1,0 +1,77 @@
+# =============================================================================
+# Reusable Workflow: PHPStan (Static Analysis)
+# =============================================================================
+# Purpose:
+#   Runs PHPStan for static analysis. DORMANT by design until the project
+#   adds phpstan/phpstan and a phpstan.neon(.dist) configuration file.
+#
+# Called by: workflows/ci.yml
+#
+# Activation checklist (when ready):
+#   1. composer require --dev phpstan/phpstan
+#   2. Add phpstan.neon.dist to the repo root (set an initial `level`)
+#   3. Nothing else to change here — this job auto-detects and runs.
+#
+# Design notes:
+#   - Uses PHPStan's native GitHub Actions error formatter so failures show
+#     up as inline annotations on the PR diff, not just raw console text.
+# =============================================================================
+
+name: "Reusable / PHPStan"
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        description: "PHP version to run static analysis with"
+        type: string
+        default: "8.3"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  phpstan:
+    name: "PHPStan (PHP ${{ inputs.php-version }})"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Check for PHPStan configuration"
+        id: check
+        run: |
+          if [ -f "phpstan.neon" ] || [ -f "phpstan.neon.dist" ] || [ -f "phpstan.dist.neon" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No phpstan.neon(.dist) found — skipping static analysis. See activation checklist in this workflow file."
+          fi
+
+      - name: "Set up PHP ${{ inputs.php-version }}"
+        if: steps.check.outputs.exists == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php-version }}
+          coverage: none
+          tools: composer:v2
+
+      - name: "Cache Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "Install Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: "Run PHPStan"
+        if: steps.check.outputs.exists == 'true'
+        # github error format produces inline PR annotations.
+        run: vendor/bin/phpstan analyse --error-format=github --memory-limit=1G

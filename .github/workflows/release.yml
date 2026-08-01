@@ -1,0 +1,98 @@
+# =============================================================================
+# Release — Automatic GitHub Release on tag push
+# =============================================================================
+# Purpose:
+#   When a version tag (e.g. v1.2.0) is pushed, this workflow:
+#     1. Re-validates the codebase (reuses the same lint/composer checks
+#        as CI — a release should never ship on unverified code).
+#     2. Creates a GitHub Release with auto-generated release notes.
+#     3. (Dormant) Builds & pushes the Docker image tagged with the version.
+#     4. (Dormant) Triggers deployment to production, gated by a GitHub
+#        Environment approval.
+#
+# Trigger:
+#   Push of any tag matching semantic versioning: v1.0.0, v1.0.0-beta.1, etc.
+#
+# Design notes:
+#   - Uses GitHub's native `generate_release_notes` instead of a third-party
+#     changelog action, to keep the dependency surface minimal. Swap for a
+#     dedicated changelog tool later if the project needs stricter formatting.
+#   - Docker publish and deploy jobs are wired but effectively no-op until
+#     their activation checklists (in their respective reusable workflow
+#     files) are completed — enable them by uncommenting the `needs`/body
+#     once ready.
+# =============================================================================
+
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
+  # Allows creating a release manually for a specific ref, without needing
+  # to push a new tag (useful for re-running a failed release job).
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to release (e.g. v1.2.0)"
+        type: string
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  validate:
+    name: "Pre-release validation"
+    uses: ./.github/workflows/_reusable-php-lint.yml
+    with:
+      php-versions: '["8.3"]'
+
+  composer-check:
+    name: "Composer validation"
+    uses: ./.github/workflows/_reusable-composer.yml
+    with:
+      php-version: "8.3"
+
+  github-release:
+    name: "Create GitHub Release"
+    needs:
+      - validate
+      - composer-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, needed for accurate auto-generated notes
+
+      - name: "Create GitHub Release"
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          generate_release_notes: true
+          # Marks versions with a pre-release suffix (e.g. -beta.1, -rc.1)
+          # as a GitHub pre-release automatically.
+          prerelease: ${{ contains(inputs.tag || github.ref_name, '-') }}
+
+  docker-publish:
+    name: "Publish Docker image"
+    needs: github-release
+    uses: ./.github/workflows/_reusable-docker-build.yml
+    with:
+      push: true
+
+  # -----------------------------------------------------------------------
+  # Deployment is intentionally NOT wired to run automatically yet.
+  # Once a real deployment target exists (see _reusable-deploy.yml's
+  # activation checklist), uncomment and adjust the block below.
+  # -----------------------------------------------------------------------
+  # deploy-production:
+  #   name: "Deploy to production"
+  #   needs: docker-publish
+  #   uses: ./.github/workflows/_reusable-deploy.yml
+  #   with:
+  #     environment: production
+  #     ref: ${{ inputs.tag || github.ref_name }}

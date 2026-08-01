@@ -1,0 +1,78 @@
+# =============================================================================
+# Reusable Workflow: PHP-CS-Fixer (Code Style)
+# =============================================================================
+# Purpose:
+#   Checks code style compliance in --dry-run mode (never auto-commits).
+#   DORMANT by design until the project adds friendsofphp/php-cs-fixer and
+#   a .php-cs-fixer.dist.php configuration file.
+#
+# Called by: workflows/ci.yml
+#
+# Activation checklist (when ready):
+#   1. composer require --dev friendsofphp/php-cs-fixer
+#   2. Add .php-cs-fixer.dist.php to the repo root
+#   3. Nothing else to change here — this job auto-detects and runs.
+#
+# Design notes:
+#   - Runs --dry-run --diff so CI reports style violations without ever
+#     mutating the contributor's branch; fixing is a local/dev-time action
+#     (`composer cs-fix` or similar), not something CI does automatically.
+# =============================================================================
+
+name: "Reusable / PHP-CS-Fixer"
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        description: "PHP version to run the style check with"
+        type: string
+        default: "8.3"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  cs-fixer:
+    name: "Code Style (PHP ${{ inputs.php-version }})"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Check for PHP-CS-Fixer configuration"
+        id: check
+        run: |
+          if [ -f ".php-cs-fixer.php" ] || [ -f ".php-cs-fixer.dist.php" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No .php-cs-fixer(.dist).php found — skipping code style check. See activation checklist in this workflow file."
+          fi
+
+      - name: "Set up PHP ${{ inputs.php-version }}"
+        if: steps.check.outputs.exists == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php-version }}
+          coverage: none
+          tools: composer:v2
+
+      - name: "Cache Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "Install Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: "Run PHP-CS-Fixer (dry run)"
+        if: steps.check.outputs.exists == 'true'
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff --ansi

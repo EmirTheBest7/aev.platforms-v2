@@ -1,0 +1,79 @@
+# =============================================================================
+# Dependabot Configuration
+# =============================================================================
+# Purpose:
+#   Automates dependency updates and, critically, security vulnerability
+#   patches for both Composer (PHP) and GitHub Actions dependencies. This
+#   is the update mechanism; actual scanning/alerts come from GitHub's
+#   Dependabot alerts feature (Settings → Code security → Dependabot alerts),
+#   which should be enabled alongside this file.
+#
+# Ecosystems covered:
+#   - composer: PHP dependencies (once composer.json exists — Dependabot
+#     simply finds nothing to do until then, no error).
+#   - github-actions: keeps action versions (actions/checkout@vX, etc.)
+#     patched, since outdated actions are a common supply-chain risk.
+#   - docker: keeps base images in the Dockerfile patched (once it exists).
+#
+# Design notes:
+#   - Grouped updates reduce PR noise: minor/patch bumps are batched into
+#     a single weekly PR per ecosystem instead of one PR per package.
+#   - Major version bumps are excluded from grouping and reviewed
+#     individually, since they're more likely to include breaking changes.
+# =============================================================================
+
+version: 2
+
+updates:
+  # ---------------------------------------------------------------------
+  # PHP dependencies (Composer)
+  # ---------------------------------------------------------------------
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "php"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Major version bumps reviewed manually, one PR per package.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # ---------------------------------------------------------------------
+  # GitHub Actions used in workflows
+  # ---------------------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "ci"
+    groups:
+      actions-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---------------------------------------------------------------------
+  # Docker base images (once a Dockerfile exists — no-op until then)
+  # ---------------------------------------------------------------------
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "docker"

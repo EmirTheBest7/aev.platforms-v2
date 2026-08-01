@@ -1,0 +1,65 @@
+# =============================================================================
+# Stale — Issue & PR housekeeping
+# =============================================================================
+# Purpose:
+#   As the project scales and attracts external contributions, issues and
+#   PRs that receive no activity tend to pile up. This workflow marks them
+#   stale after a period of inactivity, then closes them after a further
+#   grace period — keeping the tracker signal-to-noise ratio high.
+#
+# Trigger:
+#   Daily schedule. Not run on push/PR since it's a time-based sweep.
+#
+# Design notes:
+#   - Exempts issues/PRs labeled "pinned" or "security" from ever going
+#     stale, so important long-lived items aren't accidentally closed.
+#   - Conservative timeouts (60/7 days) — tune down once the project has
+#     enough contributor traffic to warrant faster cycling.
+# =============================================================================
+
+name: Stale
+
+on:
+  schedule:
+    # Daily at 02:30 UTC.
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: "Mark/close stale issues and PRs"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 60
+          days-before-close: 7
+
+          exempt-issue-labels: "pinned,security,in-progress"
+          exempt-pr-labels: "pinned,security,in-progress"
+
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has
+            had no activity for 60 days. It will be closed in 7 days if no
+            further activity occurs. If this is still relevant, please
+            comment to keep it open.
+
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because
+            it has had no activity for 60 days. It will be closed in 7 days
+            if no further activity occurs.
+
+          close-issue-message: >
+            Closing due to inactivity. Feel free to reopen if this is still
+            relevant.
+
+          close-pr-message: >
+            Closing due to inactivity. Feel free to reopen and rebase if you
+            wish to continue this work.

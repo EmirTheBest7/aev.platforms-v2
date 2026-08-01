@@ -1,0 +1,92 @@
+# =============================================================================
+# Reusable Workflow: Composer Validate & Install
+# =============================================================================
+# Purpose:
+#   Validates composer.json/composer.lock integrity and performs a cached
+#   `composer install`. Other reusable workflows (PHPUnit, PHPStan, CS
+#   Fixer) depend on the vendor/ directory this job produces via cache,
+#   so Composer install logic lives in exactly one place.
+#
+# Called by: workflows/ci.yml (and indirectly required by phpunit/phpstan/
+#            cs-fixer jobs, which restore the same cache key)
+#
+# Design notes:
+#   - Gracefully no-ops if composer.json does not exist yet (early project
+#     stage) instead of failing the whole pipeline.
+#   - Uses actions/cache keyed on composer.lock hash so repeated runs are
+#     fast, and a restore-key fallback for partial cache hits.
+# =============================================================================
+
+name: "Reusable / Composer Validate & Install"
+
+on:
+  workflow_call:
+    inputs:
+      php-version:
+        description: "PHP version to use for the Composer run"
+        type: string
+        default: "8.3"
+        required: false
+    outputs:
+      composer-json-exists:
+        description: "Whether composer.json was found in the repository"
+        value: ${{ jobs.composer.outputs.composer-json-exists }}
+
+permissions:
+  contents: read
+
+jobs:
+  composer:
+    name: "Composer (PHP ${{ inputs.php-version }})"
+    runs-on: ubuntu-latest
+    outputs:
+      composer-json-exists: ${{ steps.check.outputs.exists }}
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Check for composer.json"
+        id: check
+        run: |
+          if [ -f "composer.json" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No composer.json found yet — skipping Composer steps."
+          fi
+
+      - name: "Set up PHP ${{ inputs.php-version }}"
+        if: steps.check.outputs.exists == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ inputs.php-version }}
+          coverage: none
+          tools: composer:v2
+
+      - name: "Validate composer.json and composer.lock"
+        if: steps.check.outputs.exists == 'true'
+        # --strict fails on deprecated/ambiguous fields, not just malformed JSON.
+        run: composer validate --strict --no-check-publish
+
+      - name: "Get Composer cache directory"
+        if: steps.check.outputs.exists == 'true'
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: "Cache Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          # Cache key includes the lock file hash so it invalidates whenever
+          # dependencies change; restore-keys allow partial reuse otherwise.
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "Install Composer dependencies"
+        if: steps.check.outputs.exists == 'true'
+        # --prefer-dist is faster than --prefer-source for CI.
+        # --no-interaction/--no-progress keep logs clean.
+        run: composer install --prefer-dist --no-interaction --no-progress

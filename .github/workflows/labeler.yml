@@ -1,0 +1,27 @@
+# =============================================================================
+# PR Auto-Labeler
+# =============================================================================
+# Purpose:
+#   Applies labels to pull requests automatically based on which paths were
+#   changed, using the rules defined in .github/labeler.yml. Keeps issue/PR
+#   triage fast as the codebase grows across core/, api/, apps/, database/.
+# =============================================================================
+
+name: "PR Labeler"
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    name: "Apply path-based labels"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          configuration-path: .github/labeler.yml

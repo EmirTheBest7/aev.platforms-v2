@@ -1,0 +1,12 @@
+# =============================================================================
+# Funding / Sponsorship Links
+# =============================================================================
+# Populates the "Sponsor" button on the repository page. This is entirely
+# optional — remove this file if ALIEV.IO V2 does not accept sponsorship,
+# or fill in the real usernames/URLs below once decided.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+# =============================================================================
+
+# github: [your-github-username]
+# open_collective: aliev-io
+# custom: ["https://example.com/donate"]

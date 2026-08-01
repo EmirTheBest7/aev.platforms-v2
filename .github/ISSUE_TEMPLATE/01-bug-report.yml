@@ -1,0 +1,99 @@
+name: "Bug Report"
+description: "Report a reproducible problem in ALIEV.IO V2"
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report. Please fill out the
+        sections below as completely as possible — this helps us reproduce
+        and fix the issue faster.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "When I do X, Y happens instead of Z."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Step-by-step instructions to reproduce the behavior."
+      placeholder: |
+        1. Go to '...'
+        2. Run '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual Behavior"
+      description: "What actually happened? Include full error messages/stack traces if applicable."
+      render: shell
+    validations:
+      required: false
+
+  - type: input
+    id: php-version
+    attributes:
+      label: "PHP Version"
+      placeholder: "8.3.x"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: "Environment"
+      options:
+        - "Local (Docker)"
+        - "Local (native)"
+        - "Staging"
+        - "Production"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: "ALIEV.IO V2 Version / Commit"
+      description: "Release tag or commit SHA, if known."
+      placeholder: "v1.2.0 or commit SHA"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional Context"
+      description: "Logs, screenshots, related issues, or anything else relevant."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have searched existing issues to make sure this isn't a duplicate."
+          required: true
+        - label: "I have included steps to reproduce the issue."
+          required: true

@@ -1,0 +1,68 @@
+# =============================================================================
+# Reusable Workflow: Deployment Pipeline
+# =============================================================================
+# Purpose:
+#   Template for deploying ALIEV.IO V2 to a target environment. DORMANT by
+#   design — the actual deploy `run:` steps are placeholders because the
+#   real deployment target (SSH host, Kubernetes, PaaS, etc.) is not yet
+#   decided. This file exists so the *pipeline shape* (environment gating,
+#   approvals, ordering) is ready in advance.
+#
+# Called by: workflows/release.yml (manually wired once a target exists)
+#
+# Activation checklist (when ready):
+#   1. Decide the deployment target (SSH/rsync, Kubernetes, Forge, etc.)
+#   2. Replace the placeholder step below with real deployment commands.
+#   3. Add required secrets (e.g. DEPLOY_HOST, DEPLOY_KEY) in the target
+#      GitHub Environment's secrets, not repository-level secrets — this
+#      keeps production credentials scoped to protected environments only.
+#   4. Configure the "production" environment under Settings → Environments
+#      with required reviewers, so this job pauses for manual approval.
+#
+# Design notes:
+#   - Uses GitHub Environments (`environment:`) for approval gates and
+#     environment-scoped secrets — the standard, framework-agnostic way to
+#     protect production deploys in Actions.
+# =============================================================================
+
+name: "Reusable / Deploy"
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target GitHub Environment name (e.g. staging, production)"
+        type: string
+        required: true
+      ref:
+        description: "Git ref to deploy (tag, branch, or SHA)"
+        type: string
+        default: ${{ github.ref }}
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: "Deploy to ${{ inputs.environment }}"
+    runs-on: ubuntu-latest
+    # Ties this job to a GitHub Environment: enables required-reviewer
+    # approval gates and environment-scoped secrets when configured in
+    # repository settings. No effect until an Environment is created.
+    environment:
+      name: ${{ inputs.environment }}
+
+    steps:
+      - name: "Checkout ref to deploy"
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: "Deploy (placeholder — replace with real deployment steps)"
+        run: |
+          echo "::warning::Deployment pipeline is not yet configured."
+          echo "This is a placeholder step for the '${{ inputs.environment }}' environment."
+          echo "Replace this step in .github/workflows/_reusable-deploy.yml with real"
+          echo "deployment logic (SSH/rsync, kubectl, Forge API call, etc.) when ready."
+          echo "Ref being 'deployed': ${{ inputs.ref }}"

@@ -1,0 +1,35 @@
+# =============================================================================
+# CODEOWNERS
+# =============================================================================
+# Automatically requests review from the listed owner(s) whenever a PR
+# touches matching paths. Rules are evaluated top-to-bottom; the LAST
+# matching rule wins, so keep general/default rules near the top and more
+# specific overrides further down (mirroring .gitignore semantics).
+#
+# Replace @aliev-io/placeholder-team and @your-github-username below with
+# real GitHub usernames or teams once the project has contributors.
+# For a team to be used here, it must have write access to the repository.
+# =============================================================================
+
+# Default owners for everything, unless a later, more specific rule matches.
+*                       @your-github-username
+
+# Core platform engine — highest scrutiny, foundational code.
+/core/                  @your-github-username
+
+# API communication layer.
+/api/                   @your-github-username
+
+# Platform applications.
+/apps/                  @your-github-username
+
+# Database structure & migrations — schema changes deserve careful review.
+/database/              @your-github-username
+
+# CI/CD, workflows, and repository configuration.
+/.github/               @your-github-username
+
+# Security-sensitive files always require review, even if a subdirectory
+# above has different owners (this rule, being last, takes precedence).
+/.github/SECURITY.md    @your-github-username
+/core/auth/             @your-github-username

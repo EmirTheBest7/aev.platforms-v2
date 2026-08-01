@@ -1,32 +1,109 @@
-name: ALIEV.IO CI
+# =============================================================================
+# Continuous Integration — Orchestrator
+# =============================================================================
+# Purpose:
+#   The single entry point that reacts to pushes and pull requests. It does
+#   no work itself — it composes the reusable workflows in this directory
+#   (each one job = one concern) via `workflow_call`. This keeps the CI
+#   pipeline modular: adding/removing a check means adding/removing one
+#   `jobs.*` block here, not editing shared logic.
+#
+# Jobs (in dependency order):
+#   1. php-lint   — fast syntax check, no dependencies required
+#   2. composer   — validates composer.json/lock, installs & caches vendor/
+#   3. phpunit    — (dormant until configured) runs the test suite
+#   4. phpstan    — (dormant until configured) static analysis
+#   5. cs-fixer   — (dormant until configured) code style check
+#   6. docker     — (dormant until a Dockerfile exists) build-only validation
+#
+# All PHP-tooling jobs run in parallel after `composer` succeeds, since
+# they're independent of each other — this minimizes total pipeline time.
+# =============================================================================
+
+name: CI
 
 on:
   push:
     branches:
       - main
-
+      - develop
   pull_request:
     branches:
       - main
+      - develop
+  # Allows manual re-runs from the Actions tab, e.g. after fixing a flaky run.
+  workflow_dispatch:
 
+# Cancels superseded runs on the same branch/PR to save CI minutes when a
+# contributor pushes multiple commits in quick succession.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  php-check:
+  php-lint:
+    name: "PHP Lint"
+    uses: ./.github/workflows/_reusable-php-lint.yml
+    with:
+      php-versions: '["8.3", "8.4"]'
 
+  composer:
+    name: "Composer"
+    uses: ./.github/workflows/_reusable-composer.yml
+    with:
+      php-version: "8.3"
+
+  phpunit:
+    name: "Tests"
+    needs: composer
+    uses: ./.github/workflows/_reusable-phpunit.yml
+    with:
+      php-versions: '["8.3", "8.4"]'
+      use-database: true
+
+  phpstan:
+    name: "Static Analysis"
+    needs: composer
+    uses: ./.github/workflows/_reusable-phpstan.yml
+    with:
+      php-version: "8.3"
+
+  cs-fixer:
+    name: "Code Style"
+    needs: composer
+    uses: ./.github/workflows/_reusable-cs-fixer.yml
+    with:
+      php-version: "8.3"
+
+  docker:
+    name: "Docker"
+    uses: ./.github/workflows/_reusable-docker-build.yml
+    with:
+      push: false
+
+  # Single required status check for branch protection rules: point
+  # "Require status checks to pass" at this job instead of every individual
+  # job above, so adding/renaming a check later doesn't break branch
+  # protection settings.
+  ci-summary:
+    name: "CI Summary"
+    if: always()
+    needs:
+      - php-lint
+      - composer
+      - phpunit
+      - phpstan
+      - cs-fixer
+      - docker
     runs-on: ubuntu-latest
-
     steps:
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3"
-
-
-      - name: Check PHP syntax
+      - name: "Check overall CI result"
         run: |
-          find . -name "*.php" -print0 | xargs -0 -n1 php -l
+          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ]; then
+            echo "::error::One or more CI jobs failed."
+            exit 1
+          fi
+          echo "All CI jobs passed or were skipped cleanly."

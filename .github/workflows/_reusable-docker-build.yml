@@ -1,0 +1,113 @@
+# =============================================================================
+# Reusable Workflow: Docker Build & Publish
+# =============================================================================
+# Purpose:
+#   Builds the project Docker image and pushes it to GitHub Container
+#   Registry (ghcr.io). DORMANT by design until a Dockerfile exists at the
+#   repository root — auto-detects and skips cleanly otherwise.
+#
+# Called by: workflows/ci.yml (build-only, PR validation) and
+#            workflows/release.yml (build + push, on release)
+#
+# Activation checklist (when ready):
+#   1. Add a Dockerfile to the repository root (or pass a custom path/
+#      context via inputs).
+#   2. Nothing else to change here — this job auto-detects and runs.
+#   3. Ensure the repository's Actions settings allow "Read and write
+#      permissions" for GITHUB_TOKEN, or use a PAT with packages:write.
+#
+# Design notes:
+#   - Uses Buildx with GitHub Actions cache (type=gha) to keep rebuilds fast.
+#   - `push` input lets callers build-and-validate on PRs without publishing,
+#     then build-and-push for real on release — same job, two behaviors.
+# =============================================================================
+
+name: "Reusable / Docker Build & Publish"
+
+on:
+  workflow_call:
+    inputs:
+      push:
+        description: "Whether to push the built image to the registry (false = build-only validation)"
+        type: boolean
+        default: false
+        required: false
+      image-name:
+        description: "Image name, without registry prefix (defaults to the repository name)"
+        type: string
+        default: ""
+        required: false
+      dockerfile:
+        description: "Path to the Dockerfile"
+        type: string
+        default: "Dockerfile"
+        required: false
+      context:
+        description: "Build context path"
+        type: string
+        default: "."
+        required: false
+      tags:
+        description: "Newline-separated list of tags to apply (used when push=true); defaults to the git ref name"
+        type: string
+        default: ""
+        required: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    name: "Docker Build${{ inputs.push && ' & Push' || ' (validate only)' }}"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Check for Dockerfile"
+        id: check
+        run: |
+          if [ -f "${{ inputs.dockerfile }}" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No Dockerfile found at '${{ inputs.dockerfile }}' — skipping Docker build. See activation checklist in this workflow file."
+          fi
+
+      - name: "Set up Docker Buildx"
+        if: steps.check.outputs.exists == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Log in to GitHub Container Registry"
+        if: steps.check.outputs.exists == 'true' && inputs.push
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Resolve image metadata (tags/labels)"
+        if: steps.check.outputs.exists == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/${{ inputs.image-name != '' && inputs.image-name || github.event.repository.name }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=sha,prefix=sha-
+
+      - name: "Build (and optionally push) image"
+        if: steps.check.outputs.exists == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.dockerfile }}
+          push: ${{ inputs.push }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -1,0 +1,66 @@
+# =============================================================================
+# CodeQL — Static security analysis & secret-pattern scanning
+# =============================================================================
+# Purpose:
+#   Runs GitHub's native CodeQL engine against the PHP codebase to catch
+#   security vulnerabilities (SQL injection, XSS, path traversal, etc.)
+#   directly in pull requests and on a weekly schedule.
+#
+# Note on secret scanning:
+#   Actual secret-scanning (detecting committed credentials/API keys) is a
+#   GitHub *repository setting*, not a workflow — enable it under:
+#     Settings → Code security → Secret scanning → Enable
+#   (and "Push protection" to block secrets before they're even committed).
+#   This workflow file complements that by covering *vulnerability patterns*
+#   in code (CodeQL), which push protection does not.
+#
+# Trigger:
+#   - Every pull request into main/develop (catches issues before merge)
+#   - Every push to main/develop (catches issues from direct pushes/merges)
+#   - Weekly schedule (catches newly-disclosed vulnerability patterns in
+#     code that hasn't changed recently)
+# =============================================================================
+
+name: CodeQL
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    # Every Monday at 03:17 UTC. Off-the-hour minute avoids the "top of the
+    # hour" congestion spike on GitHub's scheduled-job infrastructure.
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write # required for CodeQL to upload results
+
+jobs:
+  analyze:
+    name: "Analyze (PHP)"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Initialize CodeQL"
+        uses: github/codeql-action/init@v3
+        with:
+          languages: php
+          queries: security-and-quality
+
+      - name: "Run CodeQL analysis"
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:php"

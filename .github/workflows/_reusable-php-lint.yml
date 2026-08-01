@@ -1,0 +1,63 @@
+# =============================================================================
+# Reusable Workflow: PHP Syntax Lint
+# =============================================================================
+# Purpose:
+#   Runs `php -l` (lint) against every tracked .php file to catch syntax
+#   errors as early and cheaply as possible, before any heavier tooling
+#   (Composer install, PHPUnit, PHPStan) runs.
+#
+# Called by: workflows/ci.yml
+#
+# Design notes:
+#   - Uses a PHP version matrix (input-driven) so CI automatically covers
+#     every PHP version the project claims to support (8.3+).
+#   - No Composer dependencies are required for this job, so it runs fast
+#     and fails fast, independent of dependency-related issues.
+# =============================================================================
+
+name: "Reusable / PHP Lint"
+
+on:
+  workflow_call:
+    inputs:
+      php-versions:
+        description: "JSON array of PHP versions to lint against, e.g. '[\"8.3\", \"8.4\"]'"
+        type: string
+        default: '["8.3"]'
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: "Lint (PHP ${{ matrix.php-version }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ${{ fromJSON(inputs.php-versions) }}
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up PHP ${{ matrix.php-version }}"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          tools: none
+
+      - name: "Run PHP syntax check on all tracked .php files"
+        # find + php -l is dependency-free and works even before composer.json
+        # exists. Fails the job (non-zero exit) on the first syntax error.
+        run: |
+          set -euo pipefail
+          echo "Linting all tracked PHP files against PHP ${{ matrix.php-version }}..."
+          FILES=$(git ls-files '*.php')
+          if [ -z "$FILES" ]; then
+            echo "No PHP files found yet — nothing to lint."
+            exit 0
+          fi
+          echo "$FILES" | xargs -n1 -P "$(nproc)" php -l

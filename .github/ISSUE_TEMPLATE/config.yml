@@ -1,0 +1,19 @@
+# =============================================================================
+# Issue Template Chooser Configuration
+# =============================================================================
+# Purpose:
+#   Controls the issue-creation landing page contributors see. Setting
+#   `blank_issues_enabled: false` forces use of a structured template
+#   (bug report, feature request, or question) so triage always has the
+#   minimum information needed.
+# =============================================================================
+
+blank_issues_enabled: false
+
+contact_links:
+  - name: "Discussions"
+    url: https://github.com/aliev-io/aliev-io-v2/discussions
+    about: "Ask general questions or discuss ideas with the community before opening an issue."
+  - name: "Report a security vulnerability"
+    url: https://github.com/aliev-io/aliev-io-v2/security/advisories/new
+    about: "Please do NOT report security vulnerabilities as public issues — use private advisory reporting instead. See SECURITY.md."

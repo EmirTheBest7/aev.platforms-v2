@@ -1,0 +1,46 @@
+# =============================================================================
+# Dependency Review — PR-time dependency vulnerability gate
+# =============================================================================
+# Purpose:
+#   Scans the dependency changes introduced by a pull request (composer.lock,
+#   package-lock.json, etc. — whatever the PR touches) against known
+#   vulnerability databases, and fails the check if a newly introduced
+#   dependency has a known vulnerability at or above the configured
+#   severity threshold.
+#
+# This is complementary to CodeQL: CodeQL analyzes your own code, this
+# analyzes the third-party packages you're pulling in.
+#
+# Trigger:
+#   Pull requests only — this action's design is inherently diff-based
+#   (comparing base vs. head dependency manifests), so it doesn't apply to
+#   plain pushes.
+# =============================================================================
+
+name: Dependency Review
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write # allows posting a summary comment on the PR
+
+jobs:
+  dependency-review:
+    name: "Scan dependency changes"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Run dependency review"
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail the check on moderate severity or higher; adjust as the
+          # project's risk tolerance is defined.
+          fail-on-severity: moderate
+          comment-summary-in-pr: always
