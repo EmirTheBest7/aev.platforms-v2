@@ -1,0 +1,96 @@
+# ============================================================================
+# ALIEV.IO .gitignore - Comprehensive ignore patterns
+# ============================================================================
+
+# ENVIRONMENT & SECRETS
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# OPERATING SYSTEM
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.icloud
+
+# IDE & EDITOR
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+
+# PHP & COMPOSER
+/vendor/
+composer.lock
+*.phar
+
+# NODE.JS
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# PYTHON
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+
+# BUILD & RUNTIME
+storage/
+storage/*
+!storage/.gitkeep
+public/build/
+dist/
+build/
+*.log
+logs/
+
+# TEMPORARY FILES
+*.tmp
+*.temp
+*.bak
+*.old
+*.swp
+*.swo
+*~
+.~*
+
+# DATABASE
+*.sqlite
+*.db
+*.sql
+!init.sql
+
+# CACHING
+.cache/
+cache/
+*.cache
+
+# OSX BUNDLES
+*.app
+*.dSYM/
+
+# PROJECT SPECIFIC LEGACY FILES
+page/main/data.json
+home/*/data.json
+storage/cache/*
+storage/logs/*
+uploads/*
+
+# TEST COVERAGE
+coverage/
+.coverage

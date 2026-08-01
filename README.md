@@ -52,7 +52,7 @@ aliev.io/
 │   └── helpers/                # Shared utilities
 │
 ├── api/                        # Backend communication layer
-│   ├── v1/                     # Public API version 1
+│   ├── v2/                     # Public API version 2
 │   ├── internal/               # Internal services
 │   └── terminal/               # Terminal app API
 │
