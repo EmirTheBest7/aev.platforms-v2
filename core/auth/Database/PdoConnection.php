@@ -14,10 +14,22 @@ use RuntimeException;
  * No other class in core/auth should call `new PDO(...)` directly — this
  * guarantees consistent error mode, fetch mode, and charset everywhere,
  * and gives us one place to swap connection strategy later (e.g. pooling).
+ *
+ * Supports both MySQL/MariaDB and PostgreSQL via separate factory methods.
+ * The repositories that consume the resulting PDO (UserRepository,
+ * LoginAttemptRepository) branch their SQL dialect off of
+ * DatabaseDriver::fromPdo($pdo) rather than assuming one engine.
  */
 final class PdoConnection
 {
-    private static ?PDO $instance = null;
+    /**
+     * Per-instance cache (NOT static/shared) so a process that opens both
+     * a MySQL and a PostgreSQL connection — e.g. during a migration, or in
+     * tests — never accidentally hands back the wrong engine's connection.
+     * Each `new PdoConnection(...)` you construct gets its own single
+     * cached PDO, reused across repeated connect() calls on that instance.
+     */
+    private ?PDO $instance = null;
 
     public function __construct(
         private readonly string $dsn,
@@ -29,8 +41,8 @@ final class PdoConnection
 
     public function connect(): PDO
     {
-        if (self::$instance instanceof PDO) {
-            return self::$instance;
+        if ($this->instance instanceof PDO) {
+            return $this->instance;
         }
 
         $defaultOptions = [
@@ -41,7 +53,7 @@ final class PdoConnection
         ];
 
         try {
-            self::$instance = new PDO(
+            $this->instance = new PDO(
                 $this->dsn,
                 $this->username,
                 $this->password,
@@ -52,7 +64,7 @@ final class PdoConnection
             throw new RuntimeException('Database connection failed.', previous: $e);
         }
 
-        return self::$instance;
+        return $this->instance;
     }
 
     /**
@@ -72,6 +84,26 @@ final class PdoConnection
             $port,
             $database,
             $charset,
+        );
+
+        return new self($dsn, $username, $password);
+    }
+
+    /**
+     * Convenience factory for PostgreSQL using discrete parameters.
+     */
+    public static function forPostgres(
+        string $host,
+        string $database,
+        string $username,
+        string $password,
+        int $port = 5432,
+    ): self {
+        $dsn = sprintf(
+            'pgsql:host=%s;port=%d;dbname=%s',
+            $host,
+            $port,
+            $database,
         );
 
         return new self($dsn, $username, $password);

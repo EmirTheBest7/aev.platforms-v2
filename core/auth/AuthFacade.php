@@ -89,8 +89,14 @@ final class AuthFacade
     }
 
     /**
-     * Convenience factory wiring up default (MySQL/MariaDB + native
-     * session) implementations from a shared PDO connection.
+     * Convenience factory wiring up default repository/session
+     * implementations from a shared PDO connection.
+     *
+     * Works with both MySQL/MariaDB and PostgreSQL connections — the
+     * underlying repositories detect the driver automatically via
+     * DatabaseDriver::fromPdo($pdo). Build the PDO with
+     * PdoConnection::forMysql(...)->connect() or
+     * PdoConnection::forPostgres(...)->connect().
      */
     public static function create(PDO $pdo, ?AuthConfig $config = null): self
     {

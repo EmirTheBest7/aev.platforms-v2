@@ -26,7 +26,12 @@ use PDO;
  *   - logout
  *   - password.rehashed
  *
- * Expected schema: see database/reference/auth_schema.sql
+ * Expected schema: see database/reference/auth_schema.sql (MySQL) or
+ * database/reference/auth_schema.postgres.sql (PostgreSQL).
+ *
+ * No engine-specific branching needed here: both MySQL's JSON column and
+ * PostgreSQL's JSONB column accept a plain JSON-encoded string on INSERT
+ * via a bound PDO parameter.
  */
 final class AuditLogger implements AuditLoggerInterface
 {
