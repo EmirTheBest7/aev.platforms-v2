@@ -84,6 +84,9 @@ cache/
 *.app
 *.dSYM/
 
+# LEGACY AUDIT SOURCE (migration reference only, never part of production tree)
+/aev.platforms-master/
+
 # PROJECT SPECIFIC LEGACY FILES
 page/main/data.json
 home/*/data.json
