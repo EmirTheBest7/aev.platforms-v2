@@ -58,7 +58,7 @@ directory unnecessary (no `apps/{social,messenger,wallet,…}`, no `packages/`, 
 │   ├── assets/{css,js,fonts,images,icons,brand,vendor}
 │   ├── downloads/             files offered on /downloads
 │   └── home/_api/{UI,Docs}/   retained static bundle (see §6)
-├── resources/                 NOT served: licence-restricted fonts (SF Pro, DotlineBold), legacy 3D-room style reference
+├── resources/                 NOT served: licence-restricted fonts (SF Pro, DotlineBold)
 ├── storage/                   runtime only, never committed: logs/ cache/ leads/ ratelimit/
 ├── docker/                    apache/ (vhost, security, api-csp), php.ini, entrypoint.sh, nginx.example.conf
 ├── Dockerfile  compose.yaml  .dockerignore  .env.example
