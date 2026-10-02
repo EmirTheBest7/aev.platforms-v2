@@ -44,15 +44,15 @@ original, `scripts/visual/legacy-baseline.sh up` serves a sanitised copy of `./a
 
 1. Route in `routes/web.php` → controller method returning a `Response`
    (`View::render('pages/x', $data, ['title' => …, 'description' => …, 'path' => '/x'], layout)`).
-2. Template in `app/Views/pages/` (escape with `$e()`; no inline script/style/handlers).
-3. Page-specific CSS/JS under `public/assets/`; reference first-party files through `$view->asset('/assets/…')`.
+2. Template in `website/<page>/views/` (escape with `$e()`; no inline script/style/handlers).
+3. Page-specific CSS/JS under `website/<page>/assets/` (shared ones in `resources/`); run `php scripts/build.php`; reference published files through `$view->asset('/build/<page>/…')`.
 4. Historical URL (if any) in `routes/legacy.php`.
 5. Feature test in `tests/Feature`, then check it in the browser.
 
 ## Adding JS behaviour
 
 Wire behaviour with `data-*` hooks and event delegation. Start every optional feature inside its own guard so it
-cannot block the page. Main-page scripts are loaded in a fixed order from `app/Views/layouts/shell.php`.
+cannot block the page. Main-page scripts are loaded in a fixed order from `resources/views/layouts/shell.php`.
 
 ## Conventions
 

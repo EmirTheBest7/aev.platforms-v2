@@ -85,3 +85,13 @@ Each entry: original → problem → new → visual / functional impact.
 - **Profile panel** (`aev-profile-options`): restyled with the supplied SaaS Widget; the two identical "Sign In" links became one button.
 - **Assets removed** (verified unreferenced or tied to removed products): maps/messenger/timeline/video/finance launcher icons, six never-used home images, `images/mail/unnamed.png`, `header.css`.
 
+
+## G. Canonical structure and shared components (2026-10)
+
+- **Original:** `app/` (`App\`), `public/assets/`, templates in `app/Views`, one navbar/head/guard-fields copy per page.
+- **Problem:** structure did not match the ALIEV.IO canonical layout; shared UI elements were duplicated per page (navbar CSS 28 identical rules, head, honeypot/CSRF fields, ripple script, error-page chrome).
+- **New:** `core/` (engine + `auth`), `website/<page>/` (controller, views, assets), `api/{internal,terminal}`, `resources/` (shared views, components, CSS, JS, images, fonts, vendor); sources published to git-ignored `public/build/` and `public/home/_api/` by `scripts/build.php`. One navbar, head, guard-fields, button, forms and ripple implementation. Empty future folders (`apps/*`, `api/v2`, `core/users|permissions|cache`, `website/legal|investors`) intentionally not created.
+- **Reason:** single source of truth per element; pages are self-contained folders.
+- **Visual impact:** none, proven by `scripts/visual/baseline.mjs` + `compare-baseline.py` (HTML, requests, console, boxes at four viewports, 22 routes). Intended differences only: Contact icon 16→17 px, Auth logo y 56→60, error pages now use the real navbar.
+- **Functional impact:** none; URLs unchanged.
+- **Cleanup:** removed unused `DB_DRIVER`/`QIRIMTALK_URL` settings, empty `core/auth/Database`, `scripts/visual/shoot.mjs` (superseded by `baseline.mjs`), `.github/README.md` (duplicate of the root README).

@@ -23,6 +23,8 @@ the provided image.
 
 ## Plain Apache/PHP hosting (no Docker)
 
+`public/build/` and `public/home/_api/` are generated: run `php scripts/build.php` on the build machine (the prod image and the container entrypoint do it for you).
+
 Point the vhost document root at `public/` (preferred). `public/.htaccess` supplies the front controller and blocks dotfiles/other `.php`. Run `composer install --no-dev --optimize-autoloader` on the build machine and upload the result. If the host cannot change the document root, **do not** upload the repository root as-is; deploy only the contents of `public/` as the root and place the rest one level above it, adjusting the path in `public/index.php`.
 
 ## Configuration (environment)

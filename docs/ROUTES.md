@@ -21,6 +21,6 @@ All routes live in `routes/web.php` (current) and `routes/legacy.php` (historica
 | POST `/home/_api/valentine/yes` | `ApiController::valentineYes` | Server-side notification (CSRF header, rate limited) |
 | GET `/widgets/{clock,calculator}` | `WidgetController` | Mini-apps framed by the main page |
 
-Static (Apache, no PHP): `/assets/…`, `/downloads/…` files, `/downloads/wallpapers/create/`, `/home/_api/UI/`, `/home/_api/UI/terminal/…`, `/home/_api/Docs/`, `/manifest.webmanifest`. A directory that ships an `index.html` is served at its trailing-slash URL; other directories belong to the application.
+Static (Apache, no PHP): `/build/…`, `/downloads/…` files, `/downloads/wallpapers/create/`, `/home/_api/UI/`, `/home/_api/UI/terminal/…`, `/home/_api/Docs/`, `/manifest.webmanifest`. A directory that ships an `index.html` is served at its trailing-slash URL; other directories belong to the application.
 
 Historical URLs → see `URL-MIGRATION.md`.

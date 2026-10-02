@@ -26,4 +26,6 @@ node pages.mjs  http://localhost:8080 /tmp/shots /careers /contact /downloads /h
 scripts/visual/legacy-baseline.sh up                                    # sanitised ./aev-new on :8099 for side-by-side
 ```
 
+Regression proof for restructures: `node scripts/visual/baseline.mjs <dir>` before and after, then `python3 scripts/visual/compare-baseline.py <before> <after>` (HTML, requests, console errors and chrome boxes of every route at four viewports; remaining differences must be intended). Run `php scripts/build.php` first when assets changed — the phpunit bootstrap does it automatically.
+
 Viewports: 1440×900, 820×1180, 390×844, 844×390. Reports horizontal overflow, console errors and failed requests per page. Never submit the baseline's forms.
