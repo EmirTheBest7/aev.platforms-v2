@@ -1,0 +1,48 @@
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  --transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.075);
+  perspective: 2400px;
+}
+body:after {
+  content: "Enter : Start // Arrow Keys : Move // Ctrl : Shoot // Space : Open Door";
+  color: #666;
+  position: absolute;
+  top: 10px;
+  font-size: 14px;
+  transition: var(--transition);
+  transform: translateY(-50px);
+}
+body:before {
+  content: "";
+  position: absolute;
+  width: 100vw;
+  height: calc(50vh - 100px);
+  bottom: 0;
+  left: 0;
+  z-index: 12;
+  pointer-events: none;
+  background: linear-gradient(to top, #000, rgba(0, 0, 0, 0.01));
+}
+body iframe {
+  -webkit-clip-path: polygon(10px 207px, 650px 207px, 650px 612px, 10px 612px);
+          clip-path: polygon(10px 207px, 650px 207px, 650px 612px, 10px 612px);
+  height: 800px;
+  width: 1200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(calc(-50% + 136.5px), calc(-50% - 5px)) scale(0.5);
+  opacity: 0;
+  transition: var(--transition);
+}
+</style>
+
+<iframe height='800' id='doom' src='https://diekmann.github.io/wasm-fizzbuzz/doom/' width='1200'></iframe>

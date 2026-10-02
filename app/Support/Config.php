@@ -23,6 +23,32 @@ final class Config
         return new self($items);
     }
 
+    /**
+     * Returns a copy with `$overrides` deep-merged over the current items (arrays merge, scalars replace).
+     *
+     * @param array<string, mixed> $overrides
+     */
+    public function with(array $overrides): self
+    {
+        return new self(self::merge($this->items, $overrides));
+    }
+
+    /**
+     * @param array<string, mixed> $base
+     * @param array<string, mixed> $extra
+     * @return array<string, mixed>
+     */
+    private static function merge(array $base, array $extra): array
+    {
+        foreach ($extra as $key => $value) {
+            $base[$key] = is_array($value) && isset($base[$key]) && is_array($base[$key]) && !array_is_list($value)
+                ? self::merge($base[$key], $value)
+                : $value;
+        }
+
+        return $base;
+    }
+
     public function get(string $key, mixed $default = null): mixed
     {
         $node = $this->items;

@@ -10,6 +10,9 @@ namespace App\Support;
  */
 final class View
 {
+    /** @var array<string, mixed> variables of the page being rendered, inherited by its partials */
+    private array $shared = [];
+
     public function __construct(
         private readonly string $directory,
         private readonly string $appUrl,
@@ -21,9 +24,10 @@ final class View
      */
     public function render(string $template, array $data = [], array $meta = [], string $layout = 'base'): string
     {
+        $this->shared = $data;
         $content = $this->capture($template, $data);
 
-        return $this->capture('layouts/' . $layout, [
+        return $this->capture('layouts/' . $layout, $data + [
             'content' => $content,
             'meta' => $meta + ['title' => 'ΛΞV | Digital studio', 'description' => '', 'path' => '/', 'noindex' => false, 'bodyClass' => ''],
             'appUrl' => $this->appUrl,
@@ -33,7 +37,7 @@ final class View
     /** @param array<string, mixed> $data */
     public function partial(string $template, array $data = []): string
     {
-        return $this->capture($template, $data);
+        return $this->capture($template, $data + $this->shared);
     }
 
     /** @param array<string, mixed> $data */
@@ -48,10 +52,18 @@ final class View
 
         return (static function () use ($file, $data, $e, $view): string {
             extract($data, EXTR_SKIP);
+            $level = ob_get_level();
             ob_start();
-            require $file;
+            try {
+                require $file;
 
-            return (string) ob_get_clean();
+                return (string) ob_get_clean();
+            } catch (\Throwable $error) {
+                while (ob_get_level() > $level) {
+                    ob_end_clean(); // never leak a half-rendered template's buffer
+                }
+                throw $error;
+            }
         })();
     }
 }

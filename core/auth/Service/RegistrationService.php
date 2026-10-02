@@ -53,7 +53,7 @@ final class RegistrationService
 
         $passwordHash = $this->hasher->hash($data->password);
 
-        $userId = $this->users->create($data->email, $data->username, $passwordHash);
+        $userId = $this->users->create($data->email, $data->username, $passwordHash, $data->displayName, $data->referralCode);
 
         $this->auditLogger->log('registration.success', $userId, $ipAddress, $userAgent);
 

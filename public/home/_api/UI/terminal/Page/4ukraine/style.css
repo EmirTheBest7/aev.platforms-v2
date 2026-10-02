@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;  
+  background-color: #005BBB;
+  font-family: 'Montserrat', sans-serif;
+  color: #FFD500;
+}
+
+/* ----- HEADER -----*/
+header {
+  top: 0;
+  margin: 0;
+  height: 10%;
+  padding-top: 10px;
+  text-align: center;
+  line-height: 1;
+}
+
+h1, h2, h3 {
+  font-family: 'Arima Madurai', cursive;
+  text-transform: uppercase;
+}
+
+/* ----- FACT SECTION -----*/
+section {
+  margin: 0px;
+  padding-bottom: 50px;
+  height: 220px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.fact-box {
+  padding: 0px 0px;
+  height: auto;
+  max-width: 600px;
+}
+
+#title {
+  margin: 20px 0px -25px 0px;
+}
+
+#fact {
+  padding-top: 10px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+button {
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 5px 15px;
+  border: solid #FFD500 2px;
+  border-radius: 5px;
+  font-weight: 600;
+  background-color: #005BBB;
+  color: #FFD500;
+  cursor: pointer;
+  transition: .2s ease-out;
+}
+
+button:hover {
+  background-color: #FFD500;
+  color: #005BBB;
+  padding: 5px 20px;
+}
+
+
+/* ----- FOOTER -----*/
+footer {
+  bottom: 0;
+  width: 100%; 
+  padding-bottom: 100px;
+  height: auto;
+  background-color: #FFD500;
+  color: #005BBB;
+}
+
+.footer-cntr {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-header {
+  width: 100%;
+}
+
+.footer-header h2 {
+  padding: 10px 0px 0px 10px;
+}
+
+.box-cntr {
+  bottom: 0;
+  padding: 5px 10px;
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.box {
+  min-width: 30%;
+}
+
+.box h3 {
+  margin: 10px 0px -10px 0px;
+}
+
+.box ul {
+  margin 0px;
+  padding: 0px 20px;
+}
+
+
+li a {
+  text-decoration: none;
+  color: #005BBB;
+  transition: .2s ease-out;
+}
+
+a:hover {
+  text-shadow: 1px 1px 4px #FFF;
+  border-bottom: solid #005BBB 1px;
+}

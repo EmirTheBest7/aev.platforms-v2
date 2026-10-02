@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Serves a SANITISED copy of the legacy site (aev.platforms-master) for visual comparison.
+# Serves a SANITISED copy of the legacy site (./aev-new by default) for visual comparison.
 #   - copies only _assets/ and page/ (never home/, never credentials)
 #   - replaces _inc/functions.php with a stub: no credentials, notify() is a no-op
 #   - rewrites absolute production URLs to http://localhost:$PORT
@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-LEGACY="$ROOT/aev.platforms-master"
+LEGACY="${LEGACY_SRC:-$ROOT/aev-new}"   # the cleaned source of truth; override with LEGACY_SRC=…
 PORT="${PORT:-8099}"
 WORK="${TMPDIR:-/tmp}/aliev-legacy-baseline"
 NAME="aliev-legacy-baseline"
@@ -40,6 +40,7 @@ for dp, _, fs in os.walk(work):
             p = os.path.join(dp, f)
             t = open(p, errors='ignore').read()
             u = re.sub(r'https://(www\.)?aliev\.io', f'http://localhost:{port}', t)
+            u = re.sub(r'<script[^>]*js\.web4ukraine\.org[^>]*></script>', '', u)  # remote script that can redirect visitors
             if u != t:
                 open(p, 'w').write(u)
 PY

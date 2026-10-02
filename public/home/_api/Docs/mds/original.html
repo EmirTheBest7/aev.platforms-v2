@@ -1,0 +1,246 @@
+<section id="Hello_World">
+    <header class="main-section__heading">Hello World </header>
+    <p class="main-section__intro">The smallest ΛΞV example looks like this:</p>
+
+    <code class="code">
+        ΛΞVDOM.render(
+        <br />
+        &nbsp;&nbsp;&lth1&gtHello, world!&lt/h1&gt,
+        <br />
+        &nbsp;&nbsp;document.getElementById('root')
+        <br />
+        );
+    </code>
+
+    <p class="main-section__text">Consider the ticking clock example from one of the previous sections. In <a href="#"
+            class="main-section__link--inline">Rendering Elements</a>, we have only learned one way to update the UI. We
+        call <code class="code--inline">ΛΞVDOM.render()</code> to change the rendered output:</p>
+
+    <a href="#" class="main-section__link">Try it on</a>
+    <h3 class="main-section__subHeading">How to Read this Guide</h3>
+    <p class="main-section__text">In this guide, we will examine the building blocks of ΛΞV apps: elements and
+        components. Once you master them, you can create complex apps from small reusble code. </p>
+    <blockquote class="main-section__tipbox">
+        <h4>Tip</h4>
+        <p class="main-section__text">This guide is designed for people who prefer <strong>learning concepts step by
+                step</strong>. If you prefer to learn by doing, check out our <a href="#"
+                class="main-section__link--inline">practical tutorial</a>. You might find this guide and that tutorial
+            complementary to each other.</p>
+    </blockquote>
+    <p class="main-section__text">This is the first chapter in a step-by-step guide about main ΛΞV concepts. You can
+        find a list of all its chapters in the navigation sidebar. If you’re reading this from a mobile device, you can
+        access the navigation by pressing the button in the bottom right corner of your screen.</p>
+</section>
+
+<hr />
+
+<section class="main-section" id="Introducing_JSX">
+    <header class="main-section__heading">
+        Introducing JSX
+    </header>
+    <p class="main-section__intro">Consider this variable declaration:</p>
+    <code class="code">
+        const element = &lth1&gtHello, world!&lt/h1&gt;
+    </code>
+    <p class="main-section__text">This funny tag syntax is neither a string nor HTML.</p>
+
+    <p class="main-section__text">It is called JSX, and it is a syntax extension to JavaScript. We recommend using it
+        with ΛΞV to describe what the UI should look like. JSX may remind you of a template language, but it comes with
+        the full power of JavaScript.</p>
+
+    <p class="main-section__text">JSX produces ΛΞV “elements”. We will explore rendering them to the DOM in the next
+        section. Below, you can find the basics of JSX necessary to get you started.</p>
+
+    <h3 class="main-section__subHeading">Why JSX?</h3>
+
+    <p class="main-section__text">
+        ΛΞV embraces the fact that rendering logic is inherently coupled with other UI logic: how events are handled,
+        how the state changes over time, and how the data is prepared for display.</p>
+    <p class="main-section__text">Instead of artificially separating technologies by putting markup and logic in
+        separate files, ΛΞV <a href="#" class="main-section__link--inline">separates <em>concerns</em></a> with loosely
+        coupled units called “components” that contain both. We will come back to components in a <a href="#"
+            class="main-section__link--inline">further section</a>, but if you’re not yet comfortable putting markup in
+        JS, this <a href="#" class="main-section__link--inline">talk</a> might convince you otherwise.</p>
+    <p class="main-section__text">ΛΞV doesn’t require using JSX, but most people find it helpful as a visual aid when
+        working with UI inside the JavaScript code. It also allows ΛΞV to show more useful error and warning messages.
+    </p>
+    <p class="main-section__text">With that out of the way, let’s get started!</p>
+    <blockquote class="main-section__tipbox">
+        <h4>Warning:</h4>
+        <p class="main-section__text">Since JSX is closer to JavaScript than to HTML, ΛΞV DOM uses <code
+                class="code--inline">camelCase</code> property naming convention instead of HTML attribute names.</p>
+        <p class="main-section__text">For example, <code class="code--inline">class</code> becomes className in JSX, and
+            tabindex becomes tabIndex.
+    </blockquote>
+</section>
+
+<hr />
+
+<section class="main-section" id="Rendering_Elements">
+
+    <header class="main-section__heading">
+        Rendering Elements
+    </header>
+
+    <p class="main-section__intro">Elements are the smallest building blocks of ΛΞV apps.</p>
+
+    <p class="main-section__text">An element describes what you want to see on the screen:</p>
+
+    <code class="code">
+        const element = &lth1&gtHello, world&lt/h1&gt;
+    </code>
+
+    <p class="main-section__text">Unlike browser DOM elements, ΛΞV elements are plain objects, and are cheap to create.
+        ΛΞV DOM takes care of updating the DOM to match the ΛΞV elements.</p>
+
+    <blockquote class="main-section__tipbox">
+        <h4>Note:</h4>
+        <p class="main-section__text">
+            One might confuse elements with a more widely known concept of “components”. We will introduce components in
+            the <a href="#" class="main-section__link--inline">next section</a>. Elements are what components are “made
+            of”, and we encourage you to read this section before jumping ahead.</p>
+    </blockquote>
+
+    <h3 class="main-section__subHeading">Rendering an Element into the DOM</h3>
+
+    <p class="main-section__text">Let’s say there is a <code class="code--inline">&ltdiv&gt</code> somewhere in your
+        HTML file:</p>
+
+    <code class="code">
+        &ltdiv id="root"&gt&lt/div&gt
+    </code>
+
+    <p class="main-section__text">We call this a “root” DOM node because everything inside it will be managed by ΛΞV
+        DOM.</p>
+
+    <p class="main-section__text">Applications built with just ΛΞV usually have a single root DOM node. If you are
+        integrating ΛΞV into an existing app, you may have as many isolated root DOM nodes as you like.</p>
+
+    <p class="main-section__text">To render a ΛΞV element into a root DOM node, pass both to ΛΞVDOM.render():</p>
+
+    <code class="code">
+        const element = &lth1&gtHello, world&lt/h1&gt;<br />
+        ΛΞVDOM.render(element, document.getElementById('root'));
+    </code>
+
+    <a href="#" class="main-section__link">Try it on</a>
+
+    <p class="main-section__text">It displays “Hello, world” on the page.</p>
+
+</section>
+
+<hr />
+
+<section class="main-section" id="Components_and_Props">
+    <header class="main-section__heading">
+        Components and Props
+    </header>
+    <p class="main-section__intro">Components let you split the UI into independent, reusable pieces, and think about
+        each piece in isolation. This page provides an introduction to the idea of components. You can find a <a
+            href="#" class="main-section__link--inline">detailed component API reference here</a>.</p>
+
+    <p class="main-section__text">Conceptually, components are like JavaScript functions. They accept arbitrary inputs
+        (called “props”) and return ΛΞV elements describing what should appear on the screen.</p>
+
+    <h3 class="main-section__subHeading">Functional and Class Components</h3>
+
+    <p class="main-section__text">The simplest way to define a component is to write a JavaScript function:</p>
+
+    <code class="code">
+        function Welcome(props) {<br />
+        &nbsp;&nbsp;return &lth1&gtHello, {props.name}&lt/h1&gt;<br />
+        }
+    </code>
+
+    <p class="main-section__text">This function is a valid ΛΞV component because it accepts a single “props” (which
+        stands for properties) object argument with data and returns a ΛΞV element. We call such components “functional”
+        because they are literally JavaScript functions.</p>
+
+    <p class="main-section__text">You can also use an ES6 class to define a component:</p>
+
+    <code class="code">
+        class Welcome extends ΛΞV.Component {<br />
+        &nbsp;&nbsp;render() {<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;return &lth1&gtHello, {this.props.name}&lt/h1&gt;<br />
+        &nbsp;&nbsp;}<br />
+        }
+    </code>
+
+    <p class="main-section__text">The above two components are equivalent from ΛΞV’s point of view.</p>
+
+    <p class="main-section__text">Classes have some additional features that we will discuss in the next sections. Until
+        then, we will use functional components for their conciseness.</p>
+
+</section>
+
+<hr />
+
+<section class="main-section" id="State_And_Lifecycle">
+    <header class="main-section__heading">
+        State and Lifecycle
+    </header>
+
+    <p class="main-section__intro">This page introduces the concept of state and lifecycle in a ΛΞV component. You can
+        find a <a href="#" class="main-section__link--inline">detailed component API reference here</a>.</p>
+
+    <p class="main-section__text">Consider the ticking clock example from one of the previous sections. In <a href="#"
+            class="main-section__link--inline">Rendering Elements</a>, we have only learned one way to update the UI. We
+        call <code class="code--inline">ΛΞVDOM.render()</code> to change the rendered output:</p>
+
+    <p class="main-section__text">
+        However, it misses a crucial requirement: the fact that the Clock sets up a timer and updates the UI every
+        second should be an implementation detail of the Clock.</p>
+
+    <p class="main-section__text">Ideally we want to write this once and have the Clock update itself:
+    </p>
+
+    <code class="code">
+        ΛΞVDOM.render(<br />
+        &nbsp;&nbsp;&ltClock /&gt, <br />
+        &nbsp;&nbsp;document.getElementById('root')<br />
+        );
+    </code>
+
+    <p class="main-section__text">To implement this, we need to add “state” to the <code
+            class="code--inline">Clock</code> component.</p>
+
+    <p class="main-section__text">State is similar to props, but it is private and fully controlled by the component.
+    </p>
+
+    <p class="main-section__text">We mentioned before that components defined as classes have some additional features.
+        Local state is exactly that: a feature available only to classes.</p>
+
+    <h3 class="main-section__subHeading">
+        Converting a Function to a Class
+    </h3>
+
+    <p class="main-section__text">You can convert a functional component like Clock to a class in five steps:</p>
+
+    <ol class="main-section__list">
+        <li class="main-section__text">
+            Create an ES6 class, with the same name, that extends <code class="code--inline">ΛΞV.Component</code>.
+        </li>
+        <li class="main-section__text">
+            Add a single empty method to it called <code class="code--inline">render()</code>.
+        </li>
+        <li class="main-section__text">
+            Move the body of the function into the <code class="code--inline">render()</code> method.
+        </li>
+        <li class="main-section__text">
+            Replace props with <code class="code--inline">this.props</code> in the <code
+                class="code--inline">render()</code> body.</li>
+        <li class="main-section__text">
+            Delete the remaining empty function declaration.
+        </li>
+    </ol>
+
+    <a hre="#" class="main-section__link">
+        Try it on
+    </a>
+
+    <p class="main-section__text"><code class="main-section__inline">Class</code> is now defined as a class rather than
+        a function</p>
+
+</section>
+
+<hr />

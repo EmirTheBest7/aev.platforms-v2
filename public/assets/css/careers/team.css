@@ -1,0 +1,229 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap");
+@import url("https://unicons.iconscout.com/release/v4.0.0/css/line.css");
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: rgb(19,19,20);
+  min-height: 100vh;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: top;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.headline {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.main-text {
+  font-size: 45px;
+    line-height: 1.06667;
+    font-weight: 700;
+    letter-spacing: 0;
+    font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+    margin-bottom: 20px; /* Spacing between elements */
+
+    background: linear-gradient(10deg, #217bfe 0%, #ac87eb 30%, #ee4d5d 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.sub-text{
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.sub-link {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+  color: #2997ff;
+  padding-top: 100px;
+  width: 100%;
+}
+
+section {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  padding-block: min(20vh, 5rem);
+  text-align: center;
+  width: calc(min(90rem, 90%));
+  margin-inline: auto;
+}
+section p,
+section h2,
+section h3 {
+  letter-spacing: 0.035rem;
+}
+section p {
+  line-height: 1.7;
+  color: white;
+  max-width: 70rem;
+  margin: 0 auto;
+  font-size: clamp(0.9rem, 0.825rem + 0.3vw, 1.2rem);
+}
+section h2 {
+  font-size: clamp(3rem, 2.4286rem + 2.2857vw, 5rem);
+  color: white;
+  text-transform: capitalize;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+section .cards {
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 2rem;
+}
+@media screen and (min-width: 51rem) {
+  section .cards {
+    gap: 3.5rem;
+  }
+}
+section .cards .card {
+  position: relative;
+  text-align: left;
+  /*hover states*/
+}
+section .cards .card .social-icon {
+  background: #111;
+  padding: 1rem 1.75rem;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+}
+section .cards .card .social-icon i {
+  color: #fff;
+  font-size: 1.4rem;
+}
+section .cards .card .social-icon:hover i {
+  color: #003ef5;
+}
+section .cards .card img {
+  filter: grayscale(100%);
+  transition: 0.5s ease;
+}
+section .cards .card img:hover {
+  filter: grayscale(0%);
+}
+section .cards .card .card-content-wrapper {
+  margin-left: auto;
+  max-width: 90%;
+}
+section .cards .card .card-content-wrapper .card-content {
+  display: block;
+  background: rgb(34,35,39);
+  transition: 0.5s ease;
+  padding: 4.5rem 2rem 0 3.2rem;
+}
+section .cards .card .card-content-wrapper .card-content > div {
+  text-align: right;
+}
+section .cards .card .card-content-wrapper .card-content h3,
+section .cards .card .card-content-wrapper .card-content p {
+  text-transform: capitalize;
+}
+section .cards .card .card-content-wrapper .card-content h3 {
+  font-size: clamp(1.15rem, 1.1071rem + 0.1714vw, 1.3rem);
+  font-weight: 800;
+  color: white;
+}
+section .cards .card .card-content-wrapper .card-content p {
+  color: white;
+  font-size: 0.9rem;
+}
+section .cards .card .card-content-wrapper .card-content svg {
+  display: inline-block;
+  text-align: right;
+  width: 60px;
+  fill: #003ef5;
+}
+section .cards .card .card-img-wrapper:hover ~ .card-content-wrapper .card-content {
+  background: #003ef5;
+}
+section .cards .card .card-img-wrapper:hover ~ .card-content-wrapper .card-content h3,
+section .cards .card .card-img-wrapper:hover ~ .card-content-wrapper .card-content p,
+section .cards .card .card-img-wrapper:hover ~ .card-content-wrapper .card-content svg {
+  color: white;
+}
+section .cards .card .card-content-wrapper:hover .card-content {
+  background: #003ef5;
+}
+section .cards .card .card-content-wrapper:hover .card-content h3,
+section .cards .card .card-content-wrapper:hover .card-content p,
+section .cards .card .card-content-wrapper:hover .card-content svg {
+  color: white;
+}
+
+blockquote{
+  text-align: left;
+    font-size: 1.4em;
+    width: 100%;
+    margin: 25px auto;
+    font-style: italic;
+    color: white;
+    padding: 1.2em 30px 1.2em 75px;
+    border-left: 8px solid #003ef5;
+    line-height: 1.6;
+    position: relative;
+    background: rgb(34,35,39);
+    margin: 120px 0;
+}
+
+blockquote::before{
+  font-family:Arial;
+  content: "\201C";
+  color:#003ef5;
+  font-size:4em;
+  position: absolute;
+  left: 10px;
+  top:-10px;
+}
+
+blockquote::after{
+  content: '';
+}
+
+blockquote span{
+  display:block;
+  color:white;
+  font-style: normal;
+  font-weight: bold;
+  margin-top:1em;
+}
+

@@ -22,7 +22,7 @@ interface UserRepositoryInterface
     /**
      * Creates a new user record and returns the generated user id.
      */
-    public function create(string $email, string $username, string $passwordHash): int;
+    public function create(string $email, string $username, string $passwordHash, ?string $displayName = null, ?string $referralCode = null): int;
 
     /**
      * Fetches raw credential data needed to attempt a login.

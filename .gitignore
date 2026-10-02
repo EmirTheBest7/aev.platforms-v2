@@ -97,3 +97,6 @@ uploads/*
 # TEST COVERAGE
 coverage/
 .coverage
+
+# Cleaned source for the agency rebuild (read-only input; nested git repo, contains legacy secrets in its tree/history)
+/aev-new/

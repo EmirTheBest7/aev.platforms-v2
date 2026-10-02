@@ -17,6 +17,7 @@ final class Request
         public readonly array $query = [],
         public readonly array $post = [],
         public readonly array $server = [],
+        public readonly string $body = '',
     ) {}
 
     public static function fromGlobals(): self
@@ -28,7 +29,12 @@ final class Request
         /** @var array<string, string> $server */
         $server = array_filter($_SERVER, is_string(...));
 
-        return new self(strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET')), $path, $_GET, $_POST, $server);
+        $body = '';
+        if (in_array(strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET')), ['POST', 'PUT', 'PATCH'], true)) {
+            $body = (string) file_get_contents('php://input', false, null, 0, 65536); // hard cap: never read an unbounded body
+        }
+
+        return new self(strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET')), $path, $_GET, $_POST, $server, $body);
     }
 
     public static function normalizePath(string $path): string
@@ -40,7 +46,18 @@ final class Request
 
     public function withPath(string $path): self
     {
-        return new self($this->method, $path, $this->query, $this->post, $this->server);
+        return new self($this->method, $path, $this->query, $this->post, $this->server, $this->body);
+    }
+
+    /** @return array<mixed>|null decoded JSON object/array body, or null when absent/invalid */
+    public function json(): ?array
+    {
+        if ($this->body === '' || !str_contains(strtolower($this->server['CONTENT_TYPE'] ?? ''), 'application/json')) {
+            return null;
+        }
+        $data = json_decode($this->body, true);
+
+        return is_array($data) ? $data : null;
     }
 
     public function header(string $name): ?string
@@ -68,6 +85,12 @@ final class Request
         $value = $this->post[$key] ?? [];
 
         return is_array($value) ? array_values(array_filter($value, is_string(...))) : [];
+    }
+
+    /** True for fetch/XHR callers that ask for JSON (the page scripts); plain form posts get redirects/HTML. */
+    public function wantsJson(): bool
+    {
+        return str_contains(strtolower($this->header('Accept') ?? ''), 'application/json');
     }
 
     public function isSecure(): bool

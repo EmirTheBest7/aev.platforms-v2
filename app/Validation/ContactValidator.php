@@ -26,10 +26,10 @@ final class ContactValidator
      */
     public function validate(string $name, string $email, string $company, array $services, string $message): array
     {
-        $name = self::clean($name);
-        $email = strtolower(self::clean($email));
-        $company = self::clean($company);
-        $message = self::cleanMultiline($message);
+        $name = Text::line($name);
+        $email = strtolower(Text::line($email));
+        $company = Text::line($company);
+        $message = Text::multiline($message);
         $services = array_values(array_unique(array_filter($services, static fn(string $s): bool => isset(self::SERVICES[$s]))));
 
         $errors = [];
@@ -53,22 +53,5 @@ final class ContactValidator
         }
 
         return ['data' => compact('name', 'email', 'company', 'services', 'message'), 'errors' => $errors];
-    }
-
-    /** Single-line field: strips control characters, collapses whitespace. */
-    private static function clean(string $value): string
-    {
-        $value = (string) preg_replace('/[\p{Cc}\p{Cf}]+/u', ' ', $value);
-
-        return trim((string) preg_replace('/\s+/u', ' ', $value));
-    }
-
-    /** Multi-line field: keeps newlines, strips other control characters. */
-    private static function cleanMultiline(string $value): string
-    {
-        $value = str_replace(["\r\n", "\r"], "\n", $value);
-        $value = (string) preg_replace('/[^\P{Cc}\n]+|\p{Cf}+/u', '', $value);
-
-        return trim((string) preg_replace("/\n{3,}/", "\n\n", $value));
     }
 }

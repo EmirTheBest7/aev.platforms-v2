@@ -1,12 +1,16 @@
 # CLAUDE.md — ALIEV.IO
 
-Permanent instructions for Claude Code sessions in this repository. Read this first, then `docs/PROJECT-VISION.md` (why the project is what it is) and `docs/ARCHITECTURE.md` (how v2 is built).
+Permanent instructions for Claude Code sessions in this repository. Read this first, then `docs/ARCHITECTURE.md`. `docs/PROJECT-VISION.md` is background on the original project, not current scope.
 
-## Project identity
+## Project identity and scope
 
-ALIEV.IO ("ΛΞV", "Λ L I Ξ V Platforms") is a **long-term personal project of its owner**, built over years: an **ecosystem** — a public face (agency/studio, lead generation, careers, investors, events), a registered-user platform (accounts, Space social feed, Studio, Messenger, Videos, Wallet/Store), a developer layer (terminal tools, Docs, API keys, the HesterGPT AI assistant) and user hosting. This repository (v2) **revives** it; it is not a redesign and not "an agency website". The historical reference is `./aev.platforms-master` (git-ignored, read-only; public mirror `EmirTheBest7/aev.platforms`).
+ALIEV.IO ("ΛΞV", "Λ L I Ξ V Platforms") is the owner's long-running personal project. **This repository is the fresh rebuild of it as a digital agency / studio website**, made from the manually cleaned source `./aev-new` (git-ignored, read-only; it is the visual and behavioural reference). Read `docs/ARCHITECTURE.md` first.
 
-Revival goal: **preserve the project and its identity; improve the engineering underneath.** Same experience, better engine.
+**In scope:** the main page (`/`), Careers, Contact, Downloads, Auth (`home/auth`) and the retained `_api` bundle (kept as an internal/API/terminal foundation, to be modernised later, not redesigned).
+
+**Out of scope — do not reintroduce:** social network, messenger, wallet/finance, AI / HesterGPT (at most a clean extension point for a future iframe; do not invent a replacement), games as apps, music platform, search-engine experiments, abandoned apps and prototypes. `docs/history/` and the ecosystem-era docs are historical records, not current scope.
+
+Goal: **same ALIEV.IO design and UI/UX, better functionality, security and maintainability.** Not a redesign.
 
 ## The seven standing rules
 
@@ -24,14 +28,14 @@ Revival goal: **preserve the project and its identity; improve the engineering u
 
 ## Architecture (full detail in `docs/ARCHITECTURE.md`)
 
-PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`**. `app/Application.php` is the composition root: `app/Http` (Request/Response/Router), `app/Controllers`, `app/Services` (Notifier, LeadStore), `app/Security`, `app/Validation`, `app/Support`, `app/Views` (plain-PHP templates; shell partials in `partials/shell`), `config/`, `routes/`, `storage/` (runtime, not committed), `tests/`, `docker/`. New code follows `route → controller → service → repository → view`. `core/auth` is the account system — **reuse it**, don't write a second session/CSRF implementation. The v2 README's module plan (`apps/{social,messenger,forum,store,wallet,studio,terminal}`, `api/*`) is the legacy platform re-planned: follow it as apps return.
+PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`**. Minimal MVC: `route → controller → (model | service) → view`. `app/Application.php` is the only wiring point (explicit, no container). Layers: `app/{Http,Controllers,Models,Services,Security,Validation,Support,Views}`, `config/`, `routes/`, `database/migrations/`, `storage/` (runtime, not committed), `resources/` (not served), `docker/`, `scripts/`, `tests/{Unit,Feature}`, `docs/`. `core/auth` is the account system — **reuse it**; one session manager and one CSRF implementation, built once in `Application`. Do not add an abstraction without a second consumer.
 
 ## Coding standards
 
 - **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (`app/Views` templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
 - **Templates:** every dynamic value through `$e()`. No inline `<script>`, `<style>`, `style=""`, `on*=` — the CSP forbids them (legacy inline styles are extracted into generated utility classes).
-- **JavaScript:** native ES modules, defensive DOM access, event delegation, listener/animation cleanup, keyboard access, `prefers-reduced-motion`. jQuery is not required; if used to preserve exact legacy behaviour it must be a single self-hosted copy.
-- **CSS:** reuse the legacy classes/tokens (`public/assets/css/{core,main}.css` are ported with mechanical edits only — see their headers); tokens in `site.css` for new pages.
+- **JavaScript:** keep the original behaviour. The main page runs the original jQuery-based scripts (self-hosted, single copy) plus `assets/js/home/app.js`; wire behaviour through `data-*` hooks and delegation, never inline handlers. Every optional feature starts inside its own guard so it can never block the page. New code: defensive DOM access, keyboard access, `prefers-reduced-motion`.
+- **CSS:** reuse the legacy classes/tokens (`public/assets/css/{core,main}.css` are ported with mechanical edits only — see their headers). Additions of the port live in `shell.css` (accessibility/plumbing, button resets); extracted inline styles are the generated `utilities.css`.
 - **HTML:** semantic landmarks, labelled controls, real `<button>`/`<a>` (never `href="#"` as a control), meaningful `alt`.
 - **Naming:** `PascalCase` classes, `camelCase` methods, BEM-ish CSS, lowercase-kebab routes.
 
@@ -47,11 +51,11 @@ Secrets only via environment (`.env.example` placeholders). Treat every credenti
 
 ## URL rules
 
-Preserve public URLs. Legacy → new mapping lives in `routes/legacy.php` + `docs/URL-MIGRATION.md`. Single-hop 301 only. **Do not return 410 for work that is being preserved** — unbuilt paths return 404 until rebuilt. No trailing-slash duplicates.
+Preserve public URLs. Legacy → new mapping lives in `routes/legacy.php` + `docs/URL-MIGRATION.md`. App routes have no trailing slash; the static `/home/_api/` bundle keeps it. Single-hop 301 only. **Do not return 410 for work that is being preserved** — unbuilt paths return 404 until rebuilt. No trailing-slash duplicates.
 
 ## Deployment
 
-Docker-first, host-agnostic: image from `docker/Dockerfile` (`prod` stage), nginx or Apache with **document root `public/`**, PHP 8.3+, non-root, persistent `storage/`, config via environment. `docs/DEPLOYMENT.md`.
+Docker-first: `Dockerfile` at the repository root (`prod` stage), `php:8.3-apache` with **document root `public/`** (Apache master runs as root to bind the port, workers as `www-data`), MariaDB for accounts/jobs, persistent `storage/`, config via environment. `docker compose up --build`. `docs/DEPLOYMENT.md`.
 
 ## Git
 
@@ -68,4 +72,8 @@ scripts/visual/legacy-baseline.sh up   # sanitised legacy copy for visual compar
 
 ## Open owner decisions (do not assume)
 
-See `docs/PROJECT-VISION.md` §10 and `docs/MIGRATION.md` "Decisions": which platform apps return first; fonts; Liquid Glass; destinations for Docs/Finance/Maps/social links; `AEVT`/`AEVD` price sources; Intergram target; "Functional key" intent; whether `/account` is exposed; history purge of the public legacy repo.
+See `docs/ARCHITECTURE.md` §14: the HesterGPT card in the Works slider, canonical URL forms, job URL shape, and the unregistered `aliev.io` domain. Also open: whether to keep/licence Ndot-55, the "Functional key" intent, destinations for unset social links, Intergram chat ID, SMTP for password reset, history purge of the public legacy repo.
+
+## Verification rule
+
+PHPUnit green is not "working". After any UI change open the page in a real browser at 1440×900, 820×1180, 390×844 and 844×390 (`scripts/visual/states.mjs`; baseline via `scripts/visual/legacy-baseline.sh`), check console, failed requests and horizontal overflow, and exercise the controls.

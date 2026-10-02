@@ -1,0 +1,11 @@
+{
+    "content_scripts": [
+        {
+            "js": ["jquery.min.js", "qrcode.min.js", "smarty.js"],
+            "matches": ["https://www.smarty.cz/*"]
+        }
+    ],
+    "manifest_version": 3,
+    "name": "Make Smarty Great Again",
+    "version": "1.1.0"
+}

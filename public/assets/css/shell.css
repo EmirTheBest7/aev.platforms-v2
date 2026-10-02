@@ -1,0 +1,86 @@
+/* Additions of the PHP port to the legacy page chrome (accessibility + form plumbing).
+   They are invisible in the design: skip link appears on keyboard focus only, honeypot is off-screen. */
+.skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100000; padding: .6rem 1rem; background: #000; color: #fff; border: 1px solid #fff; }
+.skip-link:focus { top: 1rem; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.hire-message { min-height: 1.2em; margin: .75rem 0 0; color: #fff; }
+.pwa-status { color: #fff; }
+.aev-profile-logout { display: inline; margin: 0; }
+.aev-profile-logout button { cursor: pointer; }
+
+/* Controls that were <div>s in the legacy markup are real <button>s here (keyboard + screen readers):
+   neutralise the user-agent button look so they render exactly like the original divs.
+   (Legacy rules for size/colour/spacing keep applying: they are not overridden here.) */
+button.aev-apps-menu,
+button.aev-user-badge {
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+button.aDHieSVT-link {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font-family: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* A <button> centres its content vertically; pin the avatar ring to the button box like the original div. */
+button.aev-user-badge { position: relative; }
+button.aev-user-badge .circle { position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; }
+
+/* Touch target: the hamburger is 38px on phones; enlarge its hit area to 44px without moving anything. */
+.Navbar-toggle::after { content: ""; position: absolute; top: 0; left: 0; width: 44px; height: 44px; }
+
+/* Short viewports (phone landscape): the menu column is a flex container whose first block has overflow:scroll,
+   so it collapsed to 0px and the links below painted over it. Let it keep its content height; the menu scrolls. */
+.Navbar-menu-major,
+.Navbar-menu-minor { flex-shrink: 0; }
+
+/* Launcher: the Account entry is the (round) user avatar — legacy inline style border-radius:50%; padding:7px. */
+.u-round-avatar { border-radius: 50% !important; padding: 7px !important; }
+/* Footer shortcuts were <button>s; the "aliev.io" one is a link here and must not look like one. */
+a.aev-apps-footer-button { text-decoration: none; color: inherit; }
+
+/* Legacy inline styles that the template references by name. */
+.u-log-in { color: white; }
+.u-tg-size { font-size: 26px; }
+
+/* Profile card: the legacy <button>s are links (Sign In / Dashboard) and a logout form here; same pill look. */
+.aev-profile-buttons { display: flex; justify-content: center; }
+.aev-profile-buttons .aev-profile-button,
+.aev-profile-buttons .aev-profile-logout button {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 40%;
+  padding: 5px 10px;
+  border: 2px solid #282a2c;
+  background: #282a2c;
+  color: #fff;
+  font: 14px Arial, sans-serif;
+  height: 35px;
+  line-height: 31px;
+  text-align: center;
+  text-decoration: none;
+}
+.aev-profile-buttons > :first-child { border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
+.aev-profile-buttons > :last-child { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
+.aev-profile-buttons .aev-profile-logout { display: contents; }
+.aev-profile-buttons .aev-profile-logout button { border-radius: 0 20px 20px 0; }
+
+/* Menu grid: Settings / Widgets share the exact width of the Re:Search field above them (same 14% gutters),
+   instead of two fixed 45% boxes that stop short of its right edge on narrow screens. */
+.mod-buttons { justify-content: space-between; gap: 10px; }
+.mod-buttons button { width: calc(50% - 5px); }
+
+/* Hero option cards: two cards are laid out left-to-right with the original card-to-card gap
+   (container width minus three 250px cards, split in two) instead of leaving a hole in the middle. */
+.intro--options { justify-content: flex-start; column-gap: max(16px, calc((100% - 750px) / 2)); }

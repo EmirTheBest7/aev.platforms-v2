@@ -29,6 +29,13 @@ final class RegistrationValidator
         $this->validateUsername($data->username, $errors);
         $this->validatePassword($data->password, $data->passwordConfirmation, $errors);
 
+        if ($data->displayName !== null && mb_strlen($data->displayName) > 80) {
+            $errors['display_name'][] = 'Name must be at most 80 characters.';
+        }
+        if ($data->referralCode !== null && $data->referralCode !== '' && preg_match('/^[A-Za-z0-9_-]{1,40}$/', $data->referralCode) !== 1) {
+            $errors['referral_code'][] = 'Referral code may contain letters, digits, "-" and "_" (max 40).';
+        }
+
         if ($errors !== []) {
             throw new ValidationException($errors);
         }

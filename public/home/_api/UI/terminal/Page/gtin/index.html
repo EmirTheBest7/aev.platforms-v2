@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>ZIP GTIN Extractor - JPG Version</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+
+    <style>
+
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; line-height: 1.6; }
+
+        .container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+
+        .controls { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+
+        
+
+        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+
+        .card { border: 1px solid #ddd; padding: 15px; background: #fff; border-radius: 10px; text-align: center; }
+
+        
+
+        img { max-width: 100%; height: auto; border: 1px solid #eee; margin-bottom: 10px; image-rendering: pixelated; }
+
+        
+
+        .result-box { margin-top: 10px; font-weight: bold; color: #2c3e50; word-break: break-all; font-size: 13px; }
+
+        .filename { font-size: 10px; color: #888; margin-bottom: 5px; }
+
+        
+
+        .status { color: #007bff; font-weight: bold; margin-bottom: 10px; }
+
+
+
+        /* New Button Styles */
+
+        .btn-export {
+
+            background-color: #28a745;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            display: none; /* Hidden until processing is done */
+
+        }
+
+        .btn-export:hover { background-color: #218838; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+    <div class="controls">
+
+        <div>
+
+            <h2>ZIP JPG GTIN Decoder</h2>
+
+            <input type="file" id="zip-upload" accept=".zip">
+
+            <div id="status" class="status">Upload your ZIP file containing JPGs to begin.</div>
+
+        </div>
+
+        <button id="export-csv" class="btn-export">Download Results (CSV)</button>
+
+    </div>
+
+
+
+    <div id="gallery"></div>
+
+</div>
+
+
+
+<script>
+
+    const codeReader = new ZXing.BrowserDatamatrixCodeReader();
+
+    const zipInput = document.getElementById('zip-upload');
+
+    const gallery = document.getElementById('gallery');
+
+    const status = document.getElementById('status');
+
+    const exportBtn = document.getElementById('export-csv');
+
+
+
+    // Array to store results for CSV
+
+    let decodedResults = [];
+
+
+
+    zipInput.addEventListener('change', async (e) => {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+
+
+        gallery.innerHTML = '';
+
+        decodedResults = []; // Reset results
+
+        exportBtn.style.display = 'none'; // Hide button on new upload
+
+        status.innerText = "Extracting JPGs from ZIP...";
+
+
+
+        try {
+
+            const zip = await JSZip.loadAsync(file);
+
+            const imageFiles = Object.values(zip.files).filter(f => !f.dir && f.name.match(/\.(jpg|jpeg)$/i));
+
+
+
+            if (imageFiles.length === 0) {
+
+                status.innerText = "No JPG files found in this ZIP.";
+
+                return;
+
+            }
+
+
+
+            status.innerText = `Processing ${imageFiles.length} images...`;
+
+
+
+            for (const zipEntry of imageFiles) {
+
+                const blob = await zipEntry.async("blob");
+
+                const imageUrl = URL.createObjectURL(blob);
+
+                await processImage(imageUrl, zipEntry.name);
+
+            }
+
+
+
+            status.innerText = `Finished! Processed ${imageFiles.length} images.`;
+
+            
+
+            // Show the export button if there are results
+
+            if (decodedResults.length > 0) {
+
+                exportBtn.style.display = 'block';
+
+            }
+
+        } catch (err) {
+
+            status.innerText = "Error: Invalid ZIP file.";
+
+            console.error(err);
+
+        }
+
+    });
+
+
+
+    async function processImage(src, fileName) {
+
+        return new Promise((resolve) => {
+
+            const card = document.createElement('div');
+
+            card.className = 'card';
+
+            
+
+            const img = new Image();
+
+            
+
+            const nameDiv = document.createElement('div');
+
+            nameDiv.className = 'filename';
+
+            nameDiv.innerText = fileName;
+
+
+
+            const resDiv = document.createElement('div');
+
+            resDiv.className = 'result-box';
+
+            resDiv.innerText = "Decoding...";
+
+
+
+            card.appendChild(img);
+
+            card.appendChild(nameDiv);
+
+            card.appendChild(resDiv);
+
+            gallery.appendChild(card);
+
+
+
+            img.onload = async () => {
+
+                let textResult = "Decoding failed";
+
+                try {
+
+                    const result = await codeReader.decodeFromImageElement(img);
+
+                    textResult = result.text;
+
+                    resDiv.innerHTML = `Decoded Content: <br><span style="color: green;">${textResult}</span>`;
+
+                } catch (err) {
+
+                    resDiv.innerHTML = `<span style="color: red;">Error: Could not decode image.</span>`;
+
+                }
+
+                
+
+                // Add to CSV array even if failed (to show status in report)
+
+                decodedResults.push({ picture: fileName, string: textResult });
+
+                resolve();
+
+            };
+
+            
+
+            img.src = src;
+
+        });
+
+    }
+
+
+
+    // Export Functionality
+
+    exportBtn.addEventListener('click', () => {
+
+        let csvContent = "data:text/csv;charset=utf-8,Picture,Decoded string\n";
+
+        
+
+        decodedResults.forEach(row => {
+
+            // Escape double quotes in strings and wrap in quotes for CSV safety
+
+            const safeString = row.string.replace(/"/g, '""');
+
+            csvContent += `"${row.picture}","${safeString}"\n`;
+
+        });
+
+
+
+        const encodedUri = encodeURI(csvContent);
+
+        const link = document.createElement("a");
+
+        link.setAttribute("href", encodedUri);
+
+        link.setAttribute("download", "decoded_gtin_results.csv");
+
+        document.body.appendChild(link);
+
+        
+
+        link.click(); // Trigger download
+
+        document.body.removeChild(link); // Clean up
+
+    });
+
+</script>
+
+
+
+</body>
+
+</html>

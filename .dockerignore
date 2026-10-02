@@ -1,0 +1,22 @@
+.git
+.github
+.idea
+.vscode
+.DS_Store
+.env
+.env.*
+!.env.example
+# input trees that must never enter an image (legacy secrets live in them)
+aev-new
+aev.platforms-master
+# regenerated inside the image
+vendor
+node_modules
+storage
+.phpunit.cache
+.php-cs-fixer.cache
+.phpstan.cache
+tests
+docs
+scripts/visual
+*.log

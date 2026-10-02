@@ -1,0 +1,43 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+/* ------------ SETTINGS ------------ */
+body {
+  background: #121212;
+}
+
+/* ------------ CARD ------------ */
+.card {
+  width: 70vw;
+  height: calc(9/16 * 70vw);
+  max-width: calc(16/9 * 70vh);
+  max-height: 70vh;
+  display: flex;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  overflow: hidden;
+}
+
+.video-js {
+  width: 100%;
+  height:100%;
+}
+
+

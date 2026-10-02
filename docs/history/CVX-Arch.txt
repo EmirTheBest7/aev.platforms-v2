@@ -1,0 +1,102 @@
+CVX Architecture
+---------------------------
+Introduction
+
+#What is Λ L I Ξ V ?
+
+
+
+ΛΞV project represents a new, high-performance, permissionless, scalable platform. 
+Project is based in Prague, Czech Republic and was created by two students.
+
+#Why us?
+Our team believes that...
+
+**1. Innovation Drives Us**
+
+"Pretty much, Apple and Dell are the only ones in this industry making money. They make it by being Walmart. We make it by innovation."*²
+
+At our IT company, innovation is our heartbeat. We thrive on pushing boundaries, exploring new technologies, and turning ideas into reality. 
+Whether it's developing cutting-edge software, designing intuitive user interfaces, or optimizing complex systems, we're committed to staying ahead of the curve.
+
+## **2. Quality Over Quantity**
+
+*"Quality is more important than quantity. One home run is much better than two doubles."*¹
+
+We don't settle for mediocrity. Our team obsesses over delivering exceptional results. From code architecture to user experience, we sweat the details. When you choose us, you're choosing craftsmanship, precision, and excellence.
+
+## **3. Collaborative Minds**
+
+*"Great things in business are never done by one person. They're done by a team of people."*⁴
+
+Our company culture thrives on collaboration. We believe that diverse perspectives lead to breakthroughs. When you work with us, you're not just hiring a service provider; you're gaining a team of passionate problem-solvers who'll be by your side every step of the way.
+
+## **4. Discipline and Vision**
+
+*"To turn really interesting ideas and fledgling technologies into a company that can continue to innovate for years, it requires a lot of discipline."*²
+
+Discipline fuels our vision. We don't chase short-term gains; we're in it for the long haul. Our roadmap is clear, and our commitment unwavering. When you partner with us, you're investing in a future where technology transforms lives.
+
+## **5. Love for What We Do**
+
+*"The only way you can create great work is if you love what you do."*⁴
+
+Passion drives our engines. We wake up excited to tackle challenges, solve puzzles, and create solutions. Our love for technology is contagious, and it reflects in every line of code we write and every project we undertake.
+
+---
+
+#What is Solana?
+Why Solana?
+
+#Documentation Overview
+The ΛΞV docs describe our projects, a platform built from the ground up for scale. 
+They cover why ΛΞV system is useful, how to use it, how it works, and why it will continue to grow. 
+
+The goal of the CVX architecture is to demonstrate a set of software algorithms 
+that is used in combination to implement a blockchain, removes software as a performance bottleneck, 
+allowing transaction throughput to scale proportionally with network bandwidth. 
+The architecture goes on to satisfy all three desirable properties of a proper blockchain: it is scalable, secure and decentralized.
+
+The architecture describes a theoretical upper bound of 710 thousand transactions per second (tps) on a standard gigabit network and 28.4 million tps on 40 gigabit. 
+Furthermore, the architecture supports safe, concurrent execution of programs authored in general-purpose programming languages such as JS, Python, PHP or C++.
+
+Disclaimer
+All claims, content, designs, algorithms, estimates, roadmaps, specifications, 
+and performance measurements described in this project are done with the author's best effort. 
+It is up to the reader to check and validate their accuracy and truthfulness. 
+Furthermore, nothing in this project constitutes a solicitation for investment.
+
+
+implementing:
+cheap 
+scalability
+
+---------------------------
+#Getting Started
+
+Lets start with basics of CVX Architecture. Main concepts solve a problem about how to make systems
+easy to understand for future development, efficient and powerfull.
+
+Scheme:
+/_assets/ - Static files CSS/JS, icon, images
+    - 
+/_inc/ - Parts of actively used by system. In this directory we can also find root file
+         for 
+
+/home/ - Intro
+/page/ - Intro
+
+.htaccess / 
+
+#“The design is not just what it looks like and feels like. The design is how it works” — Steve Jobs
+
+---------------------------
+
+Front-end/Designer Devs || Back-end Devs
+There will be no complicated tools or install requirements — to complete this section, 
+you only need an internet connection, and a minute of your time.
+
+Optional: Download the full example (2KB zipped)
+
+---------------------------
+

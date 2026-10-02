@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            flex-direction: column;
+        }
+
+
+        .card {
+            border: 1px dashed black;
+            padding: 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style=" width: 100%; height: 100%; ">
+        <div class="card">
+            <h2>O kolik procent je číslo x více než číslo y?</h2>
+            <label for="x">Hodnota X:</label>
+            <input type="number" id="x" name="x"><br><br>
+            <label for="y">Hodnota Y:</label>
+            <input type="number" id="y" name="y"><br><br>
+            <button onclick="calculateIncrease()">Spočítat</button>
+            <p id="result"></p>
+            <p id="result2"></p>
+        </div>
+
+        <div class="card">
+            <h2>Kolik je x % z čísla y?</h2>
+            <label for="percentage">Procenta (%):</label>
+            <input type="number" id="percentage" placeholder="Zadejte procenta">
+            <br>
+            <label for="number">Číslo:</label>
+            <input type="number" id="number" placeholder="Zadejte číslo">
+            <br>
+            <button onclick="calculatePercentage()">Spočítat</button>
+            <p id="resultProcent"></p>
+        </div>
+
+        <div class="card">
+            <h2>Kolik procent je číslo x z čísla y?</h2>
+            <label for="part">Číslo (x):</label>
+            <input type="number" id="part" placeholder="Zadejte číslo">
+            <br>
+            <label for="whole">Základ (y):</label>
+            <input type="number" id="whole" placeholder="Zadejte základ">
+            <br>
+            <button onclick="calculateXfromY()">Spočítat</button>
+            <p id="XfromY"></p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Procenta z 
+        function calculatePercentage() {
+            var percentage = document.getElementById('percentage').value;
+            var number = document.getElementById('number').value;
+            var result = (percentage / 100) * number;
+            document.getElementById('resultProcent').innerText = percentage + "% z " + number + " je " + result;
+        }
+
+        // Narust >/<
+        function calculateIncrease() {
+            var x = parseFloat(document.getElementById('x').value);
+            var y = parseFloat(document.getElementById('y').value);
+            if (isNaN(x) || isNaN(y) || y === 0) {
+                document.getElementById('result').innerText = "Prosím zadejte platné hodnoty.";
+                document.getElementById('result2').innerText = "";
+                return;
+            }
+            var percentageIncrease = ((x - y) / y) * 100;
+            var percentageDecrease = ((x - y) / x) * 100;
+            document.getElementById('result').innerText = x.toFixed(1) + " je o " + percentageIncrease.toFixed(1) + "% více než " + y.toFixed(1);
+            document.getElementById('result2').innerText = y.toFixed(1) + " je o " + percentageDecrease.toFixed(1) + "% méně než " + x.toFixed(1);
+        }
+
+        function calculateXfromY() {
+            var part = document.getElementById('part').value;
+            var whole = document.getElementById('whole').value;
+            var result = (part / whole) * 100;
+            document.getElementById('XfromY').innerText = part + " ze " + whole + " je " + result.toFixed(1) + " %";
+        }
+
+
+        
+
+
+    </script>
+</body>
+</html>
+
+

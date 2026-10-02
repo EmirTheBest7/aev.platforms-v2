@@ -1,0 +1,436 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600);
+/*@import url(http://weloveiconfonts.com/api/?family=brandico|entypo);*/
+
+main {
+    position: relative!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@keyframes;
+@-webkit-keyframes fish {
+  0%, 70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fish {
+  0%, 70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes;
+html {
+  height: 100%;
+}
+
+.Toggle i {
+  top: 15px;
+  position: absolute;
+  font-size: 25px;
+  line-height: 30px;
+  left: 16px;
+  color: white;
+}
+
+.fish, .fish-shadow {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -moz-animation: fish 3s forwards ease-in-out;
+  -webkit-animation: fish 3s forwards ease-in-out;
+  animation: fish 3s forwards ease-in-out;
+  pointer-events: none;
+}
+.fish path, .fish-shadow path {
+  fill: #fff;
+}
+.fish path:hover, .fish-shadow path:hover {
+  fill: #0f33ff;
+}
+.fish .line, .fish-shadow .line {
+  fill: none;
+}
+
+.fish-shadow-con {
+  opacity: 0.2;
+  filter: blur(10px);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.fish-shadow {
+  top: -125px;
+  left: -157px;
+}
+.fish-shadow path {
+  fill: #211922;
+}
+.fish-shadow path:hover {
+  fill: #211922;
+}
+
+.fish-shadow {
+  -webkit-filter: url("#goo");
+  filter: url(#goo);
+  top: -125px;
+  left: -157px;
+  opacity: 0.4;
+}
+
+/* Marker tweaks */
+.mapboxgl-popup-close-button {
+  padding: 10px;
+}
+.mapboxgl-popup {
+  padding-bottom: 2rem;
+}
+
+.mapboxgl-popup-content {
+  font: 400 15px/22px "Source Sans Pro", "Helvetica Neue", sans-serif;
+  padding: 0;
+  width: 180px;
+}
+
+.mapboxgl-popup-content h3 {
+  background: rgba(0,0,0,0.5);
+  color: black;
+  margin: 0;
+  padding: 0.25rem;
+  border-radius: 0.25rem 0.25rem 0 0;
+  font-weight: 700;
+}
+
+.mapboxgl-popup-content h4 {
+  margin: 0;
+  padding: 0.25rem;
+  color: black;
+}
+
+.mapboxgl-popup-content div {
+  padding: 10px;
+}
+
+.mapboxgl-popup-anchor-top > .mapboxgl-popup-content {
+  margin-top: 0.75rem;
+}
+
+.mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
+  border-bottom-color: #91c949;
+}
+
+.underline {
+  width: 25%;
+  margin-left: 0px;
+}
+
+.marker {
+  margin-top: 1rem;
+  background: white;
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#lead {
+  width: auto;
+  height: 100vh;
+  min-height: 100%;
+  background: rgba(26, 29, 37, 0.8);
+  display: grid;
+  grid-template-rows: 250px auto;
+}
+
+#services {
+  width: auto;
+  height: auto;
+  background: hsla(var(--main-sat), 100%, 50%, 0.7);
+}
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+  padding-right: 10px;
+}
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+#browser {
+  color: white;
+  border: 1px solid white;
+  width: 95%;
+  -webkit-box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+#browser-bar {
+  background: #000;
+  border-bottom: 1px solid white;
+  width: 100%;
+  padding: 8px;
+  margin: 0 auto;
+  font-weight: 300;
+  position: relative;
+}
+#browser-bar p {
+  text-align: center;
+}
+
+.arrow {
+  position: absolute;
+  right: 3px;
+  top: 6px;
+  font-size: 1.2em;
+  color: #8e9699;
+}
+
+#content {
+  background: #000;
+}
+#content:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#content #left, #content #right {
+  height: 100%;
+}
+#content #left {
+  float: left;
+  width: 75%;
+  background: #0f33ff;
+}
+@media all and (max-width: 780px) {
+  #content #left {
+    width: 100%;
+  }
+}
+#content #left #map {
+  height: 388px;
+  position: relative;
+  background-size: cover;
+}
+#content #left #map p {
+  text-transform: uppercase;
+  padding-top: 20px;
+  padding-left: 30px;
+  font-weight: 600;
+}
+#content #left #map .zoom {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  width: 2px;
+  height: 70px;
+  background: white;
+}
+#content #left #map .zoom:before, #content #left #map .zoom:after {
+  text-align: center;
+  font-weight: 600;
+  position: absolute;
+  color: #0f33ff;
+  background: white;
+  width: 20px;
+}
+#content #left #map .zoom:before {
+  content: '+';
+  top: -10px;
+  right: -8px;
+}
+#content #left #map .zoom:after {
+  content: '-';
+  bottom: -10px;
+  right: -8px;
+}
+#content #left #map .map-locator {
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  border-radius: 15px;
+  height: 30px;
+  width: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  border: solid 2px white;
+}
+#content #left #map .map-locator:before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 5px;
+}
+#content #left #map .map-locator .tooltip {
+  position: absolute;
+  color: #394141;
+  left: 50px;
+  top: -10px;
+  background: white;
+  font-weight: 600;
+  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+#content #left #map .map-locator .tooltip:before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 14px;
+  border-right: solid white 10px;
+  border-top: solid transparent 8px;
+  border-bottom: solid transparent 8px;
+}
+#content #left #map .map-locator .tooltip [class*="entypo-"] {
+  min-width: 25px;
+  display: inline-block;
+  text-align: center;
+  border-right: solid thin #CCC;
+  margin-right: 5px;
+}
+#content #left #map .map-locator .tooltip li {
+  border-bottom: solid thin #CCC;
+  padding: 10px;
+  white-space: nowrap;
+}
+#content #left #map .map-locator .tooltip li a {
+  color: #51B2D6;
+}
+#content #left #map .map-locator .tooltip li:hover [class*="entypo-"] {
+  color: #51B2D6;
+}
+#content #left ul#location-bar {
+  width: 100%;
+  text-align: center;
+  display: table;
+}
+#content #left ul#location-bar li {
+  display: table-cell;
+  padding: 15px;
+  background: black;
+  border-right: solid thin white;
+  border-top: solid thin white;
+}
+
+#content #left ul#location-bar li:hover {
+  background: #0f33ff;
+}
+#content #left ul#location-bar .active {
+  background: #fff;
+}
+#content #right {
+  float: left;
+  width: 25%;
+  background: #000;
+  padding: 15px;
+}
+@media all and (max-width: 780px) {
+  #content #right {
+    width: 100%;
+  }
+}
+#content #right p {
+  margin-bottom: 10px;
+}
+#content #right a:hover {
+  color: #51B2D6;
+}
+#content #right #social {
+  display: table;
+  width: 100%;
+}
+#content #right .social {
+  display: table-cell;
+  text-align: center;
+}
+#content #right form {
+  margin-bottom: 20px;
+}
+#content #right form input,
+#content #right form textarea {
+  background: #000;
+  border: 1px solid white;
+  padding: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  color: white;
+}
+#content #right form input:last-of-type,
+#content #right form textarea:last-of-type {
+  margin-bottom: 0;
+}
+#content #right form input[type='submit'],
+#content #right form textarea[type='submit'] {
+  text-transform: uppercase;
+  background: #0f33ff;
+  width: 50%;
+  color: white;
+  margin-top: 5px;
+}
+#content #right form input[type='submit']:hover,
+#content #right form textarea[type='submit']:hover {
+  background: black;
+  border: 1px solid white;
+  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+#content #right form input[type='textarea'],
+#content #right form textarea[type='textarea'] {
+  min-height: 75px;
+  vertical-align: text-top;
+}
+#content #right p.other {
+  margin-bottom: 5px;
+  font-weight: 100;
+}
+#content #right p.other,
+#content #right p.other a {
+  color: #8e9699;
+}
+
+@media screen and (max-width: 768px) {
+    #browser {
+      border: 0;
+      height: 100%;
+      width: 100%;
+    }
+    #browser-bar {
+        display: none!important;
+    }
+    #content #left ul#location-bar {
+        border-bottom: 1px solid white;
+    }
+
+    .fish {
+      height: 388px;
+    }
+}

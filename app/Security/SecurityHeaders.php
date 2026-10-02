@@ -20,31 +20,39 @@ final class SecurityHeaders
 
     public function apply(Response $response): Response
     {
-        $csp = [
-            "default-src 'self'",
-            "script-src 'self'",
-            "style-src 'self'",
-            "img-src 'self' data:",
-            "font-src 'self'",
-            "connect-src 'self'",
-            "manifest-src 'self'",
-            "worker-src 'self'",
-            "object-src 'none'",
-            "base-uri 'none'",
-            "form-action 'self'",
-            "frame-ancestors 'none'",
+        $directives = [
+            'default-src' => "'self'",
+            'script-src' => "'self'",
+            'style-src' => "'self'",
+            'img-src' => "'self' data:",
+            'font-src' => "'self'",
+            'connect-src' => "'self'",
+            'manifest-src' => "'self'",
+            'worker-src' => "'self'",
+            'object-src' => "'none'",
+            'base-uri' => "'none'",
+            'form-action' => "'self'",
+            'frame-ancestors' => "'none'",
         ];
+        $directives = $response->cspOverrides() + $directives;
+
+        $csp = [];
+        foreach ($directives as $name => $value) {
+            $csp[] = $name . ' ' . $value;
+        }
         if ($this->upgradeInsecure) {
             $csp[] = 'upgrade-insecure-requests';
         }
+
+        $framedBySelf = $directives['frame-ancestors'] === "'self'";
 
         $headers = [
             'Content-Security-Policy' => implode('; ', $csp),
             'X-Content-Type-Options' => 'nosniff',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
-            'Permissions-Policy' => 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()',
+            'Permissions-Policy' => 'camera=(), microphone=(self), geolocation=(), payment=(), usb=(), interest-cohort=()',
             'Cross-Origin-Opener-Policy' => 'same-origin',
-            'X-Frame-Options' => 'DENY',
+            'X-Frame-Options' => $framedBySelf ? 'SAMEORIGIN' : 'DENY',
         ];
         if ($this->hsts) {
             $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';

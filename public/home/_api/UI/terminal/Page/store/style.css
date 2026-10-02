@@ -1,0 +1,2585 @@
+*:not(head, script, svg, svg *),
+*:not(head, script, svg, svg *)::before,
+*:not(head, script, svg, svg *)::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-color: #393939 #bbb;
+  scrollbar-width: thin;
+}
+
+html > body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-color: #bbb;
+  color: white;
+  font: normal normal 400 100% / 140% "Open Sans", sans-serif;
+  letter-spacing: -0.5px;
+  overflow-x: hidden;
+}
+
+#ccDxtp {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  background-color: #1a1a1a;
+  overflow: hidden;
+}
+
+#ccDxtp header {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  background-color: black;
+}
+
+#ccDxtp header figure {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#ccDxtp header figure:first-of-type {
+  width: 12.5%;
+  padding-left: 10px;
+}
+
+#ccDxtp header figure:first-of-type svg {
+  width: 100%;
+  max-width: 16px;
+  min-width: 16px;
+  height: auto;
+  margin-right: 6px;
+}
+
+#ccDxtp header figure:first-of-type h1 {
+  font-size: 78%;
+  color: white;
+  font-weight: 400;
+  line-height: 120%;
+  white-space: nowrap;
+  position: relative;
+  top: 1px;
+}
+
+#ccDxtp header figure:last-of-type {
+  width: 12%;
+}
+
+#ccDxtp header figure:last-of-type button {
+  background-color: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: unset;
+  width: 33%;
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp header figure:last-of-type button:hover {
+  transition: all 0.2s ease;
+}
+
+#ccDxtp header figure:last-of-type button:not(:last-of-type):hover {
+  background-color: #222;
+}
+
+#ccDxtp header figure:last-of-type button:last-of-type:hover {
+  background-color: #b30b00;
+}
+
+#ccDxtp header figure:last-of-type button i {
+  font-size: 100%;
+  color: white;
+}
+
+#ccDxtp #toolBar {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1d1d1d;
+  border-bottom: 2px solid #323232;
+  padding: 10px 15px;
+  z-index: 4;
+}
+
+#ccDxtp #toolBar input:not([type="search"]) {
+  display: none;
+}
+
+#ccDxtp #toolBar > button,
+#ccDxtp #toolBar > figure > button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: unset;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 3px;
+}
+
+#ccDxtp #toolBar button label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar button label i {
+  font-size: 140%;
+  color: #a2a2a2;
+}
+
+#ccDxtp #toolBar button:first-of-type label i {
+  font-size: 160%;
+}
+
+#ccDxtp #toolBar button label:hover i {
+  color: white;
+}
+
+#ccDxtp
+  #toolBar
+  :is(figure input:checked + button, button:nth-child(1):focus, figure
+    > button:focus, button:has(+ nav:hover)) {
+  background-color: #393939;
+}
+
+#ccDxtp #toolBar nav {
+  display: none;
+  position: absolute;
+  top: 90%;
+  left: 13px;
+  width: 180px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: #080808;
+  border-radius: 4px;
+  border: 1px solid #444;
+  padding: 5px 0;
+}
+
+#ccDxtp #toolBar button:focus + nav,
+#ccDxtp #toolBar nav:has(ul *:hover) {
+  display: flex;
+}
+
+#ccDxtp #toolBar nav > ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  z-index: 1;
+}
+
+#ccDxtp #toolBar nav > ul > li {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 5px 12px;
+}
+
+#ccDxtp #toolBar nav > ul > li > label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar nav ul li {
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar nav ul li:hover {
+  background-color: #222;
+}
+
+#ccDxtp #toolBar nav > ul > li > p {
+  font-size: 83%;
+  line-height: 130%;
+  font-weight: 600;
+  color: #ccc;
+  margin: 0;
+}
+
+#ccDxtp #toolBar nav > ul > li > i {
+  font-size: 80%;
+  color: #ccc;
+}
+
+#ccDxtp #toolBar nav > ul > li > ul {
+  display: none;
+  position: absolute;
+  left: 98%;
+  top: 0px;
+  width: 240px;
+  border-radius: 4px;
+  background-color: #080808;
+  border: 1px solid #444;
+  padding: 5px 0;
+  list-style: none;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+#ccDxtp #toolBar nav > ul > li:has(> label:hover) > ul,
+#ccDxtp #toolBar nav > ul > li > ul:hover {
+  display: flex;
+}
+
+#ccDxtp #toolBar nav > ul > li > ul > li {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+
+#ccDxtp #toolBar nav > ul > li > ul > li label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+#ccDxtp
+  #toolBar
+  nav
+  > ul
+  > li:not(:nth-child(2), :nth-child(3))
+  > ul
+  > li:not(:last-of-type),
+#ccDxtp #toolBar nav > ul > li:nth-child(2) > ul > li:nth-child(6),
+#ccDxtp
+  #toolBar
+  nav
+  > ul
+  > li:nth-child(3)
+  > ul
+  > :is(li:nth-child(5), li:nth-child(6), li:nth-child(9)) {
+  border-bottom: 2px solid #222;
+}
+
+#ccDxtp #toolBar nav > ul > li > ul > li > p:first-of-type {
+  font-size: 83%;
+  line-height: 130%;
+  font-weight: 600;
+  color: #ccc;
+  margin: 0;
+}
+
+#ccDxtp #toolBar nav > ul > li > ul > li > p:last-of-type {
+  font-size: 73%;
+  line-height: 120%;
+  font-weight: 600;
+  color: #ccc;
+  margin: 0;
+}
+
+#ccDxtp #toolBar code {
+  width: 100%;
+  max-width: 470px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 75px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar code:has(input:focus, section:hover) {
+  max-width: 620px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar code input {
+  width: 100%;
+  background-color: transparent;
+  border: 2px solid #494949;
+  outline: none;
+  padding: 10px 50px;
+  border-radius: 25px;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar code input::placeholder {
+  color: #777;
+}
+
+#ccDxtp #toolBar code input:focus::placeholder {
+  color: #ddd;
+}
+
+#ccDxtp #toolBar code input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#ccDxtp #toolBar code input:focus,
+#ccDxtp #toolBar code input:has(~ section:hover) {
+  border-radius: 25px 25px 0 0;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar code > i {
+  position: absolute;
+  left: 25px;
+  line-height: 0;
+  color: #999;
+  font-size: 90%;
+}
+
+#ccDxtp #toolBar code section {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 0 0 12px 0;
+  margin: 0;
+  border-left: 1px solid #444;
+  border-bottom: 1px solid #444;
+  border-right: 1px solid #444;
+  border-radius: 0 0 25px 25px;
+  background-color: #1d1d1d;
+  font-family: "Open Sans", sans-serif;
+}
+
+#ccDxtp #toolBar code input:focus ~ section,
+#ccDxtp #toolBar code section:hover {
+  visibility: visible;
+}
+
+#ccDxtp #toolBar code section figure {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 20px 15px 20px;
+}
+
+#ccDxtp #toolBar code section figure:not(:last-of-type) {
+  border-bottom: 1px solid #444;
+}
+
+#ccDxtp #toolBar code section figure figcaption {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+#ccDxtp #toolBar code section figure figcaption p {
+  color: #888;
+  font-size: 70%;
+  line-height: 130%;
+  margin: 0;
+}
+
+#ccDxtp #toolBar code section figure figcaption a {
+  color: dodgerblue;
+  font-size: 85%;
+  line-height: 140%;
+  text-decoration: none;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type {
+  padding: 12px 0 7px 0;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type figcaption {
+  padding: 0 20px;
+  margin-bottom: 5px;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li:hover {
+  background-color: #333;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li svg {
+  width: 32px;
+  min-width: 32px;
+  height: auto;
+  margin-right: 15px;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 85%;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li div strong {
+  font-size: 80%;
+  color: #bbb;
+  line-height: 150%;
+  font-weight: 500;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li div p {
+  color: #888;
+  font-size: 70%;
+  line-height: 130%;
+  margin: 0;
+}
+
+#ccDxtp #toolBar code section figure:first-of-type ul li a {
+  color: #888;
+  font-size: 70%;
+  line-height: 130%;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel {
+  width: 100%;
+  opacity: 0;
+  margin-top: -4px;
+  min-width: 578px;
+}
+
+#ccDxtp #toolBar code input:focus ~ section figure .itemCarousel,
+#ccDxtp #toolBar code section:hover figure .itemCarousel {
+  opacity: 1;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel li {
+  position: relative;
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar code section figure:nth-child(2) .itemCarousel li::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "bootstrap-icons";
+  content: "\F4F9";
+  font-size: 180%;
+  color: #222;
+  opacity: 0;
+}
+
+#ccDxtp
+  #toolBar
+  code
+  section
+  figure:nth-child(2)
+  .itemCarousel
+  li:hover::after {
+  opacity: 1;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel li img {
+  width: 100%;
+  height: auto;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel li a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 15px;
+  border: 1px solid #444;
+  text-decoration: none;
+  border-radius: 4px;
+  min-height: 65px;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel li a i {
+  font-size: 130%;
+  color: white;
+  margin-right: 20px;
+}
+
+#ccDxtp #toolBar code section figure .itemCarousel li a p {
+  color: #ccc;
+  font-weight: 600;
+  font-size: 90%;
+  line-height: 150%;
+}
+
+#ccDxtp #toolBar .slick-list {
+  margin: 0 -5px;
+}
+
+#ccDxtp #toolBar .slick-slide {
+  margin: 0 5px;
+}
+
+#ccDxtp #toolBar code section figure .slick-next {
+  right: -10px;
+}
+
+#ccDxtp #toolBar code section figure :is(.slick-prev, .slick-next) {
+  width: 30px;
+  height: 30px;
+}
+
+#ccDxtp #toolBar code section figure .slick-prev::before {
+  font-size: 12px;
+}
+
+#ccDxtp #toolBar code section figure .slick-next::before {
+  font-size: 12px;
+}
+
+#ccDxtp #toolBar > figure {
+  position: relative;
+  width: 15%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#ccDxtp #toolBar > figure nav:first-of-type {
+  top: 120%;
+  left: -15px;
+  width: unset;
+}
+
+#ccDxtp #toolBar > figure nav:first-of-type ul li {
+  padding: 7px 12px;
+}
+
+#ccDxtp #toolBar > figure nav:hover {
+  display: flex;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(6) {
+  width: 400px;
+  border: none;
+  left: -290px;
+  top: 120%;
+  padding: 25px 20px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(6) strong {
+  width: 100%;
+  font-size: 110%;
+  color: white;
+  font-weight: 600;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #444;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(6) figure {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(6) figure svg {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  fill: #6e6e6e;
+  margin-bottom: 15px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(6) figure figcaption {
+  font-size: 90%;
+  color: #777;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) {
+  width: 400px;
+  left: -220px;
+  top: 120%;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:first-of-type {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 10px 15px 15px 15px;
+  border-bottom: 2px solid #393939;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:first-of-type figcaption {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 7px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:first-of-type
+  figcaption
+  strong {
+  font-size: 70%;
+  color: #aaa;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:first-of-type figcaption p {
+  font-size: 70%;
+  color: #aaa;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:first-of-type meter {
+  width: 100%;
+  border: none;
+  height: 7px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:first-of-type
+  meter::-webkit-meter-bar {
+  background: none;
+  background-color: #393939;
+  border: none;
+  border-radius: 1px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:first-of-type
+  meter::-webkit-meter-optimum-value {
+  background-color: dodgerblue;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:first-of-type label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 2px;
+  font-size: 75%;
+  color: #aaa;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type {
+  width: 100%;
+  padding: 20px 20px 17px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type input {
+  display: none;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type > i {
+  display: none;
+  font-size: 130%;
+  margin-right: 20px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  > i:first-of-type {
+  color: green;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  > i:last-of-type {
+  color: white;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #resumeSync:checked
+  ~ i:first-of-type {
+  display: initial;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #pauseSync:checked
+  ~ i:last-of-type {
+  display: initial;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-right: auto;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  figcaption
+  strong {
+  font-size: 90%;
+  line-height: 140%;
+  color: #ddd;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type figcaption p {
+  display: none;
+  font-size: 70%;
+  line-height: 100%;
+  color: #aaa;
+  margin: 0;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #resumeSync:checked
+  ~ figcaption
+  p:first-of-type {
+  display: initial;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #pauseSync:checked
+  ~ figcaption
+  p:last-of-type {
+  display: initial;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #131313;
+  border: 1px solid #333;
+  border-radius: 5px;
+  width: 35px;
+  min-width: 35px;
+  height: 35px;
+  min-height: 35px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type button:hover {
+  border: 1px solid #555;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type button i {
+  font-size: 170%;
+  color: #888;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type button:hover i {
+  color: #ccc;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(8) figure:last-of-type button label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  button
+  label:last-of-type {
+  display: none;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  button
+  i:first-of-type {
+  display: none;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #pauseSync:checked
+  ~ button
+  :is(label:first-of-type, i:last-of-type) {
+  display: none;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(8)
+  figure:last-of-type
+  #pauseSync:checked
+  ~ button
+  :is(label:last-of-type, i:first-of-type) {
+  display: initial;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) {
+  top: 120%;
+  left: -135px;
+  width: 320px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:first-of-type {
+  border-bottom: 1px solid #444;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:first-of-type figure {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 13px 10px 18px 5px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:first-of-type figure i {
+  font-size: 400%;
+  color: yellow;
+  margin-right: 15px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:first-of-type
+  figure
+  figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:first-of-type
+  figure
+  figcaption
+  strong {
+  font-size: 100%;
+  color: white;
+  font-weight: 600;
+  line-height: 140%;
+  margin-bottom: 3px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:first-of-type
+  figure
+  figcaption
+  p {
+  font-size: 80%;
+  color: #aaa;
+  line-height: 100%;
+  margin: 0;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2) {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 25px 20px;
+  border-bottom: 1px solid #444;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2):hover {
+  background-color: unset;
+  cursor: default;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2) > p {
+  font-size: 80%;
+  color: #ccc;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 110%;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2) > figure {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 17px;
+  border: 1px solid #444;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:nth-child(2)
+  > figure
+  figcaption {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:nth-child(2)
+  > figure
+  figcaption
+  p {
+  font-size: 85%;
+  color: #ccc;
+  margin: 0;
+  line-height: 170%;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:nth-child(2)
+  > figure
+  figcaption
+  p
+  span {
+  font-weight: 700;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  li:nth-child(2)
+  > figure
+  figcaption
+  i {
+  font-size: 120%;
+  color: #ccc;
+  cursor: pointer;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2) > figure > p {
+  background-color: #1e1e1e;
+  color: #ccc;
+  font-size: 70%;
+  line-height: 170%;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:nth-child(2) > figure > p a {
+  color: #ccc;
+}
+
+#ccDxtp
+  #toolBar
+  > figure
+  nav:nth-child(10)
+  ul
+  :is(li:nth-child(3), li:nth-child(4), li:nth-child(5), li:nth-child(6), li:nth-child(7)) {
+  padding: 10px 20px;
+}
+
+#ccDxtp #toolBar > figure nav:nth-child(10) ul li:last-of-type p {
+  color: tomato;
+}
+
+#ccDxtp main {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-color: #c8c8c8 #393939;
+  scrollbar-width: thin;
+}
+
+#ccDxtp main nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 6.5%;
+  min-width: 81px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 25px;
+  background-color: #1d1d1d;
+  border-right: 2px solid #323232;
+  z-index: 3;
+}
+
+#ccDxtp main nav ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#ccDxtp main nav ul li {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#ccDxtp main nav ul li:not(:last-of-type) {
+  margin-bottom: 20px;
+}
+
+#ccDxtp main nav ul li input {
+  display: none;
+}
+
+#ccDxtp main nav ul li label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+#ccDxtp main nav ul li label i {
+  width: 30px;
+  height: 30px;
+  font-size: 115%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 7px;
+}
+
+#ccDxtp main nav ul li label:hover i {
+  background-color: #303030;
+}
+
+#ccDxtp main nav ul li input:checked + label i {
+  color: black;
+  background-color: white;
+}
+
+#ccDxtp main nav ul li label p {
+  color: white;
+  font-size: 70%;
+  line-height: 130%;
+  margin: 5px 0 0 0;
+  text-align: center;
+}
+
+#ccDxtp main > section {
+  width: 75.5%;
+  z-index: 1;
+}
+
+#ccDxtp main #homeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px 30px;
+}
+
+#ccDxtp main #homeContent > figure {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  z-index: 2;
+}
+
+#ccDxtp main #homeContent > figure figcaption {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  font-weight: 600;
+  font-size: 110%;
+}
+
+#ccDxtp main #homeContent > figure figcaption i {
+  color: #aaa;
+  font-size: 90%;
+  margin-left: 10px;
+}
+
+#ccDxtp main #homeContent > figure a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  color: #bbb;
+  font-size: 83%;
+  text-decoration: none;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+#ccDxtp main #homeContent > figure a label {
+  cursor: pointer;
+}
+
+#ccDxtp main #homeContent > figure a i {
+  position: relative;
+  bottom: 1px;
+  font-size: 110%;
+  margin-right: 8px;
+}
+
+#ccDxtp main #homeContent > figure a:hover i {
+  color: white;
+}
+
+#ccDxtp main #homeContent > figure ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  right: 130px;
+}
+
+#ccDxtp main #homeContent > figure ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+#ccDxtp main #homeContent > figure ul li label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: #ccc;
+  font-size: 85%;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#ccDxtp main #homeContent > figure ul li label:hover {
+  color: white;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #popularFilter:checked
+  ~ figure
+  ul
+  li:nth-child(1)
+  label {
+  background-color: #393939;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #photoFilter:checked
+  ~ figure
+  ul
+  li:nth-child(2)
+  label {
+  background-color: #393939;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #videoFilter:checked
+  ~ figure
+  ul
+  li:nth-child(3)
+  label {
+  background-color: #393939;
+}
+
+#ccDxtp main #homeContent #pdfFilter:checked ~ figure ul li:nth-child(4) label {
+  background-color: #393939;
+}
+
+#ccDxtp main #homeContent > input {
+  display: none;
+}
+
+#ccDxtp .itemCarousel {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 106%;
+  list-style: none;
+  margin-top: -10px;
+}
+
+#ccDxtp main .itemCarousel::after {
+  position: absolute;
+  right: -30px;
+  width: 11.5%;
+  height: 100%;
+  background-color: #1a1a1a;
+  z-index: 1;
+  content: "";
+}
+
+#ccDxtp .slick-list {
+  margin: 0 -8px;
+}
+
+#ccDxtp .slick-track {
+  display: flex !important;
+}
+
+#ccDxtp .slick-slide {
+  margin: 0 8px;
+  height: inherit !important;
+}
+
+#ccDxtp .slick-prev,
+#ccDxtp .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: transparent;
+  z-index: 2;
+}
+
+#ccDxtp .slick-prev:hover,
+#ccDxtp .slick-prev:focus,
+#ccDxtp .slick-next:hover,
+#ccDxtp .slick-next:focus {
+  color: transparent;
+  outline: none;
+  background: transparent;
+}
+
+#ccDxtp .slick-prev:hover:before,
+#ccDxtp .slick-prev:focus:before,
+#ccDxtp .slick-next:hover:before,
+#ccDxtp .slick-next:focus:before {
+  background-color: black;
+  color: white;
+  border: 1px solid #888;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp .slick-prev.slick-disabled:before,
+#ccDxtp .slick-next.slick-disabled:before {
+  opacity: 0.25;
+}
+
+#ccDxtp .slick-prev:before,
+#ccDxtp .slick-next:before {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "bootstrap-icons";
+  font-size: 14px;
+  border: 1px solid #555;
+  padding: 8px;
+  border-radius: 100%;
+  line-height: 0;
+  color: #ccc;
+  background-color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp .slick-prev {
+  left: -15px;
+  display: none !important;
+}
+
+#ccDxtp [dir="rtl"] .slick-prev {
+  right: -25px;
+  left: auto;
+}
+
+#ccDxtp .slick-prev:before {
+  content: "\F284";
+}
+
+#ccDxtp [dir="rtl"] .slick-prev:before {
+  content: "\F285";
+}
+
+#ccDxtp .slick-next {
+  right: 62px;
+}
+
+#ccDxtp [dir="rtl"] .slick-next {
+  right: auto;
+  left: -15px;
+}
+
+#ccDxtp .slick-next:before {
+  content: "\F285";
+}
+
+#ccDxtp [dir="rtl"] .slick-next:before {
+  content: "\F284";
+}
+
+#ccDxtp main #homeContent #appShortcuts {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 0 0 0 20px;
+  margin: 0;
+  list-style: none;
+}
+
+#ccDxtp main #homeContent #appShortcuts button {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: unset;
+  border: none;
+  padding-bottom: 15px;
+  margin: 0 50px 40px 0;
+  position: relative;
+  cursor: pointer;
+}
+
+#ccDxtp main #homeContent #appShortcuts button svg {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#ccDxtp main #homeContent #appShortcuts button i {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font-size: 120%;
+  margin-bottom: 10px;
+}
+
+#ccDxtp main #homeContent #appShortcuts button p {
+  position: absolute;
+  bottom: 0;
+  color: #bbb;
+  font-size: 90%;
+  margin: 0;
+  text-align: center;
+  width: 100px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #appShortcuts button:hover p {
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel {
+  padding-bottom: 40px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background-color: #1e1e1e;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #suggestedCarousel
+  :is(#thickBorder, li:has(.bi-shop))::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45px;
+  height: 100%;
+  background-image: linear-gradient(
+    180deg,
+    #8388f6,
+    #ba80ea,
+    #e47ccb,
+    #ff80a0,
+    #ff8e70,
+    #ffa741,
+    #f5b919,
+    #e4c000,
+    #cec800,
+    #b0d000,
+    #89d725,
+    #4bde50
+  ) !important;
+  content: "";
+  z-index: -1;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #suggestedCarousel
+  :is(#thinBorder, li:has(code))
+  :is(figure, p:not(figcaption > p)) {
+  position: relative;
+  left: 8px;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #suggestedCarousel
+  :is(#thinBorder, li:has(code))::after {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background-image: linear-gradient(
+    180deg,
+    #f90107,
+    #fc4600,
+    #f27100,
+    #db9700,
+    #b7b800,
+    #81d300,
+    #6ddf46,
+    #8cde36,
+    #a5dd27,
+    #bbdc19,
+    #cedb11,
+    #dfda16
+  );
+  content: "";
+  z-index: -1;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li:hover {
+  border: 1px solid #666;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 13px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure i {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  color: white;
+  font-size: 110%;
+  line-height: 0;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel .bi-grid-fill {
+  background-color: #6767ec !important;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel .bi-lightbulb-fill {
+  background-color: #e68619 !important;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel .bi-shop {
+  background-color: #c038cc !important;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure svg {
+  width: 40px;
+  height: auto;
+  min-width: 40px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  top: 3px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure figcaption p {
+  color: #aaa;
+  text-transform: uppercase;
+  font-size: 70%;
+  line-height: 90%;
+  margin: 0 0 8px 10px;
+  font-weight: 700;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li figure figcaption strong {
+  color: white;
+  font-size: 95%;
+  line-height: 130%;
+  font-weight: 600;
+  margin: 0 0 0 10px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li > p {
+  font-size: 80%;
+  line-height: 160%;
+  color: #ccc;
+  margin: 0;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #suggestedCarousel
+  :is(#thickBorder, li:has(.bi-shop))
+  > p {
+  margin-left: 51px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px;
+  border-radius: 30px;
+  border: 2px solid #c8c8c8;
+  color: #c8c8c8;
+  font-weight: 700;
+  align-self: flex-end;
+  text-decoration: none;
+  font-size: 82%;
+  margin-top: 40px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li a i {
+  margin-right: 7px;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li a:hover {
+  background-color: #c8c8c8;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li button {
+  font-size: 130%;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #bbb;
+  background-color: unset;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li button:hover {
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #suggestedCarousel li:hover button {
+  opacity: 1;
+  transition: none;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :where(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel) {
+  visibility: hidden;
+  opacity: 0;
+  height: 0px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+}
+
+#ccDxtp main #homeContent #popularFilter:checked ~ #popularCarousel {
+  visibility: visible;
+  opacity: 1;
+  height: initial;
+  padding-bottom: 40px;
+  margin-top: -10px;
+  min-height: 118px;
+}
+
+#ccDxtp main #homeContent #photoFilter:checked ~ #photoCarousel {
+  visibility: visible;
+  opacity: 1;
+  height: initial;
+  padding-bottom: 40px;
+  margin-top: -10px;
+  min-height: 118px;
+}
+
+#ccDxtp main #homeContent #videoFilter:checked ~ #videoCarousel {
+  visibility: visible;
+  opacity: 1;
+  height: initial;
+  padding-bottom: 40px;
+  margin-top: -10px;
+  min-height: 118px;
+}
+
+#ccDxtp main #homeContent #pdfFilter:checked ~ #pdfCarousel {
+  visibility: visible;
+  opacity: 1;
+  height: initial;
+  padding-bottom: 40px;
+  margin-top: -10px;
+  min-height: 118px;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #1e1e1e;
+  padding: 15px 12px;
+  cursor: pointer;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li:hover {
+  border: 1px solid #666;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  i {
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  border-radius: 3px;
+  background-color: #444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 145%;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li:hover
+  i {
+  filter: brightness(1.2);
+  transition: all 0.2s ease;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  .bi-images {
+  background-color: #261a33;
+  color: #8863b6;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  :is(.bi-aspect-ratio, .bi-textarea-resize, .bi-filetype-pdf) {
+  background-color: #0d2628;
+  color: #23b2b8;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  :is(.bi-filetype-gif, .bi-qr-code) {
+  background-color: #182c1b;
+  color: #3da74e;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  :is(.bi-filetype-mp4, .bi-filetype-jpg) {
+  background-color: #372513;
+  color: #d58c36;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  :is(.bi-scissors, .bi-filetype-svg, .bi-filter-square-fill) {
+  background-color: #2f1531;
+  color: #cf3edc;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  :is(.bi-intersect, .bi-file-earmark-plus) {
+  background-color: #1e2037;
+  color: #8383e3;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  .bi-crop {
+  background-color: #213119;
+  color: #6aa636;
+  padding-right: 3px;
+  padding-bottom: 3px;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  .bi-filetype-png {
+  background-color: #0d1f35;
+  color: #3280d8;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  .bi-file-earmark-pdf {
+  background-color: #341517;
+  color: #e34850;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  :is(#popularCarousel, #photoCarousel, #videoCarousel, #pdfCarousel)
+  li
+  p {
+  color: white;
+  font-size: 95%;
+  line-height: 150%;
+  font-weight: 600;
+  margin: 0 0 0 12px;
+}
+
+#ccDxtp main #homeContent #expressCarousel {
+  padding-bottom: 40px;
+}
+
+#ccDxtp main #homeContent #expressCarousel li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#ccDxtp main #homeContent #expressCarousel li figure {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background-color: #2c2c2c;
+  border-radius: 5px;
+  margin-bottom: 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#ccDxtp main #homeContent #expressCarousel li .centerImg {
+  align-self: center;
+}
+
+#ccDxtp main #homeContent #expressCarousel li figure figcaption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #expressCarousel li figure:hover figcaption {
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #expressCarousel li figure figcaption a {
+  position: relative;
+  top: 20px;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  padding: 3px 7px;
+  font-weight: 700;
+  border-radius: 20px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 80%;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #expressCarousel li figure:hover figcaption a {
+  top: 0px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #expressCarousel
+  li
+  figure
+  figcaption
+  a:first-of-type {
+  background-color: white;
+  margin-bottom: 7px;
+  color: #222;
+}
+
+#ccDxtp
+  main
+  #homeContent
+  #expressCarousel
+  li
+  figure
+  figcaption
+  a:last-of-type:hover {
+  background-color: #888;
+}
+
+#ccDxtp main #homeContent #expressCarousel li p {
+  font-size: 77%;
+  color: white;
+  font-weight: 700;
+  margin: 0;
+  align-self: flex-start;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel {
+  padding-bottom: 40px;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li form {
+  position: relative;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li form textarea {
+  font-family: "Open Sans", sans-serif;
+  width: 100%;
+  height: 100%;
+  background-color: #080808;
+  color: white;
+  border: 1px solid dodgerblue;
+  outline: 12px solid #003066;
+  border-radius: 5px;
+  padding: 15px;
+  resize: none;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li form textarea::placeholder {
+  color: #888;
+  font-family: "Open Sans", sans-serif;
+  font-style: italic;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li form textarea:hover::placeholder {
+  color: white;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li form input {
+  position: absolute;
+  border: none;
+  bottom: 15px;
+  right: 15px;
+  background-color: #2c2c2c;
+  padding: 10px 15px;
+  border-radius: 20px;
+  color: #777;
+  font-size: 75%;
+  font-weight: 700;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li img {
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+  border: 1px solid #444;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li figure {
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li:hover figure {
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li figure figcaption {
+  color: white;
+  font-size: 85%;
+  font-weight: 700;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li figure a {
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 4px 10px 6px 10px;
+  color: white;
+  font-size: 75%;
+  font-weight: 700;
+  background-color: transparent;
+  text-decoration: none;
+  align-self: flex-end;
+}
+
+#ccDxtp main #homeContent #fireflyCarousel li figure a:hover {
+  background-color: #888;
+}
+
+#ccDxtp main aside {
+  position: sticky;
+  top: 0;
+  right: 0;
+  width: 18%;
+  min-width: 225px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 30px 20px 0 0;
+  z-index: 2;
+}
+
+#ccDxtp main aside figure {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 20px;
+  margin-bottom: 17px;
+  border-bottom: 2px solid #323232;
+}
+
+#ccDxtp main aside figure i {
+  font-size: 300%;
+  color: #00cfff;
+  margin-right: 10px;
+}
+
+#ccDxtp main aside figure figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+#ccDxtp main aside figure figcaption p {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+#ccDxtp main aside figure figcaption a {
+  color: dodgerblue;
+  text-decoration: none;
+  font-size: 90%;
+}
+
+#ccDxtp main aside figure figcaption a:hover {
+  text-decoration: underline;
+}
+
+#ccDxtp main aside strong {
+  font-size: 90%;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+#ccDxtp main aside > p {
+  width: 100%;
+  font-size: 80%;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+#ccDxtp main aside > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 15px;
+  border-radius: 30px;
+  border: 2px solid #c8c8c8;
+  color: #c8c8c8;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 82%;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main aside > a:hover {
+  background-color: #c8c8c8;
+  color: #1e1e1e;
+  transition: all 0.2s ease;
+}
+
+#ccDxtp main aside ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  list-style: none;
+  border-top: 2px solid #323232;
+  margin: 20px 0 0 0;
+  padding: 20px 0 0 0;
+}
+
+#ccDxtp main aside ul li {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#ccDxtp main aside ul li::after {
+  position: absolute;
+  right: 5px;
+  font-family: "bootstrap-icons";
+  content: "\F285";
+  color: #ccc;
+  font-size: 80%;
+  display: none;
+}
+
+#ccDxtp main aside ul li:hover::after {
+  display: initial;
+}
+
+#ccDxtp main aside ul li input {
+  display: none;
+}
+
+#ccDxtp main aside ul li:not(:last-of-type) {
+  margin-bottom: 12px;
+}
+
+#ccDxtp main aside ul li label {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+#ccDxtp main aside ul li label i {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background-color: #2c2c2c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font-size: 120%;
+  margin-right: 10px;
+  border-radius: 3px;
+}
+
+#ccDxtp main aside ul li:hover label i {
+  color: white;
+}
+
+#ccDxtp main aside ul li label div {
+  position: relative;
+  top: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#ccDxtp main aside ul li label div h4 {
+  font-size: 90%;
+  line-height: 100%;
+  color: #bbb;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+#ccDxtp main aside ul li:hover label div h4 {
+  color: white;
+}
+
+#ccDxtp main aside ul li label div p {
+  font-size: 70%;
+  line-height: 110%;
+  color: #bbb;
+  margin: 0;
+}
+
+@media (max-width: 1320px) {
+  #ccDxtp main #homeContent > figure {
+    justify-content: flex-start;
+  }
+  #ccDxtp main #homeContent > figure ul {
+    right: unset;
+    margin: 0 10px 0 30px;
+  }
+  #ccDxtp main #homeContent > figure a {
+    margin-right: unset;
+    margin-left: 30px;
+  }
+}
+
+@media (max-width: 1280px) {
+  #ccDxtp #toolBar code {
+    left: 30px;
+  }
+  #ccDxtp #toolBar figure {
+    width: 23%;
+  }
+  #ccDxtp .itemCarousel {
+    width: 102%;
+  }
+  #ccDxtp .slick-next {
+    right: 53px;
+  }
+}
+
+@media (max-width: 1220px) {
+  #ccDxtp header figure:last-of-type {
+    width: 15%;
+  }
+  #ccDxtp .slick-next {
+    right: 48px;
+  }
+}
+
+@media (max-width: 1170px) {
+  #ccDxtp .itemCarousel {
+    width: 98%;
+  }
+  #ccDxtp .slick-next {
+    right: 40px;
+  }
+}
+
+@media (max-width: 1130px) {
+  #ccDxtp main #homeContent #appShortcuts {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1100px) {
+  #ccDxtp .itemCarousel {
+    width: 97%;
+  }
+  #ccDxtp .slick-next {
+    right: 35px;
+  }
+}
+
+@media (max-width: 1080px) {
+  #ccDxtp header figure:last-of-type {
+    width: 18%;
+  }
+  #ccDxtp main #homeContent > figure ul + a {
+    display: none;
+  }
+  #ccDxtp #toolBar code {
+    max-width: 380px;
+  }
+  #ccDxtp #toolBar code:has(input:focus, section:hover) {
+    max-width: 500px;
+  }
+  #ccDxtp #toolBar code section figure .itemCarousel {
+    min-width: 458px;
+  }
+}
+
+@media (max-width: 1040px) {
+  #ccDxtp .itemCarousel {
+    width: 95%;
+  }
+  #ccDxtp .slick-next {
+    right: 28px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #ccDxtp .itemCarousel {
+    width: 93%;
+  }
+  #ccDxtp .slick-next {
+    right: 22px;
+  }
+}
+
+@media (max-width: 970px) {
+  #ccDxtp .itemCarousel {
+    width: 90%;
+  }
+  #ccDxtp .slick-next {
+    right: 20px;
+  }
+}
+
+@media (max-width: 920px) {
+  #ccDxtp #toolBar code {
+    left: 0;
+    max-width: 300px;
+  }
+  #ccDxtp #toolBar code:has(input:focus, section:hover) {
+    max-width: 400px;
+  }
+  #ccDxtp #toolBar code section figure .itemCarousel {
+    min-width: 358px;
+  }
+  #ccDxtp #toolBar > figure {
+    width: 28%;
+  }
+  #ccDxtp .itemCarousel {
+    width: 87%;
+  }
+  #ccDxtp main #homeContent #suggestedCarousel {
+    width: 82%;
+  }
+  #ccDxtp main #homeContent #suggestedCarousel::after {
+    display: none;
+  }
+  #ccDxtp main #homeContent #suggestedCarousel .slick-next {
+    right: -15px;
+  }
+  #ccDxtp .slick-next {
+    right: 18px;
+  }
+  #ccDxtp main #homeContent > figure a {
+    display: none;
+  }
+  #ccDxtp main #homeContent #appShortcuts {
+    width: 85%;
+  }
+}
+
+@media (max-width: 880px) {
+  #ccDxtp header figure:last-of-type {
+    width: 21%;
+  }
+  #ccDxtp main #homeContent #suggestedCarousel {
+    width: 78.5%;
+  }
+  #ccDxtp .itemCarousel {
+    width: 83%;
+  }
+  #ccDxtp .slick-next {
+    right: 8px;
+  }
+  #ccDxtp main #homeContent > figure ul {
+    display: none;
+  }
+}
+
+@media (max-width: 840px) {
+  #ccDxtp .itemCarousel {
+    width: 79%;
+  }
+  #ccDxtp .slick-next {
+    right: 4px;
+  }
+  #ccDxtp main #homeContent #suggestedCarousel {
+    width: 75%;
+  }
+}
+
+@media (max-width: 800px) {
+  #ccDxtp main #homeContent #appShortcuts {
+    width: 80%;
+  }
+}
+
+@media (max-width: 790px) {
+  #ccDxtp .itemCarousel {
+    width: 72% !important;
+  }
+  #ccDxtp .itemCarousel::after {
+    display: none;
+  }
+  #ccDxtp .slick-next {
+    right: -15px;
+  }
+}
+
+@media (max-width: 750px) {
+  #ccDxtp .itemCarousel {
+    width: 69% !important;
+  }
+}
+
+@media (max-width: 725px) {
+  #ccDxtp .itemCarousel {
+    width: 66% !important;
+  }
+}

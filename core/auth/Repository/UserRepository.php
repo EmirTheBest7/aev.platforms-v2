@@ -7,6 +7,7 @@ namespace Core\Auth\Repository;
 use Core\Auth\Contracts\UserRepositoryInterface;
 use Core\Auth\Database\DatabaseDriver;
 use Core\Auth\DTO\AuthenticatedUser;
+use Core\Auth\Value\Role;
 use DateTimeImmutable;
 use PDO;
 
@@ -49,7 +50,7 @@ final class UserRepository implements UserRepositoryInterface
         return (bool) $stmt->fetchColumn();
     }
 
-    public function create(string $email, string $username, string $passwordHash): int
+    public function create(string $email, string $username, string $passwordHash, ?string $displayName = null, ?string $referralCode = null): int
     {
         // PostgreSQL: lastInsertId() requires either a sequence name or a
         // RETURNING clause; RETURNING is the portable, driver-agnostic
@@ -57,8 +58,8 @@ final class UserRepository implements UserRepositoryInterface
         // naming convention (users_id_seq).
         if ($this->driver === DatabaseDriver::PostgreSQL) {
             $stmt = $this->pdo->prepare(
-                'INSERT INTO users (email, username, password_hash, created_at)
-                 VALUES (:email, :username, :password_hash, NOW())
+                'INSERT INTO users (email, username, password_hash, display_name, referral_code, created_at)
+                 VALUES (:email, :username, :password_hash, :display_name, :referral_code, NOW())
                  RETURNING id',
             );
 
@@ -66,6 +67,8 @@ final class UserRepository implements UserRepositoryInterface
                 'email' => $email,
                 'username' => $username,
                 'password_hash' => $passwordHash,
+                'display_name' => $displayName !== '' ? $displayName : null,
+                'referral_code' => $referralCode !== '' ? $referralCode : null,
             ]);
 
             return (int) $stmt->fetchColumn();
@@ -73,14 +76,16 @@ final class UserRepository implements UserRepositoryInterface
 
         // MySQL/MariaDB: lastInsertId() works directly off the connection.
         $stmt = $this->pdo->prepare(
-            'INSERT INTO users (email, username, password_hash, created_at)
-             VALUES (:email, :username, :password_hash, NOW())',
+            'INSERT INTO users (email, username, password_hash, display_name, referral_code, created_at)
+             VALUES (:email, :username, :password_hash, :display_name, :referral_code, NOW())',
         );
 
         $stmt->execute([
             'email' => $email,
             'username' => $username,
             'password_hash' => $passwordHash,
+            'display_name' => $displayName !== '' ? $displayName : null,
+            'referral_code' => $referralCode !== '' ? $referralCode : null,
         ]);
 
         return (int) $this->pdo->lastInsertId();
@@ -145,7 +150,7 @@ final class UserRepository implements UserRepositoryInterface
                 ? new DateTimeImmutable($row['last_login_at'])
                 : null,
             createdAt: new DateTimeImmutable($row['created_at']),
-            roles: [],
+            roles: $this->loadRoles($userId),
             permissions: [],
         );
     }
@@ -179,5 +184,19 @@ final class UserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('UPDATE users SET locked_until = NULL WHERE id = :id');
         $stmt->execute(['id' => $userId]);
+    }
+
+    /**
+     * Roles granted to a user (table `user_roles`). There is no permission engine yet; roles are the
+     * authorisation primitive (e.g. "admin" gates the internal _api tools).
+     *
+     * @return list<Role>
+     */
+    private function loadRoles(int $userId): array
+    {
+        $stmt = $this->pdo->prepare('SELECT role FROM user_roles WHERE user_id = :id ORDER BY role');
+        $stmt->execute(['id' => $userId]);
+
+        return array_map(static fn (mixed $key): Role => new Role((string) $key), $stmt->fetchAll(PDO::FETCH_COLUMN));
     }
 }

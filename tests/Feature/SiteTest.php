@@ -43,15 +43,16 @@ final class SiteTest extends TestCase
         exec('rm -rf ' . escapeshellarg($this->storage));
     }
 
+    /** @param array<string, array<string, mixed>> $overrides config overrides keyed by file (app, security, notify, …) */
     private function app(array $overrides = []): Application
     {
-        $config = new Config([
-            'app' => ($overrides['app'] ?? []) + ['env' => 'testing', 'debug' => false, 'url' => 'https://aliev.test', 'key' => self::KEY, 'log_channel' => 'null', 'log_level' => 'debug'],
-            'security' => ($overrides['security'] ?? []) + ['trusted_proxies' => [], 'force_https' => false],
+        $config = Config::fromDirectory(dirname(__DIR__, 2) . '/config')->with([
+            'app' => ['env' => 'testing', 'debug' => false, 'url' => 'https://aliev.test', 'key' => self::KEY, 'log_channel' => 'null', 'log_level' => 'debug'],
+            'security' => ['trusted_proxies' => [], 'force_https' => false],
             'notify' => ['driver' => 'log', 'timeout' => 2, 'telegram' => ['token' => '', 'chat_id' => '']],
-        ]);
+        ])->with($overrides);
 
-        return new Application(dirname(__DIR__, 2), $config, $this->storage, $this->notifier);
+        return new Application(dirname(__DIR__, 2), $config, $this->storage, ['notifier' => $this->notifier]);
     }
 
     /** @param array<string, string> $server */
@@ -92,7 +93,7 @@ final class SiteTest extends TestCase
         $r = $this->get($this->app(), '/');
 
         self::assertSame(200, $r->status);
-        self::assertStringContainsString('<title>ΛΞV | Digital studio</title>', $r->body());
+        self::assertStringContainsString('<title>ΛΞV | Digital studio.</title>', $r->body());
         self::assertStringContainsString('<link rel="canonical" href="https://aliev.test/">', $r->body());
         self::assertStringContainsString('href="/contact"', $r->body());
         self::assertStringContainsString("script-src 'self'", (string) $r->header('Content-Security-Policy'));

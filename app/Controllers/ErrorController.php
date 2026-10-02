@@ -16,11 +16,21 @@ final class ErrorController
         405 => ['Method not allowed', 'That action is not supported for this address.'],
         410 => ['Gone', 'This page has been permanently removed.'],
         413 => ['Request too large', 'The request was larger than we accept.'],
+        422 => ['Invalid request', 'The request could not be processed. Please check it and try again.'],
         429 => ['Too many requests', 'Please wait a little while before trying again.'],
         500 => ['Something went wrong', 'An unexpected error occurred on our side. Please try again shortly.'],
     ];
 
     public function __construct(private readonly View $view) {}
+
+    /** JSON error for script callers; same public-safe messages, no internals. */
+    public function renderJson(int $status): Response
+    {
+        $status = isset(self::PAGES[$status]) ? $status : 500;
+
+        return Response::json(['ok' => false, 'error' => $status, 'message' => self::PAGES[$status][1]], $status)
+            ->withHeader('Cache-Control', 'no-store');
+    }
 
     public function render(int $status, string $path = '/'): Response
     {

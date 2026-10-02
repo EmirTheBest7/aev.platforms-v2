@@ -1,0 +1,11 @@
+body {
+  background-color:#fcfcfa;
+}
+body * {
+  margin:auto;
+  text-align:center;
+  font-size:21px;
+}
+input {
+  display:block;
+}

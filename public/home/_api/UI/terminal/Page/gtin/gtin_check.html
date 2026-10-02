@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTIN decoder</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        #result { margin-top: 20px; font-weight: bold; color: #2c3e50; word-break: break-all; }
+        .container { max-width: 500px; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        img { max-width: 100%; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <input type="file" id="upload" accept="image/*">
+    <br>
+    <img id="preview" alt="Preview">
+    <div id="result">Upload an image to see the content...</div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+
+<script>
+    const codeReader = new ZXing.BrowserDatamatrixCodeReader();
+    const uploadInput = document.getElementById('upload');
+    const resultDiv = document.getElementById('result');
+    const previewImg = document.getElementById('preview');
+
+    uploadInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Show a preview of the uploaded image
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            previewImg.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+
+        resultDiv.textContent = "Decoding...";
+
+        try {
+            // Decode the image using the Data Matrix reader
+            const result = await codeReader.decodeFromImageElement(previewImg);
+            resultDiv.innerHTML = `Decoded Content: <br><span style="color: green;">${result.text}</span>`;
+        } catch (err) {
+            console.error(err);
+            resultDiv.innerHTML = `<span style="color: red;">Error: Could not decode image. Make sure it's a clear Data Matrix code.</span>`;
+        }
+    });
+</script>
+
+</body>
+</html>
