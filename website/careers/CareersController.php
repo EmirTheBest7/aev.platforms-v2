@@ -79,8 +79,8 @@ final class CareersController
             'description' => $job['job_name'] . ' — ' . $job['job_company'] . ', ' . $job['job_location'] . '.',
             'path' => '/careers/' . $job['job_url'],
             'bodyClass' => 'page-careers-job',
-            'styles' => ['/build/css/fonts/careers.css', '/build/css/core.css', '/build/careers/css/desc.css'],
-        ], ['backHref' => '/careers', 'backIcon' => 'uil-step-backward-alt']);
+            'styles' => ['/build/css/fonts/montserrat.css', '/build/css/fonts/open-sans.css', '/build/css/fonts/poppins.css', '/build/css/core.css', '/build/careers/css/desc.css'],
+        ], ['leading' => 'link', 'href' => '/careers', 'icon' => 'uil-step-backward-alt', 'label' => 'All jobs']);
     }
 
     public function team(Request $request): Response
@@ -90,7 +90,7 @@ final class CareersController
             'description' => 'Work at ΛΞV. Join a team and inspire the work.',
             'path' => '/careers/team',
             'bodyClass' => 'page-careers-team',
-            'styles' => ['/build/css/fonts/careers.css', '/build/vendor/fontawesome/brands.css', '/build/careers/css/team.css'],
+            'styles' => ['/build/css/fonts/montserrat.css', '/build/css/fonts/open-sans.css', '/build/css/fonts/poppins.css', '/build/vendor/fontawesome/brands.css', '/build/careers/css/team.css'],
         ], null);
     }
 
@@ -99,7 +99,7 @@ final class CareersController
      * @param array<string, mixed> $meta
      * @param array<string, string>|null $navbar back-link of the top bar; null = no top bar on this page
      */
-    private function page(string $template, array $data, array $meta, ?array $navbar = ['backHref' => '/', 'backIcon' => 'uil-estate']): Response
+    private function page(string $template, array $data, array $meta, ?array $navbar = ['leading' => 'link', 'href' => '/', 'icon' => 'uil-estate', 'label' => 'Home']): Response
     {
         return new Response($this->view->render($template, $data + ['navbar' => $navbar], $meta, 'page'));
     }

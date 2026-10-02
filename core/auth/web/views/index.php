@@ -28,7 +28,7 @@ $val = static fn(string $k): string => $old[$k] ?? '';
 								<div class="card-3d-wrapper">
 
 									<form name="form1" method="post" action="/home/auth/login">
-										<input type="hidden" name="_csrf" value="<?= $e($csrf) ?>">
+										<?= $view->partial('components/guard-fields', ['csrf' => $csrf, 'ts' => null]) ?>
 										<div class="card-front overflow-hidden ">
 											<div id="login1" class="center-wrap switch-group">
 												<div class="section text-center">
@@ -67,9 +67,7 @@ $val = static fn(string $k): string => $old[$k] ?? '';
 									</form>
 
 									<form name="form2" method="post" action="/home/auth/register">
-										<input type="hidden" name="_csrf" value="<?= $e($csrf) ?>">
-										<input type="hidden" name="_ts" value="<?= $e($ts) ?>">
-										<div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+										<?= $view->partial('components/guard-fields', ['csrf' => $csrf, 'ts' => $ts]) ?>
 										<div class="card-back">
 											<div class="center-wrap">
 												<div class="section text-center">

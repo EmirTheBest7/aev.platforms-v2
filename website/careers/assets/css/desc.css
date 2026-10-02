@@ -315,15 +315,6 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap !important;
   width: 1px !important;
 }
-
-.Toggle i {
-  top: 15px;
-  position: absolute;
-  font-size: 25px;
-  line-height: 30px;
-  left: 17px;
-  color: white;
-}
 /* Former inline styles of the original markup (the CSP forbids style=""). */
 .job-logo { max-width: 128px; border-radius: 30px; }
 .apply-mail { background: #073B4C; color: white; }

@@ -63,7 +63,7 @@ final class AuthController
             'notice' => is_string($flash['notice'] ?? null) ? $flash['notice'] : '',
             'old' => $this->strings($flash['old'] ?? []),
             'referral' => $referral,
-            'navbar' => ['backHref' => '/', 'backIcon' => 'uil-estate'],
+            'navbar' => ['leading' => 'link', 'href' => '/', 'icon' => 'uil-estate', 'label' => 'Home'],
         ], $this->meta('ΛΞV | Log In', '/home/auth'), 'page');
 
         return (new Response($html))->withHeader('Cache-Control', 'no-store');
@@ -187,7 +187,7 @@ final class AuthController
             'path' => $path,
             'noindex' => true,
             'bodyClass' => 'page-auth',
-            'styles' => ['/build/css/fonts/auth.css', '/build/vendor/bootstrap/bootstrap.min.css', '/build/auth/css/auth.css'],
+            'styles' => ['/build/css/fonts/poppins.css', '/build/vendor/bootstrap/bootstrap.min.css', '/build/auth/css/auth.css'],
             'scripts' => ['/build/auth/js/auth.js'],
         ];
     }

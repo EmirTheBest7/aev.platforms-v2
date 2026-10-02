@@ -1,0 +1,9 @@
+/* Error pages (403/404/…/503): ALIEV look on the shared page layout — dot-matrix status code, bold title, blue slab button. */
+body.page-error { background: #000; color: #fff; font: 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.error-page { max-width: 720px; padding: 80px 6vw 60px 100px; }
+.error-page__code { margin: 0; font: 400 120px/1 "Doto", "Courier New", monospace; color: #0f33ff; }
+.error-page .page-title { margin: 0 0 30px; font-size: 55px; font-weight: 900; line-height: 1; }
+.error-page .btn { position: relative; display: inline-flex; align-items: center; gap: 5px; z-index: 0; padding: 5px 17px 5px 12px; border: 0; background: transparent; color: #fff; font: 700 14px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+.error-page .btn::before { content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: 23px; background: #0f33ff; z-index: -1; transition: left 0.2s ease-in-out; }
+.error-page .btn:hover::before, .error-page .btn:focus-visible::before { left: 0; }
+@media (max-width: 543px) { .error-page { padding-left: 6vw; } .error-page .page-title { font-size: 40px; } }

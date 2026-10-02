@@ -440,67 +440,6 @@ h6 span {
   text-decoration: underline;
 }
 
-
-
-
-.u-pullRight {
-  float: right;
-}
-
-.Toggle {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 60px;
-  padding-top: 3rem;
-  /*border-radius: 100%;*/
-  background-color: transparent;
-}
-.Toggle i{
-  top: 15px;
-  position: absolute;
-  font-size: 25px;
-  line-height: 30px;
-  left: 13px;
-  color: white;
-}
-
-
-.SocialLink {
-  color: inherit;
-  font-size: 1rem;
-  font-weight: bold;
-  letter-spacing: 0.28rem;
-  text-decoration: none;
-  text-transform: uppercase;
-  display: block;
-  vertical-align: top;
-  margin-left: -1px;
-  padding: 1.2rem !important;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background-color: #000;
-}
-
-.SocialLink-icon {
-  display: block;
-  width: 1.6rem;
-  height: 1.6rem;
-  vertical-align: middle;
-  fill: currentColor;
-}
-
-.SocialLink-text {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-  white-space: nowrap;
-}
-
 body {
   min-height: 100vh;
   padding-top: 6rem;
@@ -508,200 +447,11 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #000;
-}
-
-.Navbar {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 2.8rem;
-  letter-spacing: 0.28rem;
-  text-transform: uppercase;
-  position: fixed;
-  backface-visibility: hidden;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #000;
-  z-index: 9999;
-}
-
-.Toggle:hover {
-  background-color: #0f33ff;
-}
-
-
-.Navbar a:not(.Navbar-toggle) {
-  color: inherit;
-  text-decoration: none;
-}
-
-.Navbar-brand,
-.Navbar-menu a,
-.Navbar-quickLinks a {
-  display: block;
-}
-
-.Navbar-brand,
-.Navbar-quickLinks a {
-  padding: 1.6rem 1.4rem;
-}
-
-.Navbar-quickLinks {
-  display: none;
-}
-
-.Navbar ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.Navbar-menu {
-  line-height: 1.6rem;
-  position: fixed;
-  top: 6rem;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  width: 0%;
-  overflow-y: auto;
-  visibility: hidden;
-  padding: 2.4rem 0;
-  background-color: rgba(0, 0, 0, 0.92);
-  opacity: 0;
-  transition-property: opacity, visibility, width;
-  transition-duration: 0.35s, 0.25s, 0.25s;
-  transition-delay: 0.1s;
-}
-
-.Navbar-menu .Navbar-menu-major {
-  flex-grow: 1;
-}
-
-.Navbar-menu.is-active {
-  opacity: 1;
-  visibility: visible;
-  width: 100%;
-  transition-duration: 0.15s, 0.25s, 0.25s;
-}
-
-.Navbar-menu-major a,
-.Navbar-menu-minor a,
-.Navbar-menu-minor .Navbar-menu-social {
-  padding: 1.6rem 14%;
-}
-
-.Navbar-menu-major {
-  font-size: 1.4rem;
-}
-
-.Navbar-menu-major a:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.Navbar-menu-minor {
-  color: #666666;
-  margin-top: 1.4rem;
-}
-
-.Navbar-menu-minor a {
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-}
-
-.Navbar-menu-minor a:hover {
-  color: #fff;
-}
-
-.Navbar-menu-social {
-  overflow: hidden;
-}
-
-.Navbar-menu-social li {
-  float: left;
-}
-
-.Navbar-brand-mobile {
-  width: 100px;
-  padding: 0;
-  height: 60px;
-}
-
-/* Mobile Layout: 320px. */
-@media only screen and (max-width: 767px) {
-
-  .Navbar,
-  .Navbar-brand-mobile {
-    height: 38px;
-  }
-
-  .Navbar-brand-mobile {
-
-    padding: 0 0.7rem 0 0.7rem;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    position: absolute;
-  }
-  
-}
-
-@media (min-width: 544px) {
-  .u-Navbar-hidden\@sm-up {
-    display: none;
-  }
+}@media (min-width: 544px) {
 
   body {
     padding-top: 0;
     padding-left: 6rem;
-  }
-
-  .Navbar {
-    bottom: 0;
-    width: 60px;
-  }
-
-  .Navbar-toggle {
-    position: absolute;
-    top: 0;
-  }
-
-  .Navbar-menu {
-    top: 0;
-    left: 6rem;
-    padding-top: 5.2rem;
-  }
-
-  .Navbar-menu.is-active {
-    width: 26rem;
-  }
-
-  .Navbar-brand {
-    position: absolute;
-    right: 0;
-    padding-left: 0.4rem !important;
-    padding-right: 0.4rem !important;
-    transform: rotate(-90deg) translateY(-60px);
-    transform-origin: right top;
-    height: 60px;
-    top: calc(7rem/2);
-
-  }
-
-  .Navbar-quickLinks {
-    white-space: nowrap;
-    position: absolute;
-    bottom: 0;
-    display: block;
-    padding-left: 1.6rem !important;
-    transform: rotate(-90deg) translateX(-6rem);
-    transform-origin: 0 0;
-  }
-
-  .Navbar-quickLinks li {
-    display: inline-block;
   }
 }
 
@@ -867,7 +617,6 @@ main {
 }
 
 /* Additions of the PHP port (the CSP forbids the original inline styles/handlers; <button>s replace clickable <a>s/<i>s). */
-.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .flip-label { margin-bottom: 25px; }
 .form-group.flex-row { display: flex; }
 button.submit-btn { background: none; border: 0; cursor: pointer; font: inherit; letter-spacing: 4px; }
@@ -877,9 +626,6 @@ button.input-icon--right { right: 12px; left: unset; background: none; border: 0
 .form-notice { color: #7dffb2; margin: 0 0 10px; font-size: 13px; line-height: 1.4; }
 .hint { margin: 12px 0 0; font-size: 12px; opacity: .7; }
 .reset-card { max-width: 420px; margin: 0 auto; padding: 30px; background: #1f2029; border-radius: 4px; }
-
-/* Top-bar home button (same look as the other inner pages). */
-.Toggle i { top: 15px; position: absolute; font-size: 25px; line-height: 30px; left: 17px; color: white; }
 
 /* The two faces sit inside <form>s: keep the 3D context through them so backface-visibility works per face. */
 .card-3d-wrapper > form { -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }

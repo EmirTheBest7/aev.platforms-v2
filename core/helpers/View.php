@@ -40,16 +40,19 @@ final class View
      * @param array<string, mixed> $data
      * @param array<string, mixed> $meta title, description, path, noindex, bodyClass
      */
-    public function render(string $template, array $data = [], array $meta = [], string $layout = 'base'): string
+    public function render(string $template, array $data = [], array $meta = [], string $layout = 'page'): string
     {
         $this->shared = $data;
         $content = $this->capture($template, $data);
 
-        return $this->capture('layouts/' . $layout, $data + [
+        $layoutData = $data + [
             'content' => $content,
             'meta' => $meta + ['title' => 'ΛΞV | Digital studio', 'description' => '', 'path' => '/', 'noindex' => false, 'bodyClass' => ''],
             'appUrl' => $this->appUrl,
-        ]);
+        ];
+        $this->shared = $layoutData; // components rendered by the layout (head, navbar, …) see the page's data and meta
+
+        return $this->capture('layouts/' . $layout, $layoutData);
     }
 
     /** @param array<string, mixed> $data */

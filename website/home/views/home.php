@@ -215,9 +215,7 @@
             <div class="hire">
               <h2>You want us to do</h2>
               <form class="work-request" action="/hire" method="post" data-hire-form>
-                <input type="hidden" name="_csrf" value="<?= $e($csrf) ?>">
-                <input type="hidden" name="_ts" value="<?= $e($ts) ?>">
-                <div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+                <?= $view->partial('components/guard-fields', ['csrf' => $csrf, 'ts' => $ts]) ?>
                 <div class="work-request--options">
                   <span class="options-a">
                     <input id="opt-1" name="services[]" type="checkbox" value="app design">

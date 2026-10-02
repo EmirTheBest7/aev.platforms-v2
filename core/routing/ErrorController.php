@@ -37,12 +37,18 @@ final class ErrorController
         $status = isset(self::PAGES[$status]) ? $status : 500;
         [$title, $text] = self::PAGES[$status];
 
-        $html = $this->view->render('errors/error', ['status' => $status, 'heading' => $title, 'text' => $text], [
+        $html = $this->view->render('errors/error', [
+            'status' => $status,
+            'heading' => $title,
+            'text' => $text,
+            'navbar' => ['leading' => 'link', 'href' => '/', 'icon' => 'uil-estate', 'label' => 'Home'],
+        ], [
             'title' => $status . ' · ' . $title . ' | ΛΞV',
             'path' => $path,
             'noindex' => true,
             'bodyClass' => 'page-error',
-        ]);
+            'styles' => ['/build/css/fonts/base.css', '/build/css/core.css', '/build/css/error.css'],
+        ], 'page');
 
         return (new Response($html, $status))->withHeader('Cache-Control', 'no-store');
     }

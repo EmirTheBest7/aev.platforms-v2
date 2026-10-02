@@ -99,12 +99,12 @@ final class ContactController
     private function page(array $tokens, array $state): Response
     {
         $mapboxToken = $this->mapboxToken;
-        $html = $this->view->render('contact::contact', $state + $tokens + ['mapboxToken' => $mapboxToken, 'email' => $this->contactEmail, 'navbar' => ['backHref' => '/', 'backIcon' => 'uil-estate']], [
+        $html = $this->view->render('contact::contact', $state + $tokens + ['mapboxToken' => $mapboxToken, 'email' => $this->contactEmail, 'navbar' => ['leading' => 'link', 'href' => '/', 'icon' => 'uil-estate', 'label' => 'Home']], [
             'title' => 'ΛΞV | Contact',
             'description' => 'Contact ΛΞV — tell us about your project.',
             'path' => '/contact',
             'bodyClass' => 'page-contact',
-            'styles' => ['/build/css/fonts/contact.css', '/build/css/core.css', '/build/vendor/mapbox-gl/mapbox-gl.css', '/build/contact/css/contact.css'],
+            'styles' => ['/build/css/fonts/open-sans.css', '/build/css/core.css', '/build/vendor/mapbox-gl/mapbox-gl.css', '/build/contact/css/contact.css'],
             'scripts' => $mapboxToken === '' ? ['/build/contact/js/contact.js'] : ['/build/vendor/mapbox-gl/mapbox-gl.js', '/build/contact/js/contact.js'],
         ], 'page');
         $response = (new Response($html))->withHeader('Cache-Control', 'no-store');

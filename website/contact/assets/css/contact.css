@@ -30,15 +30,6 @@ html {
   height: 100%;
 }
 
-.Toggle i {
-  top: 15px;
-  position: absolute;
-  font-size: 25px;
-  line-height: 30px;
-  left: 16px;
-  color: white;
-}
-
 .fish, .fish-shadow {
   width: 100%;
   height: 100%;
@@ -435,7 +426,6 @@ a {
 }
 
 /* Additions of the PHP port (the CSP forbids the original inline styles; the honeypot must stay invisible). */
-.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .form-status { margin: 8px 0; }
 .form-status--ok { color: lime; }
 .form-status--error { color: #ff6b6b; }

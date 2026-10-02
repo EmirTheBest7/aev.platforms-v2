@@ -298,6 +298,3 @@ main.downloads { position: relative; left: unset !important; }
 .branded img.invert { filter: invert(1); }
 a.btn, td a.ripple-button { text-decoration: none; }
 .not-available { opacity: .6; }
-
-/* The top-bar home button (an icon here; the original downloads page had an inert hamburger): same look as Careers/Contact. */
-.Toggle i { top: 15px; position: absolute; font-size: 25px; line-height: 30px; left: 17px; color: white; }

@@ -27,7 +27,7 @@
           <div class="saas__actions">
 <?php if ($user['authenticated']): ?>
             <a class="saas__button" href="/home/_api/UI/">Dashboard <i class="uil uil-angle-right-b" aria-hidden="true"></i></a>
-            <form method="post" action="/home/auth/logout" class="saas__form"><input type="hidden" name="_csrf" value="<?= $e($csrf) ?>"><button type="submit" class="saas__button"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
+            <form method="post" action="/home/auth/logout" class="saas__form"><?= $view->partial('components/guard-fields', ['csrf' => $csrf, 'ts' => null]) ?><button type="submit" class="saas__button"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
 <?php else: ?>
             <a class="saas__button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><i class="uil uil-sign-in-alt" aria-hidden="true"></i> Sign In</a>
 <?php endif; ?>

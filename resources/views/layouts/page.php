@@ -8,41 +8,24 @@
  * @var string $appUrl
  * @var callable(mixed): string $e
  * @var \Core\Helpers\View $view
- * @var array<string, string>|null $navbar back-link of the top bar (backHref, backIcon); null = none
+ * @var array<string, string>|null $navbar arguments of components/navbar (leading, href, icon, label); null = no top bar
  */
-$canonical = $appUrl . $meta['path'];
-$icons = '/build/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
+$styles = ['/build/vendor/unicons/unicons-line.css'];
+if (($navbar ?? null) !== null) {
+    $styles[] = '/build/css/components/navbar.css';
+}
+$styles[] = '/build/css/components/button.css';
+$styles[] = '/build/css/components/forms.css';
+array_push($styles, ...($meta['styles'] ?? []));
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title><?= $e($meta['title']) ?></title>
-<?php if ($meta['description'] !== ''): ?>
-  <meta name="description" content="<?= $e($meta['description']) ?>">
-<?php endif; ?>
-  <meta name="theme-color" content="#000">
-<?php if ($meta['noindex']): ?>
-  <meta name="robots" content="noindex,nofollow">
-<?php else: ?>
-  <link rel="canonical" href="<?= $e($canonical) ?>">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Λ L I Ξ V">
-  <meta property="og:title" content="<?= $e($meta['title']) ?>">
-  <meta property="og:description" content="<?= $e($meta['description']) ?>">
-  <meta property="og:url" content="<?= $e($canonical) ?>">
-<?php endif; ?>
-  <link rel="icon" href="<?= $e($icons) ?>/favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="<?= $e($icons) ?>/apple-touch-icon.png">
-  <link rel="stylesheet" href="<?= $e($view->asset('/build/vendor/unicons/unicons-line.css')) ?>">
-<?php foreach ($meta['styles'] ?? [] as $href): ?>
-  <link rel="stylesheet" href="<?= $e($view->asset($href)) ?>">
-<?php endforeach; ?>
+<?= $view->partial('components/head', ['styles' => $styles]) ?>
 </head>
 <body class="<?= $e($meta['bodyClass']) ?>">
 <?php if (($navbar ?? null) !== null): ?>
-<?= $view->partial('partials/page/navbar', $navbar) ?>
+<?= $view->partial('components/navbar', $navbar) ?>
 <?php endif; ?>
 <?= $content ?>
 <?php foreach ($meta['scripts'] ?? [] as $src): ?>

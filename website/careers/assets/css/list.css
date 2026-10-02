@@ -179,15 +179,6 @@ body {
   border: 1px solid black;
 }
 
-.Toggle i {
-  top: 15px;
-  position: absolute;
-  font-size: 25px;
-  line-height: 30px;
-  left: 17px;
-  color: white;
-}
-
 .uk-search-icon-flip svg{
   padding: 0 !important;
   cursor: pointer;

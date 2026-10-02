@@ -12,18 +12,12 @@
  * @var bool $docsSoon
  */
 $socialIcons = ['facebook' => 'facebook-f', 'twitter' => 'twitter', 'instagram' => 'instagram'];
-$quickIcons = ['instagram' => 'instagram', 'youtube' => 'youtube', 'telegram' => 'telegram-alt'];
 // A control whose destination is not available yet keeps its place and shows the designed pending notification.
 $pending = static fn(string $name): string => ' href="/" data-soon="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '"';
 $docsAttrs = static fn(string $name): string => $docsSoon
     ? $pending($name)
     : ' href="' . htmlspecialchars($docsHref, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener"';
 ?>
-<nav class="Navbar">
-    <button type="button" id="toggle" class="Toggle Navbar-toggle" aria-label="Menu" aria-expanded="false" aria-controls="navbarCollapse"><span></span></button>
-
-    <a href="/" class="Navbar-brand-link" aria-label="ΛLIΞV — home"><img class="Navbar-brand u-pullRight Navbar-brand-mobile" alt="" src="/build/images/brand/ALIEV.svg"></a>
-
     <div id="navbarCollapse" class="Navbar-menu">
 
       <div id="login1" class="switch-group">
@@ -241,12 +235,3 @@ $docsAttrs = static fn(string $name): string => $docsSoon
       </div>
 
     </div>
-
-    <ul class="Navbar-quickLinks">
-<?php foreach ($quickLinks as $link): ?>
-      <li><a href="<?= $e($link['href']) ?>" aria-label="<?= $e(ucfirst($link['key'])) ?>"<?= $link['external'] ? ' target="_blank" rel="noopener"' : ' data-soon="' . $e(ucfirst($link['key'])) . '"' ?>><i class="uil uil-<?= $e($quickIcons[$link['key']]) ?> icon-3d<?= $link['key'] === 'telegram' ? ' u-tg-size' : '' ?>" aria-hidden="true"></i></a></li>
-<?php endforeach; ?>
-    </ul>
-  </nav>
-
-  

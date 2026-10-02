@@ -41,9 +41,7 @@ $val = static fn(string $k): string => is_string($old[$k] ?? null) ? $old[$k] : 
         <div id='right'>
           <form method="POST" action="/contact">
             <p>Tell us about your project</p>
-            <input type="hidden" name="_csrf" value="<?= $e($csrf) ?>">
-            <input type="hidden" name="_ts" value="<?= $e($ts) ?>">
-            <div class="hp" aria-hidden="true"><label for="website">Leave this field empty</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+            <?= $view->partial('components/guard-fields', ['csrf' => $csrf, 'ts' => $ts]) ?>
             <input placeholder='Email' aria-label="Email" type='email' name="contact_email" required maxlength="254" autocomplete="email" value="<?= $e($val('email')) ?>"<?= isset($errors['email']) ? ' aria-invalid="true"' : '' ?>>
             <input placeholder='Subject' aria-label="Subject" type='text' name="contact_subject" required minlength="2" maxlength="120" value="<?= $e($val('subject')) ?>"<?= isset($errors['subject']) ? ' aria-invalid="true"' : '' ?>>
             <textarea placeholder='Message' aria-label="Message" rows='4' name="contact_message" required minlength="10" maxlength="4000"<?= isset($errors['message']) ? ' aria-invalid="true"' : '' ?>><?= $e($val('message')) ?></textarea>

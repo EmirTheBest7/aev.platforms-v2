@@ -46,19 +46,6 @@
     window.addEventListener('blur', function () { document.title = alternatives[Math.floor(Math.random() * alternatives.length)]; });
   });
 
-  /* ----------------------------------------------------------- ripple button */
-  safe('ripple', function () {
-    document.addEventListener('click', function (e) {
-      var button = e.target.closest && e.target.closest('.ripple-button');
-      if (!button) return;
-      var rect = button.getBoundingClientRect();
-      button.style.setProperty('--x', (e.clientX - rect.left) + 'px');
-      button.style.setProperty('--y', (e.clientY - rect.top) + 'px');
-      button.classList.add('pulse');
-      button.addEventListener('animationend', function () { button.classList.remove('pulse'); }, { once: true });
-    });
-  });
-
   /* ------------------------------------------------------- navbar + panels */
   var navbar = document.getElementById('navbarCollapse');
   var toggle = document.getElementById('toggle');
