@@ -20,8 +20,9 @@
 # API communication layer.
 /api/                   @your-github-username
 
-# Platform applications.
-/apps/                  @your-github-username
+# Website pages and shared front-end sources.
+/website/               @your-github-username
+/resources/             @your-github-username
 
 # Database structure & migrations — schema changes deserve careful review.
 /database/              @your-github-username

@@ -21,9 +21,10 @@
 
 <!-- Check all that apply. -->
 
-- [ ] `core/` — internal platform engine
-- [ ] `api/` — API communication layer
-- [ ] `apps/` — platform applications
+- [ ] `core/` — shared engine (routing, security, auth, helpers, services)
+- [ ] `website/` — pages (home, careers, contact, downloads)
+- [ ] `api/` — internal API and the retained `_api` terminal bundle
+- [ ] `resources/` — shared views, CSS, JS, images, fonts
 - [ ] `database/` — database structure
 - [ ] `.github/` — CI/CD, templates, workflows
 - [ ] Other: <!-- specify -->

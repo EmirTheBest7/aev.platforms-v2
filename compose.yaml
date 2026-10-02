@@ -22,7 +22,6 @@ services:
       FORCE_HTTPS: "false"
       LOG_CHANNEL: stderr
       NOTIFY_DRIVER: log
-      DB_DRIVER: mysql
       DB_HOST: db
       DB_PORT: "3306"
       DB_DATABASE: ${DB_DATABASE:-aliev}

@@ -32,7 +32,6 @@ return [
         'youtube' => Env::get('SOCIAL_YOUTUBE', ''),
         'facebook' => Env::get('SOCIAL_FACEBOOK', ''),
         'twitter' => Env::get('SOCIAL_TWITTER', ''),
-        'qirimtalk' => Env::get('QIRIMTALK_URL', ''),
         'email' => 'hello@aliev.io',
     ],
 ];

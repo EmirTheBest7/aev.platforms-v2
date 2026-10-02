@@ -4,7 +4,7 @@
 # Purpose:
 #   Automatically applies labels to pull requests based on which paths they
 #   modify. Used by workflows/labeler.yml (actions/labeler). Keeps triage
-#   fast as the project grows across core/, api/, apps/, database/.
+#   fast as the project grows across core/, website/, api/, resources/, database/.
 #
 # Syntax: each top-level key is a label name; the value is a list of glob
 # patterns (using the v5 "any/all" changed-files syntax).
@@ -22,9 +22,13 @@ api:
   - changed-files:
       - any-glob-to-any-file: "api/**"
 
-apps:
+website:
   - changed-files:
-      - any-glob-to-any-file: "apps/**"
+      - any-glob-to-any-file: "website/**"
+
+resources:
+  - changed-files:
+      - any-glob-to-any-file: "resources/**"
 
 database:
   - changed-files:

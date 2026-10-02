@@ -42,9 +42,10 @@ body:
       label: "Affected Area"
       multiple: true
       options:
-        - "core (platform engine)"
-        - "api (API layer)"
-        - "apps (platform applications)"
+        - "core (shared engine)"
+        - "website (pages)"
+        - "api (internal API / _api bundle)"
+        - "resources (shared views, CSS, JS)"
         - "database"
         - "CI/CD (.github)"
         - "Documentation"

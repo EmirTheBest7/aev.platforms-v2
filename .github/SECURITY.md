@@ -44,9 +44,10 @@ a real security contact address exists)*.
 
 This policy covers the ALIEV.IO V2 codebase in this repository, including:
 
-- `core/` — internal platform engine (including `core/auth/`)
-- `api/` — API communication layer
-- `apps/` — platform applications
+- `core/` — shared engine (including `core/auth/`)
+- `website/` — pages
+- `api/` — internal API and the retained `_api` bundle
+- `resources/` — shared front-end sources
 - `database/` — database structure and migrations
 - `.github/` — CI/CD pipelines and automation
 

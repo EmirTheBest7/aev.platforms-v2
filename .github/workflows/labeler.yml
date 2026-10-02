@@ -4,7 +4,7 @@
 # Purpose:
 #   Applies labels to pull requests automatically based on which paths were
 #   changed, using the rules defined in .github/labeler.yml. Keeps issue/PR
-#   triage fast as the codebase grows across core/, api/, apps/, database/.
+#   triage fast as the codebase grows across core/, website/, api/, resources/, database/.
 # =============================================================================
 
 name: "PR Labeler"
