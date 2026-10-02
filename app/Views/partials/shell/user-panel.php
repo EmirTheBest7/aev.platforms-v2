@@ -10,24 +10,30 @@
     </span>
   </button>
 
-  <div class="aev-profile-options" id="aev-profile-options">
+  <div class="aev-profile-options" id="aev-profile-options" role="dialog" aria-label="Account">
     <div class="profile-items">
-      <ul class="first-set">
-        <div class="aev-profile-card">
-          <img src="<?= $e($user['avatar']) ?>" class="aev-avatar" alt="">
-          <div class="aev-name"><?= $e($user['name']) ?></div>
-          <div class="aev-email"><?= $e($user['email']) ?></div>
-          <div class="aev-profile-buttons">
+      <div class="saas">
+        <h2 class="saas__title"><i class="uil uil-user" aria-hidden="true"></i> Account</h2>
+        <div class="saas__block">
+          <div class="saas__columns">
+            <img src="<?= $e($user['avatar']) ?>" class="saas__user-avatar saas__user-avatar--lg" alt="">
+            <div class="saas__user-info">
+              <div class="saas__label"><?= $user['authenticated'] ? 'Signed in' : 'Guest' ?></div>
+              <div class="saas__value saas__value--truncated"><?= $e($user['name']) ?></div>
+              <div class="saas__label saas__label--plain saas__value--truncated"><?= $e($user['email']) ?></div>
+            </div>
+          </div>
+          <hr class="saas__sep">
+          <div class="saas__actions">
 <?php if ($user['authenticated']): ?>
-            <a class="aev-profile-button" href="/home/_api/UI/">Dashboard</a>
-            <form method="post" action="/home/auth/logout" class="aev-profile-logout"><input type="hidden" name="_csrf" value="<?= $e($csrf) ?>"><button type="submit"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
+            <a class="saas__button" href="/home/_api/UI/">Dashboard <i class="uil uil-angle-right-b" aria-hidden="true"></i></a>
+            <form method="post" action="/home/auth/logout" class="saas__form"><input type="hidden" name="_csrf" value="<?= $e($csrf) ?>"><button type="submit" class="saas__button"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
 <?php else: ?>
-            <a class="aev-profile-button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>>Sign In</a>
-            <a class="aev-profile-button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><i class="uil uil-sign-in-alt" aria-hidden="true"></i> Sign In</a>
+            <a class="saas__button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><i class="uil uil-sign-in-alt" aria-hidden="true"></i> Sign In</a>
 <?php endif; ?>
           </div>
         </div>
-      </ul>
+      </div>
     </div>
   </div>
 

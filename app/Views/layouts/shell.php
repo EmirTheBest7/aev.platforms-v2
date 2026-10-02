@@ -44,6 +44,7 @@ $icons = '/assets/icons/' . \App\Support\SeasonalIcons::folder(new \DateTimeImmu
   <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/widgets/3droom.css')) ?>">
   <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/utilities.css')) ?>">
   <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/shell.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/profile-widget.css')) ?>">
   <script src="<?= $e($view->asset('/assets/vendor/jquery/jquery-3.1.0.min.js')) ?>" defer></script>
   <script src="<?= $e($view->asset('/assets/vendor/underscore/underscore-1.8.3.min.js')) ?>" defer></script>
   <script src="<?= $e($view->asset('/assets/vendor/three/three.r128.min.js')) ?>" defer></script>

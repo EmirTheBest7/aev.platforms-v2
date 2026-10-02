@@ -54,33 +54,6 @@ a.aev-apps-footer-button { text-decoration: none; color: inherit; }
 .u-log-in { color: white; }
 .u-tg-size { font-size: 26px; }
 
-/* Profile card: the legacy <button>s are links (Sign In / Dashboard) and a logout form here; same pill look. */
-.aev-profile-buttons { display: flex; justify-content: center; }
-.aev-profile-buttons .aev-profile-button,
-.aev-profile-buttons .aev-profile-logout button {
-  display: inline-block;
-  box-sizing: border-box;
-  width: 40%;
-  padding: 5px 10px;
-  border: 2px solid #282a2c;
-  background: #282a2c;
-  color: #fff;
-  font: 14px Arial, sans-serif;
-  height: 35px;
-  line-height: 31px;
-  text-align: center;
-  text-decoration: none;
-}
-.aev-profile-buttons > :first-child { border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
-.aev-profile-buttons > :last-child { border-top-right-radius: 20px; border-bottom-right-radius: 20px; }
-.aev-profile-buttons .aev-profile-logout { display: contents; }
-.aev-profile-buttons .aev-profile-logout button { border-radius: 0 20px 20px 0; }
-
-/* Menu grid: Settings / Widgets share the exact width of the Re:Search field above them (same 14% gutters),
-   instead of two fixed 45% boxes that stop short of its right edge on narrow screens. */
-.mod-buttons { justify-content: space-between; gap: 10px; }
-.mod-buttons button { width: calc(50% - 5px); }
-
 /* Hero option cards: two cards are laid out left-to-right with the original card-to-card gap
    (container width minus three 250px cards, split in two) instead of leaving a hole in the middle. */
 .intro--options { justify-content: flex-start; column-gap: max(16px, calc((100% - 750px) / 2)); }

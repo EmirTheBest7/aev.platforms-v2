@@ -39,3 +39,17 @@ Rule for this phase: **record, don't delete.** A licence question never causes r
 
 - Any new dependency or asset adds a row **before** it ships.
 - "Unverified" never blocks preserving something in the legacy tree; it blocks *shipping it in production* only where the concern column says High, and only until the owner decides.
+
+### Added during the agency rebuild (self-hosted copies; licences from the upstream projects, not yet re-verified against primary sources unless stated)
+
+| Asset | Source | Licence | Where |
+|---|---|---|---|
+| SaaS Widget (profile panel look) | Jon Kantner, codepen.io/jkantner/pen/rNXoWop (layout after a Dribbble shot by Nur Praditya) | MIT — LICENSE.txt read | `public/assets/css/profile-widget.css` (flattened Sass, attribution in the header) |
+| Montserrat, Open Sans, Poppins, Roboto, Source Code Pro, Inconsolata | Google Fonts | SIL OFL 1.1 (Roboto/Source Code Pro: OFL / Apache-2.0 families) | `public/assets/fonts/{careers,contact,docs,terminal}/` |
+| Font Awesome Free 6.5.2 (3 brand glyphs) | fontawesome.com | Icons CC BY 4.0 · font SIL OFL 1.1 · code MIT | `public/assets/vendor/fontawesome/` |
+| Bootstrap Icons 1.10.3 (2 glyphs) | getbootstrap.com | MIT | `public/assets/vendor/bootstrap-icons/` |
+| Bootstrap 4.5.0 CSS | getbootstrap.com | MIT | `public/assets/vendor/bootstrap/` |
+| UIkit 3.3.6 | getuikit.com | MIT | `public/assets/vendor/uikit/` |
+| jQuery 3.1.0 / 2.1.3, jQuery UI 1.11.2, underscore 1.8.3 | jquery.org, jqueryui.com, underscorejs.org | MIT | `public/assets/vendor/{jquery,jquery-legacy,underscore}/` |
+| Mapbox GL JS 2.4.1 | mapbox.com | **Mapbox Terms of Service (not open source)** — self-hosting terms **unverified**; needs a token | `public/assets/vendor/mapbox-gl/` |
+| Unicons 4.0.8 font files | npm `@iconscout/unicons` via jsDelivr | IconScout Simple License (as above) | `public/assets/vendor/unicons/` |
