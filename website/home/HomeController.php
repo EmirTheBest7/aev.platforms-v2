@@ -50,7 +50,7 @@ final class HomeController
             'mainColor' => $this->config->string('integrations.intergram.main_color'),
         ];
 
-        $html = $this->view->render('pages/home', [
+        $html = $this->view->render('home::home', [
             'user' => $user === null
                 ? ['authenticated' => false, 'name' => 'Hi, User!', 'email' => $this->config->string('integrations.destinations.email'), 'avatar' => '/assets/images/avatar.png']
                 : ['authenticated' => true, 'name' => 'Hi, ' . $user->username . '!', 'email' => $user->email, 'avatar' => '/assets/images/avatar.png'],

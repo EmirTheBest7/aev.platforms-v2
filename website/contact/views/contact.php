@@ -64,6 +64,6 @@ $val = static fn(string $k): string => is_string($old[$k] ?? null) ? $old[$k] : 
         </div>
       </div>
 
-      <?= $view->partial('partials/contact/fish') ?>
+      <?= $view->partial('contact::partials/fish') ?>
     </div>
   </main>

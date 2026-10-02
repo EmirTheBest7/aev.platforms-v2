@@ -32,7 +32,7 @@ PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → 
 
 ## Coding standards
 
-- **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (`app/Views` templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
+- **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (view templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
 - **Templates:** every dynamic value through `$e()`. No inline `<script>`, `<style>`, `style=""`, `on*=` — the CSP forbids them (legacy inline styles are extracted into generated utility classes).
 - **JavaScript:** keep the original behaviour. The main page runs the original jQuery-based scripts (self-hosted, single copy) plus `assets/js/home/app.js`; wire behaviour through `data-*` hooks and delegation, never inline handlers. Every optional feature starts inside its own guard so it can never block the page. New code: defensive DOM access, keyboard access, `prefers-reduced-motion`.
 - **CSS:** reuse the legacy classes/tokens (`public/assets/css/{core,main}.css` are ported with mechanical edits only — see their headers). Additions of the port live in `shell.css` (accessibility/plumbing, button resets); extracted inline styles are the generated `utilities.css`.

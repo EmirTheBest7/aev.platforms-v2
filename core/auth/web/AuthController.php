@@ -54,7 +54,7 @@ final class AuthController
         $referral = $request->query['refer'] ?? '';
         $referral = is_string($referral) && preg_match('/^[A-Za-z0-9_-]{1,40}$/D', $referral) === 1 ? $referral : '';
 
-        $html = $this->view->render('pages/auth/index', [
+        $html = $this->view->render('auth::index', [
             'csrf' => $tokens['csrf'],
             'ts' => $tokens['ts'],
             'showRegister' => ($flash['face'] ?? '') === 'register' || ($referral !== '' && $flash === []),
@@ -157,7 +157,7 @@ final class AuthController
     {
         $this->assertEnabled();
 
-        $html = $this->view->render('pages/auth/reset', ['email' => $this->contactEmail, 'navbar' => null], $this->meta('ΛΞV | Password reset', '/home/auth/reset'), 'page');
+        $html = $this->view->render('auth::reset', ['email' => $this->contactEmail, 'navbar' => null], $this->meta('ΛΞV | Password reset', '/home/auth/reset'), 'page');
 
         return (new Response($html))->withHeader('Cache-Control', 'no-store');
     }

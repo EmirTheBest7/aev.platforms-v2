@@ -5,16 +5,22 @@ declare(strict_types=1);
 namespace Core\Helpers;
 
 /**
- * Renders plain-PHP templates from app/Views inside a layout. Templates get an
- * `$e` escaper; every dynamic value must pass through it.
+ * Renders plain-PHP templates inside a layout. Templates get an `$e` escaper; every dynamic value must pass through it.
+ *
+ * Template names: `layouts/shell`, `partials/rail`, `errors/error` live in the shared root (resources/views);
+ * `home::home`, `careers::show`, `auth::index` live in the view root registered for that page area
+ * (website/<page>/views, core/auth/web/views).
  */
 final class View
 {
     /** @var array<string, mixed> variables of the page being rendered, inherited by its partials */
     private array $shared = [];
 
+    /**
+     * @param array<string, string> $roots area => directory; `shared` is the default root
+     */
     public function __construct(
-        private readonly string $directory,
+        private readonly array $roots,
         private readonly string $appUrl,
         private readonly string $publicDirectory = '',
     ) {}
@@ -55,10 +61,14 @@ final class View
     /** @param array<string, mixed> $data */
     private function capture(string $template, array $data): string
     {
-        if (preg_match('#^[a-z0-9_/-]+$#i', $template) !== 1) {
+        if (preg_match('#^(?:([a-z]+)::)?([a-z0-9_]+(?:/[a-z0-9_-]+)*)$#iD', $template, $parts) !== 1 || str_contains($template, '..')) {
             throw new \InvalidArgumentException('Invalid template name.');
         }
-        $file = $this->directory . '/' . $template . '.php';
+        $directory = $this->roots[$parts[1] !== '' ? $parts[1] : 'shared'] ?? null;
+        if ($directory === null) {
+            throw new \InvalidArgumentException('Unknown template area.');
+        }
+        $file = $directory . '/' . $parts[2] . '.php';
         $e = static fn(mixed $v): string => htmlspecialchars((string) $v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $view = $this;
 

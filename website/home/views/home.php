@@ -174,7 +174,7 @@
                   </span>
                 </a>
                 <!--<img src="/assets/images/home/about-visual.png" alt="About Us">-->
-                <?= $view->partial('partials/widgets/room') ?>
+                <?= $view->partial('home::partials/room') ?>
               </div>
               <div class="about--options">
                 <a href="/careers/team">

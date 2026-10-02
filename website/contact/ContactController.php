@@ -99,7 +99,7 @@ final class ContactController
     private function page(array $tokens, array $state): Response
     {
         $mapboxToken = $this->mapboxToken;
-        $html = $this->view->render('pages/contact', $state + $tokens + ['mapboxToken' => $mapboxToken, 'email' => $this->contactEmail, 'navbar' => ['backHref' => '/', 'backIcon' => 'uil-estate']], [
+        $html = $this->view->render('contact::contact', $state + $tokens + ['mapboxToken' => $mapboxToken, 'email' => $this->contactEmail, 'navbar' => ['backHref' => '/', 'backIcon' => 'uil-estate']], [
             'title' => 'ΛΞV | Contact',
             'description' => 'Contact ΛΞV — tell us about your project.',
             'path' => '/contact',

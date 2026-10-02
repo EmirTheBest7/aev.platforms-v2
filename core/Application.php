@@ -97,7 +97,14 @@ final class Application
             $this->config->string('app.log_level', 'info'),
         );
 
-        $this->view = new View($root . '/app/Views', $this->config->string('app.url'), $root . '/public');
+        $this->view = new View([
+            'shared' => $root . '/resources/views',
+            'home' => $root . '/website/home/views',
+            'careers' => $root . '/website/careers/views',
+            'contact' => $root . '/website/contact/views',
+            'downloads' => $root . '/website/downloads/views',
+            'auth' => $root . '/core/auth/web/views',
+        ], $this->config->string('app.url'), $root . '/public');
         $this->errors = new ErrorController($this->view);
         $this->clientIp = new ClientIp($this->config->get('security.trusted_proxies', []) ?: []);
 

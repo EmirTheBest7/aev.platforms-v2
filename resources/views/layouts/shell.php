@@ -58,14 +58,14 @@ $icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImm
 <body class="<?= $e($meta['bodyClass']) ?>">
   <a class="skip-link" href="#main">Skip to content</a>
 
-<?= $view->partial('partials/shell/preloader') ?>
+<?= $view->partial('home::partials/shell/preloader') ?>
 
   <div class="aev-notifications" role="status" aria-live="polite" aria-relevant="additions"></div>
 
-<?= $view->partial('partials/shell/spot') ?>
-<?= $view->partial('partials/shell/pwa') ?>
-<?= $view->partial('partials/shell/user-panel') ?>
-<?= $view->partial('partials/shell/navbar') ?>
+<?= $view->partial('home::partials/shell/spot') ?>
+<?= $view->partial('home::partials/shell/pwa') ?>
+<?= $view->partial('home::partials/shell/user-panel') ?>
+<?= $view->partial('home::partials/shell/navbar') ?>
 
   <main id="main">
 <?= $content ?>

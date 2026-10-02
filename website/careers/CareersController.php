@@ -44,7 +44,7 @@ final class CareersController
         }
         unset($job);
 
-        return $this->page('pages/careers/index', ['jobs' => $jobs, 'companies' => array_values($companies)], [
+        return $this->page('careers::index', ['jobs' => $jobs, 'companies' => array_values($companies)], [
             'title' => 'ΛΞV | Careers',
             'description' => 'Open roles at ΛΞV. Join a team and inspire the work.',
             'path' => '/careers',
@@ -68,7 +68,7 @@ final class CareersController
         $related = $this->load(fn() => $this->jobs->related($slug));
         $job = $this->present($job);
 
-        return $this->page('pages/careers/show', [
+        return $this->page('careers::show', [
             'job' => $job,
             'responsibilities' => $this->sentences($job['job_responsibilities']),
             'skills' => $this->sentences($job['job_skills']),
@@ -85,7 +85,7 @@ final class CareersController
 
     public function team(Request $request): Response
     {
-        return $this->page('pages/careers/team', [], [
+        return $this->page('careers::team', [], [
             'title' => 'ΛΞV | Our Team',
             'description' => 'Work at ΛΞV. Join a team and inspire the work.',
             'path' => '/careers/team',

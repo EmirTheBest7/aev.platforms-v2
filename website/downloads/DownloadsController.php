@@ -19,7 +19,7 @@ final class DownloadsController
 
     public function index(Request $request): Response
     {
-        $html = $this->view->render('pages/downloads', [
+        $html = $this->view->render('downloads::downloads', [
             'logos' => (array) $this->config->get('downloads.logos', []),
             'wallpapers' => (array) $this->config->get('downloads.wallpapers', []),
             'docs' => (array) $this->config->get('downloads.docs', []),

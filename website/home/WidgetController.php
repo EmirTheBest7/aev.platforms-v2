@@ -15,12 +15,12 @@ final class WidgetController
 
     public function clock(Request $request): Response
     {
-        return $this->frame('widgets/clock', 'Clock', 'clock');
+        return $this->frame('home::widgets/clock', 'Clock', 'clock');
     }
 
     public function calculator(Request $request): Response
     {
-        return $this->frame('widgets/calculator', 'Calculator', 'calculator');
+        return $this->frame('home::widgets/calculator', 'Calculator', 'calculator');
     }
 
     private function frame(string $template, string $title, string $widget): Response

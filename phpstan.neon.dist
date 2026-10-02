@@ -9,4 +9,9 @@ parameters:
         - public/index.php
     excludePaths:
         # Plain-PHP templates receive their variables at render time; they are exercised by tests/Feature.
-        - app/Views
+        - resources/views
+        - core/auth/web/views
+        - website/home/views
+        - website/careers/views
+        - website/contact/views
+        - website/downloads/views
