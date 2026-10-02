@@ -7,6 +7,7 @@ namespace App;
 use App\Controllers\ApiController;
 use App\Controllers\CareersController;
 use App\Controllers\ContactController;
+use App\Controllers\DownloadsController;
 use App\Controllers\ErrorController;
 use App\Controllers\HireController;
 use App\Controllers\HomeController;
@@ -175,6 +176,7 @@ final class Application
             'hire' => fn(): HireController => new HireController($this->guard(), new HireValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
             'api' => fn(): ApiController => new ApiController($this->priceService()),
             'widgets' => fn(): WidgetController => new WidgetController($this->view),
+            'downloads' => fn(): DownloadsController => new DownloadsController($this->view, $this->config),
             'careers' => fn(): CareersController => new CareersController($this->view, new JobRepository($this->pdo()), $this->logger, $this->config->string('integrations.destinations.email')),
         ]);
     }

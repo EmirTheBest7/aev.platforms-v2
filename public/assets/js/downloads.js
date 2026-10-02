@@ -66,10 +66,11 @@ function moveSlider($tab_clicked) {
         var left = offsetX;
         var timeout = null;
         var ripple = document.createElement('span');
-        var styleString = 'top:calc(' + top + 'px - .5em); left:calc(' + left + 'px - .5em);';
 
         target.appendChild(ripple);
-        ripple.setAttribute("style", styleString);
+        // CSSOM instead of a style="" attribute (the CSP forbids inline style attributes)
+        ripple.style.top = 'calc(' + top + 'px - .5em)';
+        ripple.style.left = 'calc(' + left + 'px - .5em)';
         ripple.classList.add('-ripple');
         timeout = setTimeout(function () {
             ripple.parentNode.removeChild(ripple);

@@ -204,7 +204,7 @@
                         <i class="uil uil-instagram" aria-hidden="true"></i>
                       </a>
                     </li>
-                    <li><a href="/" data-soon="Profile"><i class="uil uil-cube" aria-hidden="true"></i>&nbsp;&nbsp;Λ L I Ξ V</a></li>
+                    <li><a href="/downloads"><i class="uil uil-cube" aria-hidden="true"></i>&nbsp;&nbsp;Λ L I Ξ V</a></li>
                     <li><a href="mailto:<?= $e($email) ?>">Contact Us</a></li>
                   </ul>
                 </div>

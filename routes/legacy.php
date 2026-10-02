@@ -16,6 +16,7 @@ return static function (Router $router): void {
     $router->redirects([
         '/page/main' => ['/'],
         '/page/contact' => ['/contact'],
+        '/page/downloads' => ['/downloads'],
         '/page/careers' => ['/careers'],
         '/page/careers/list' => ['/careers'],
         '/page/careers/team' => ['/careers/team'],

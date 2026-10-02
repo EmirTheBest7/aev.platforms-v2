@@ -23,6 +23,8 @@ return static function (Router $router, array $make): void {
     $router->get('/careers/team', static fn(Request $r) => $make['careers']()->team($r));
     $router->get('/careers/{slug}', static fn(Request $r, array $p) => $make['careers']()->show($r, $p));
 
+    $router->get('/downloads', static fn(Request $r) => $make['downloads']()->index($r));
+
     $router->get('/api/prices', static fn(Request $r) => $make['api']()->prices($r));
 
 

@@ -290,3 +290,14 @@ body {
 .rwd-table th, .rwd-table td:before {
   color: #4dc4ff;
 }
+/* Former inline styles / <style> block of the original markup (the CSP forbids them). */
+main.downloads { position: relative; left: unset !important; }
+.card .content .main { color: white; border-top: 1px solid white; position: relative; padding: 6px 15px; height: 36px; display: flex; justify-content: space-between; }
+.card .content .main .btn { padding: 0; }
+.card .content .main .btn--icon { width: 50px; }
+.branded img.invert { filter: invert(1); }
+a.btn, td a.ripple-button { text-decoration: none; }
+.not-available { opacity: .6; }
+
+/* The top-bar home button (an icon here; the original downloads page had an inert hamburger): same look as Careers/Contact. */
+.Toggle i { top: 15px; position: absolute; font-size: 25px; line-height: 30px; left: 17px; color: white; }

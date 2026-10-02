@@ -106,7 +106,7 @@ $docsAttrs = static fn(string $name): string => $docsSoon
           <ul>
             <li><a<?= $pending('Store') ?>>Store</a></li>
             <li><a href="/careers">Careers</a></li>
-            <li><a<?= $pending('Downloads') ?>>Downloads</a></li>
+            <li><a href="/downloads">Downloads</a></li>
           </ul>
           <ul>
             <li><a<?= $pending('Privacy Policy') ?>>Privacy Policy</a></li>
