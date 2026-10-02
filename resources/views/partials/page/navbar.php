@@ -11,5 +11,5 @@
     <a href="<?= $e($backHref) ?>" class="Toggle Navbar-toggle d-none d-sm-block" aria-label="Back">
       <i class="uil <?= $e($backIcon) ?>" aria-hidden="true"></i>
     </a>
-    <img class="Navbar-brand u-pullRight Navbar-brand-mobile" alt="ΛLIΞV" src="/assets/brand/ALIEV.svg">
+    <img class="Navbar-brand u-pullRight Navbar-brand-mobile" alt="ΛLIΞV" src="/build/images/brand/ALIEV.svg">
   </nav>

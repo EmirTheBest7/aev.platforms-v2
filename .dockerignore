@@ -20,3 +20,5 @@ tests
 docs
 scripts/visual
 *.log
+public/build
+public/home

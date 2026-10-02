@@ -22,7 +22,7 @@ $docsAttrs = static fn(string $name): string => $docsSoon
 <nav class="Navbar">
     <button type="button" id="toggle" class="Toggle Navbar-toggle" aria-label="Menu" aria-expanded="false" aria-controls="navbarCollapse"><span></span></button>
 
-    <a href="/" class="Navbar-brand-link" aria-label="ΛLIΞV — home"><img class="Navbar-brand u-pullRight Navbar-brand-mobile" alt="" src="/assets/brand/ALIEV.svg"></a>
+    <a href="/" class="Navbar-brand-link" aria-label="ΛLIΞV — home"><img class="Navbar-brand u-pullRight Navbar-brand-mobile" alt="" src="/build/images/brand/ALIEV.svg"></a>
 
     <div id="navbarCollapse" class="Navbar-menu">
 

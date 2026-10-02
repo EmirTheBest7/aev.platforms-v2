@@ -15,10 +15,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title><?= $e($meta['title']) ?></title>
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/widgets/' . $widget . '.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/widgets/' . $widget . '.css')) ?>">
 </head>
 <body>
 <?= $content ?>
-  <script type="module" src="<?= $e($view->asset('/assets/js/widgets/' . $widget . '.js')) ?>"></script>
+  <script type="module" src="<?= $e($view->asset('/build/home/js/widgets/' . $widget . '.js')) ?>"></script>
 </body>
 </html>

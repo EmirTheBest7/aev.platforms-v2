@@ -55,8 +55,8 @@ final class CareersTest extends TestCase
     {
         $html = $this->get('/careers')->body();
         self::assertStringNotContainsString('etc/passwd', $html);
-        self::assertStringContainsString('/assets/images/careers/job_icon.png', $html);
-        self::assertStringContainsString('/assets/images/careers/logo.png', $html);
+        self::assertStringContainsString('/build/careers/images/job_icon.png', $html);
+        self::assertStringContainsString('/build/careers/images/logo.png', $html);
     }
 
     public function testJobPageRendersEscapedContentAndRelatedJobs(): void

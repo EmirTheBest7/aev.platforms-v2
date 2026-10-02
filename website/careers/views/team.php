@@ -6,14 +6,14 @@
  * @var callable(mixed): string $e
  */
 $team = [
-    ['/assets/images/avatar.png', 'Emir Aliev', 'uil uil-telegram-alt', 'CEO, COO, DEV'],
-    ['/assets/images/careers/team/IMG_3264.JPG', 'Ksenia Kabanova', 'fa-brands fa-x-twitter', 'SMM, UX/UI, Marketing'],
-    ['/assets/images/careers/team/IMG_3262.JPG', 'Olesia Savicka', 'fa-brands fa-x-twitter', 'UX/UI Designer'],
-    ['/assets/images/careers/team/IMG_3266.JPG', 'Ivan Vasilchenko', 'fa-brands fa-x-twitter', 'WebDEV.'],
-    ['/assets/images/careers/team/IMG_3268.JPG', 'Erzhan Aydarbekov', 'fa-brands fa-x-twitter', 'Community Manager, PHP'],
-    ['/assets/images/careers/team/IMG_3267.JPG', 'Yulia Belyaeva', 'fa-brands fa-x-twitter', 'Python, JS'],
-    ['/assets/images/careers/team/IMG_3263.JPG', 'Gleb Trofimov', 'fa-brands fa-linkedin-in', 'AI/ML Engineer'],
-    ['/assets/images/careers/team/IMG_3269.JPG', 'Denis Chernov', 'fa-brands fa-instagram', 'Blockchain'],
+    ['/build/images/avatar.png', 'Emir Aliev', 'uil uil-telegram-alt', 'CEO, COO, DEV'],
+    ['/build/careers/images/team/IMG_3264.JPG', 'Ksenia Kabanova', 'fa-brands fa-x-twitter', 'SMM, UX/UI, Marketing'],
+    ['/build/careers/images/team/IMG_3262.JPG', 'Olesia Savicka', 'fa-brands fa-x-twitter', 'UX/UI Designer'],
+    ['/build/careers/images/team/IMG_3266.JPG', 'Ivan Vasilchenko', 'fa-brands fa-x-twitter', 'WebDEV.'],
+    ['/build/careers/images/team/IMG_3268.JPG', 'Erzhan Aydarbekov', 'fa-brands fa-x-twitter', 'Community Manager, PHP'],
+    ['/build/careers/images/team/IMG_3267.JPG', 'Yulia Belyaeva', 'fa-brands fa-x-twitter', 'Python, JS'],
+    ['/build/careers/images/team/IMG_3263.JPG', 'Gleb Trofimov', 'fa-brands fa-linkedin-in', 'AI/ML Engineer'],
+    ['/build/careers/images/team/IMG_3269.JPG', 'Denis Chernov', 'fa-brands fa-instagram', 'Blockchain'],
 ];
 ?>
 <section>

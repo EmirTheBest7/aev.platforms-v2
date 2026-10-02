@@ -13,7 +13,7 @@ use Core\Helpers\Config;
  */
 final class AppCatalog
 {
-    private const ICON_BASE = '/assets/images/home/icons/';
+    private const ICON_BASE = '/build/home/images/home/icons/';
 
     public function __construct(private readonly Config $config) {}
 

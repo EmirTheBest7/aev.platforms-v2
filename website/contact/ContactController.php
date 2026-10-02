@@ -104,8 +104,8 @@ final class ContactController
             'description' => 'Contact ΛΞV — tell us about your project.',
             'path' => '/contact',
             'bodyClass' => 'page-contact',
-            'styles' => ['/assets/css/contact-fonts.css', '/assets/css/core.css', '/assets/vendor/mapbox-gl/mapbox-gl.css', '/assets/css/contact.css'],
-            'scripts' => $mapboxToken === '' ? ['/assets/js/contact.js'] : ['/assets/vendor/mapbox-gl/mapbox-gl.js', '/assets/js/contact.js'],
+            'styles' => ['/build/css/fonts/contact.css', '/build/css/core.css', '/build/vendor/mapbox-gl/mapbox-gl.css', '/build/contact/css/contact.css'],
+            'scripts' => $mapboxToken === '' ? ['/build/contact/js/contact.js'] : ['/build/vendor/mapbox-gl/mapbox-gl.js', '/build/contact/js/contact.js'],
         ], 'page');
         $response = (new Response($html))->withHeader('Cache-Control', 'no-store');
 

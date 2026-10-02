@@ -1,0 +1,14 @@
+/* Display font: Doto (SIL OFL 1.1) — replaces Ndot-55 (licence). See docs/DESIGN-SYSTEM.md. */
+@font-face {
+  font-family: "Doto";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/build/fonts/Doto-latin.woff2") format("woff2");
+}
+.u-font-dot { font-family: "Doto", "Courier New", monospace; font-weight: 700; }
+
+/* Ndot-55: the display font of the original design (Settings/Widgets). Kept at the owner's decision; licence status in docs/LICENSES.md. */
+@font-face {
+  font-family: Ndot;
+  src: url("/build/fonts/Ndot-55.otf") format("opentype");
+}

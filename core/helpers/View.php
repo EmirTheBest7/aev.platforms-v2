@@ -26,7 +26,7 @@ final class View
     ) {}
 
     /**
-     * Cache-busting URL for a first-party file under public/ (`/assets/css/x.css` → `…?v=<mtime>`).
+     * Cache-busting URL for a first-party file under public/ (`/build/css/x.css` → `…?v=<mtime>`).
      * Assets are served with a long Cache-Control, so the URL must change with the file.
      */
     public function asset(string $path): string

@@ -42,7 +42,7 @@ final class ApiController
 
     public function info(Request $request): Response
     {
-        return $this->json(['ok' => true, 'name' => 'ΛΞV', 'url' => $this->appUrl, 'logo' => $this->appUrl . '/assets/brand/ALIEV.svg']);
+        return $this->json(['ok' => true, 'name' => 'ΛΞV', 'url' => $this->appUrl, 'logo' => $this->appUrl . '/build/images/brand/ALIEV.svg']);
     }
 
     /** Who the terminal prompt should name. */

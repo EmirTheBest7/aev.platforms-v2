@@ -35,13 +35,13 @@ PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → 
 - **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (view templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
 - **Templates:** every dynamic value through `$e()`. No inline `<script>`, `<style>`, `style=""`, `on*=` — the CSP forbids them (legacy inline styles are extracted into generated utility classes).
 - **JavaScript:** keep the original behaviour. The main page runs the original jQuery-based scripts (self-hosted, single copy) plus `assets/js/home/app.js`; wire behaviour through `data-*` hooks and delegation, never inline handlers. Every optional feature starts inside its own guard so it can never block the page. New code: defensive DOM access, keyboard access, `prefers-reduced-motion`.
-- **CSS:** reuse the legacy classes/tokens (`public/assets/css/{core,main}.css` are ported with mechanical edits only — see their headers). Additions of the port live in `shell.css` (accessibility/plumbing, button resets); extracted inline styles are the generated `utilities.css`.
+- **CSS:** reuse the legacy classes/tokens (`resources/css/core.css` and `website/home/assets/css/main.css` are ported with mechanical edits only — see their headers). Additions of the port live in `shell.css` (accessibility/plumbing, button resets); extracted inline styles are the generated `utilities.css`.
 - **HTML:** semantic landmarks, labelled controls, real `<button>`/`<a>` (never `href="#"` as a control), meaningful `alt`.
 - **Naming:** `PascalCase` classes, `camelCase` methods, BEM-ish CSS, lowercase-kebab routes.
 
 ## Brand and fonts
 
-- Logos in `public/assets/brand/` are byte-identical copies from the legacy `page/downloads/logo/`. Never redraw/recolour/re-export. Verify with `cmp`.
+- Logos in `public/build/images/brand/` are byte-identical copies from the legacy `page/downloads/logo/`. Never redraw/recolour/re-export. Verify with `cmp`.
 - Fonts: the legacy tree holds `Ndot-55.otf` (used in Settings/Widgets; **licence restricts it to Nothing's brand materials**), `DotlineBold.ttf` (unreferenced, licence unknown) and `SF-Pro.ttf` (committed on purpose; Apple licence forbids web self-hosting). **None is deleted.** v2 currently renders the display role with **Doto (SIL OFL)** as an interim; whether to keep, license or replace Ndot is the owner's decision (`docs/DESIGN-SYSTEM.md`).
 - The identity is dark; the legacy home page has no light skin. Do not invent one. The repository description mentions "Liquid Glass UI/UX" — intent unclear, ask before adding any glass effect.
 

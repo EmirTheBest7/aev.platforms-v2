@@ -12,13 +12,13 @@ declare(strict_types=1);
  */
 return [
     'logos' => [
-        ['name' => 'Logo_', 'preview' => '/assets/brand/ALIEV.svg', 'file' => '/assets/brand/ALIEV.svg', 'invert' => false, 'guide' => '/home/_api/Docs/'],
-        ['name' => 'E.COM', 'preview' => '/assets/brand/weblogo.svg', 'file' => '/assets/brand/weblogo.svg', 'invert' => true],
-        ['name' => 'Dreamers', 'preview' => '/assets/brand/Dreamers.svg', 'file' => '/assets/brand/Dreamers.svg', 'invert' => true],
-        ['name' => 'Logo_3D', 'preview' => '/assets/brand/ALIEV_3D.png', 'file' => '/assets/brand/ALIEV_3D.png', 'invert' => false],
+        ['name' => 'Logo_', 'preview' => '/build/images/brand/ALIEV.svg', 'file' => '/build/images/brand/ALIEV.svg', 'invert' => false, 'guide' => '/home/_api/Docs/'],
+        ['name' => 'E.COM', 'preview' => '/build/images/brand/weblogo.svg', 'file' => '/build/images/brand/weblogo.svg', 'invert' => true],
+        ['name' => 'Dreamers', 'preview' => '/build/images/brand/Dreamers.svg', 'file' => '/build/images/brand/Dreamers.svg', 'invert' => true],
+        ['name' => 'Logo_3D', 'preview' => '/build/images/brand/ALIEV_3D.png', 'file' => '/build/images/brand/ALIEV_3D.png', 'invert' => false],
     ],
     'wallpapers' => [
-        ['name' => 'Unique', 'preview' => '/assets/brand/ALIEV.svg', 'action' => ['label' => 'Create', 'href' => '/downloads/wallpapers/create/']],
+        ['name' => 'Unique', 'preview' => '/build/images/brand/ALIEV.svg', 'action' => ['label' => 'Create', 'href' => '/downloads/wallpapers/create/']],
     ],
     'docs' => [
         ['name' => 'Whitepaper.pdf', 'file' => null],

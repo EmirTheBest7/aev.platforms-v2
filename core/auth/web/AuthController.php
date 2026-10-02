@@ -187,8 +187,8 @@ final class AuthController
             'path' => $path,
             'noindex' => true,
             'bodyClass' => 'page-auth',
-            'styles' => ['/assets/css/auth-fonts.css', '/assets/vendor/bootstrap/bootstrap.min.css', '/assets/css/auth.css'],
-            'scripts' => ['/assets/js/auth.js'],
+            'styles' => ['/build/css/fonts/auth.css', '/build/vendor/bootstrap/bootstrap.min.css', '/build/auth/css/auth.css'],
+            'scripts' => ['/build/auth/js/auth.js'],
         ];
     }
 

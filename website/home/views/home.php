@@ -33,7 +33,7 @@
                 <div class="marquee">
                   <ul class="marquee-content" aria-label="Market prices">
 <?php foreach ($ticker as $coin): ?>
-                    <li><img src="/assets/images/crypto/<?= $e($coin['icon']) ?>" alt="<?= $e($coin['symbol']) ?>"> <?= $e($coin['symbol']) ?> $<span data-price="<?= $e($coin['symbol']) ?>">—</span></li>
+                    <li><img src="/build/home/images/crypto/<?= $e($coin['icon']) ?>" alt="<?= $e($coin['symbol']) ?>"> <?= $e($coin['symbol']) ?> $<span data-price="<?= $e($coin['symbol']) ?>">—</span></li>
 <?php endforeach; ?>
                   </ul>
                 </div>
@@ -55,7 +55,7 @@
               </div>
               <div class="intro--options">
               <a class="u-f66e76d" href="/home/_api/UI/terminal/Page/4ukraine/">
-                <h3 class="u-6ea5894">#StopTheWar <img class="u-fa8cf5d" alt="Ukraine" src="/assets/images/home/ukr_flag.svg"></h3>
+                <h3 class="u-6ea5894">#StopTheWar <img class="u-fa8cf5d" alt="Ukraine" src="/build/home/images/home/ukr_flag.svg"></h3>
                 <p class="u-8df98a9">Help Ukraine win this war by donating to local charities.</p>
                 <span class="ripple-button u-62ea1e5">
                   Donate
@@ -80,7 +80,7 @@
                   <li class="slider--item slider--item-center">
                     <a target="_blank" rel="noopener" href="<?= $e($telegramNews) ?>">
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/IMG_2285.JPG" alt="ΛΞV Community">
+                        <img src="/build/home/images/home/IMG_2285.JPG" alt="ΛΞV Community">
                       </div>
                       <p class="slider--item-title">ΛΞV Community.</p>
                       <p class="slider--item-description">
@@ -91,7 +91,7 @@
                   <li class="slider--item slider--item-right">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/work-alex-nowak.jpg" alt="Dreamers">
+                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Dreamers">
                       </div>
                       <p class="slider--item-title">Dreamers</p>
                       <p class="slider--item-description">
@@ -102,7 +102,7 @@
                   <li class="slider--item">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/work-alex-nowak.jpg" alt="Cerebro Blockchain">
+                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Cerebro Blockchain">
                       </div>
                       <p class="slider--item-title">Cerebro Blockchain</p>
                       <p class="slider--item-description">
@@ -113,7 +113,7 @@
                   <li class="slider--item">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/work-alex-nowak.jpg" alt="Cortex Browser">
+                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Cortex Browser">
                       </div>
                       <p class="slider--item-title">Cortex Browser</p>
                       <p class="slider--item-description">
@@ -124,7 +124,7 @@
                   <li class="slider--item slider--item-left">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/IMG_7781.jpg" alt="EROS">
+                        <img src="/build/home/images/home/IMG_7781.jpg" alt="EROS">
                       </div>
                       <p class="slider--item-title">EROS 💻</p>
                       <p class="slider--item-description">
@@ -173,7 +173,7 @@
                     </svg>
                   </span>
                 </a>
-                <!--<img src="/assets/images/home/about-visual.png" alt="About Us">-->
+                <!--<img src="/build/home/images/home/about-visual.png" alt="About Us">-->
                 <?= $view->partial('home::partials/room') ?>
               </div>
               <div class="about--options">

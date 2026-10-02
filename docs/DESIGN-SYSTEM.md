@@ -1,6 +1,6 @@
 # Design system (extracted from the legacy site)
 
-Source of truth: legacy `_assets/css/core.css`, `page/main/main.css`, `page/main/index.php`, plus rendered baselines in `docs/visual-baseline/`. Nothing here is invented; where the legacy CSS contradicted itself the **rendered** result was measured and recorded. Implemented tokens: `public/assets/css/site.css`.
+Source of truth: legacy `_assets/css/core.css`, `page/main/main.css`, `page/main/index.php`, plus rendered baselines in `docs/visual-baseline/`. Nothing here is invented; where the legacy CSS contradicted itself the **rendered** result was measured and recorded. Implemented tokens: `public/build/css/site.css`.
 
 Status legend: ✅ implemented in `site.css` · 🔜 extracted, ported with its page in Phase 4/5 · ❌ intentionally dropped.
 
@@ -50,7 +50,7 @@ Not carried over: the teal/green palette in `_assets/css/header.css` (`#1b5955`,
 | **Ndot-55** (`_assets/fonts/Ndot-55.otf`) | The date/weekday readout above the clock widget and the "Settings" panel heading (`font-family:'Ndot'` inline) | Release notes v168.7.2: *"Custom Fonts Support for CVX Arch … your settings and widgets menu on the main page"*; commit "Ndot + Support Fix" 2024-09-04 `[git][owner]` | Embedded notice: Nothing's brand material, not for other uses | **Kept in the historical tree, untouched.** Not copied into v2 pending the owner's decision |
 | **DotlineBold** (`DotlineBold.ttf`) | Not referenced by any CSS/PHP | Added with the same "Added Fonts" commit; the notes mention *"Menu → Log In written in ΛΞV Font"* and *"My Own Font version"* — it may relate `[inference]` | Unknown | Kept; `Purpose unclear — requires owner review` |
 | **SF Pro** (`SF-Pro.ttf`, 5.9 MB) | `font-family: "SF Pro Display"` fallback names in careers/wallet CSS; never loaded via `@font-face` | Committed deliberately ("Create SF-Pro.ttf", 2024-09-09) `[git]` | Apple licence — web self-hosting not permitted | Kept in the legacy tree; not shipped by v2; the stack `-apple-system` renders SF on Apple devices |
-| **Doto** (v2) | Interim stand-in for the Ndot display role | Compared with Ndot on the same strings: round dots on a grid match; DotGothic16 (square pixels) did not | SIL OFL 1.1 (`public/assets/fonts/Doto-OFL.txt`) | Interim only. If the owner licenses or approves Ndot, restore it by changing `--font-dot` and one `@font-face` |
+| **Doto** (v2) | Interim stand-in for the Ndot display role | Compared with Ndot on the same strings: round dots on a grid match; DotGothic16 (square pixels) did not | SIL OFL 1.1 (`public/build/fonts/Doto-OFL.txt`) | Interim only. If the owner licenses or approves Ndot, restore it by changing `--font-dot` and one `@font-face` |
 
 Display-font use is limited to those two spots, so either choice is a small, reversible change.
 

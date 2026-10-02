@@ -12,7 +12,7 @@
  * @var string $intergramJson
  */
 $canonical = $appUrl . ($meta['path'] === '/' ? '/' : $meta['path']);
-$icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
+$icons = '/build/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -37,23 +37,23 @@ $icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImm
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="<?= $e($icons) ?>/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="<?= $e($icons) ?>/apple-touch-icon.png">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/vendor/unicons/unicons-line.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/fonts.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/main.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/core.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/widgets/3droom.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/utilities.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/shell.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/profile-widget.css')) ?>">
-  <script src="<?= $e($view->asset('/assets/vendor/jquery/jquery-3.1.0.min.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/vendor/underscore/underscore-1.8.3.min.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/vendor/three/three.r128.min.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/planet.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/sections.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/notify.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/spotlight.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/room.js')) ?>" defer></script>
-  <script src="<?= $e($view->asset('/assets/js/home/app.js')) ?>" defer></script>
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/vendor/unicons/unicons-line.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/css/fonts/base.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/main.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/css/core.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/widgets/3droom.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/utilities.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/shell.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/home/css/profile-widget.css')) ?>">
+  <script src="<?= $e($view->asset('/build/vendor/jquery/jquery-3.1.0.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/vendor/underscore/underscore-1.8.3.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/vendor/three/three.r128.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/planet.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/sections.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/notify.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/spotlight.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/room.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/build/home/js/home/app.js')) ?>" defer></script>
 </head>
 <body class="<?= $e($meta['bodyClass']) ?>">
   <a class="skip-link" href="#main">Skip to content</a>

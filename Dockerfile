@@ -32,16 +32,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends git unzip \
 # Source is bind-mounted by compose.yaml; run `composer install` inside the container.
 
 FROM base AS prod
-COPY --chown=www-data:www-data app ./app
 COPY --chown=www-data:www-data core ./core
 COPY --chown=www-data:www-data website ./website
 COPY --chown=www-data:www-data api ./api
 COPY --chown=www-data:www-data config ./config
 COPY --chown=www-data:www-data routes ./routes
 COPY --chown=www-data:www-data database ./database
-COPY --chown=www-data:www-data scripts/migrate.php scripts/import-jobs.php ./scripts/
+COPY --chown=www-data:www-data scripts/migrate.php scripts/import-jobs.php scripts/build.php ./scripts/
+COPY --chown=www-data:www-data resources ./resources
 COPY --chown=www-data:www-data public ./public
 COPY --from=vendor --chown=www-data:www-data /app/vendor ./vendor
+# publish the front-end sources into public/build and public/home/_api
+RUN php scripts/build.php && chown -R www-data:www-data public
 RUN mkdir -p storage/logs storage/ratelimit storage/leads storage/cache \
  && chown -R www-data:www-data storage && chmod -R 0750 storage
 # Apache's master process binds :80 as root and serves every request as www-data.

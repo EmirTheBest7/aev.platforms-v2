@@ -122,8 +122,8 @@ final class SiteTest extends TestCase
     public function testAssetsAreCacheBustedWithTheFileModificationTime(): void
     {
         $html = $this->get($this->app(), '/')->body();
-        self::assertMatchesRegularExpression('#/assets/css/main\.css\?v=\d{6,}#', $html);
-        self::assertMatchesRegularExpression('#/assets/js/home/app\.js\?v=\d{6,}#', $html);
+        self::assertMatchesRegularExpression('#/build/home/css/main\.css\?v=\d{6,}#', $html);
+        self::assertMatchesRegularExpression('#/build/home/js/home/app\.js\?v=\d{6,}#', $html);
     }
 
     public function testApiBundleKeepsItsTrailingSlashOtherPathsLoseIt(): void
@@ -310,10 +310,10 @@ final class SiteTest extends TestCase
         $app = $this->app(['integrations' => ['mapbox_token' => 'pk.test-token-from-config']]);
         $r = $this->get($app, '/contact');
         self::assertStringContainsString('data-mapbox-token="pk.test-token-from-config"', $r->body());
-        self::assertStringContainsString('/assets/vendor/mapbox-gl/mapbox-gl.js', $r->body());
+        self::assertStringContainsString('/build/vendor/mapbox-gl/mapbox-gl.js', $r->body());
         self::assertStringContainsString('https://api.mapbox.com', (string) $r->header('Content-Security-Policy'));
         self::assertStringNotContainsString('api.mapbox.com', (string) $this->get($app, '/')->header('Content-Security-Policy'));
-        self::assertStringNotContainsString('pk.', (string) file_get_contents(dirname(__DIR__, 2) . '/public/assets/js/contact.js'), 'no token in the script');
+        self::assertStringNotContainsString('pk.', (string) file_get_contents(dirname(__DIR__, 2) . '/public/build/contact/js/contact.js'), 'no token in the script');
     }
 
     public function testIntergramIsLoadedOnlyWhenConfigured(): void
@@ -325,7 +325,7 @@ final class SiteTest extends TestCase
         $r = $this->get($this->app(['integrations' => ['intergram' => ['chat_id' => '12345', 'server' => 'https://www.intergram.xyz', 'title_open' => 'Support', 'intro' => 'Hi', 'main_color' => '#000']]]), '/');
         self::assertStringContainsString('id="aev-intergram"', $r->body());
         self::assertStringContainsString('frame-src \'self\' https://www.intergram.xyz', (string) $r->header('Content-Security-Policy'));
-        self::assertFileExists(dirname(__DIR__, 2) . '/public/assets/vendor/intergram/widget.js');
+        self::assertFileExists(dirname(__DIR__, 2) . '/public/build/vendor/intergram/widget.js');
     }
 
     public function testRateLimitReturns429(): void

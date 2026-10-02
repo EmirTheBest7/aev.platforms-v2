@@ -52,8 +52,8 @@ final class HomeController
 
         $html = $this->view->render('home::home', [
             'user' => $user === null
-                ? ['authenticated' => false, 'name' => 'Hi, User!', 'email' => $this->config->string('integrations.destinations.email'), 'avatar' => '/assets/images/avatar.png']
-                : ['authenticated' => true, 'name' => 'Hi, ' . $user->username . '!', 'email' => $user->email, 'avatar' => '/assets/images/avatar.png'],
+                ? ['authenticated' => false, 'name' => 'Hi, User!', 'email' => $this->config->string('integrations.destinations.email'), 'avatar' => '/build/images/avatar.png']
+                : ['authenticated' => true, 'name' => 'Hi, ' . $user->username . '!', 'email' => $user->email, 'avatar' => '/build/images/avatar.png'],
             'authEnabled' => $authEnabled,
             'signInHref' => $authEnabled ? '/home/auth' : '/',
             'apps' => $launcher,

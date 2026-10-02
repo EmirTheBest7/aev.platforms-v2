@@ -26,7 +26,7 @@ for route in rb:
         d = list(difflib.unified_diff(apply_maps(ha).splitlines(), hb.splitlines(), lineterm='', n=0))
         print(route, 'HTML differs:', len(d)); print('\n'.join(d[:14])); bad += 1
     ignore = lambda rs: [r for r in rs if not re.search(r'unicons-\d+\.woff2', r)]  # unicode-range subsets load lazily
-    blob = lambda r: re.sub(r'blob:/[0-9a-f-]+', 'blob:/X', r)
+    blob = lambda r: re.sub(r'\?v=\d+', '', re.sub(r'blob:/[0-9a-f-]+', 'blob:/X', r))
     ra_req = sorted(blob(apply_maps(r)) for r in ignore(a['requests'])); rb_req = sorted(blob(r) for r in ignore(b['requests']))
     if ra_req != rb_req:
         print(route, 'requests differ:'); 

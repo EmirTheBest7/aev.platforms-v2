@@ -1,6 +1,6 @@
 # Main page (`/`)
 
-Template: `app/Views/layouts/shell.php` (chrome) + `pages/home.php` (five sections). Controller: `HomeController`. Behaviour: classic scripts under `public/assets/js/home/`, loaded with `defer` in this order — jQuery 3.1.0, underscore, three.js r128, `planet.js` (globe), `sections.js` (Hammer + section scroller/slider, byte-identical to the original `functions-min.js`), `notify.js` (notifications), `spotlight.js`, `room.js` (3D room tilt), `app.js` (everything else). Styles: `main.css`, `core.css`, `widgets/3droom.css`, `utilities.css` (generated from the original inline `style=""`), `shell.css`, `profile-widget.css`.
+Template: `app/Views/layouts/shell.php` (chrome) + `pages/home.php` (five sections). Controller: `HomeController`. Behaviour: classic scripts under `public/build/home/js/home/`, loaded with `defer` in this order — jQuery 3.1.0, underscore, three.js r128, `planet.js` (globe), `sections.js` (Hammer + section scroller/slider, byte-identical to the original `functions-min.js`), `notify.js` (notifications), `spotlight.js`, `room.js` (3D room tilt), `app.js` (everything else). Styles: `main.css`, `core.css`, `widgets/3droom.css`, `utilities.css` (generated from the original inline `style=""`), `shell.css`, `profile-widget.css`.
 
 | Part | Behaviour | Source of truth |
 |---|---|---|
@@ -13,7 +13,7 @@ Template: `app/Views/layouts/shell.php` (chrome) + `pages/home.php` (five sectio
 | Notifications | welcome sequence | `notify.js` |
 | Ticker | `/api/prices` every 60 s; AEVT has no verified source and shows "—" | `app.js`, `PriceService` |
 | Hire form | `POST /hire` over fetch (JSON) with the same guard as Contact | `app.js`, `HireController` |
-| Intergram | loaded only when `INTERGRAM_CHAT_ID` is set; the widget script is a self-hosted copy (`/assets/vendor/intergram/widget.js`, MPL-2.0) and the CSP gains `frame-src` for the chat frame only on the main page | `app.js` |
+| Intergram | loaded only when `INTERGRAM_CHAT_ID` is set; the widget script is a self-hosted copy (`/build/vendor/intergram/widget.js`, MPL-2.0) and the CSP gains `frame-src` for the chat frame only on the main page | `app.js` |
 | Works slider | Community, Dreamers, Cerebro Blockchain, Cortex Browser, EROS | `home.php` |
 
 Controls whose destination does not exist yet keep their place and answer with the designed notification (`data-soon`). Removed: HesterGPT (box, menu entry, card, launcher/directory entries, CSS, images), Avrora card, Store / Investor Relations / Journal menu entries.

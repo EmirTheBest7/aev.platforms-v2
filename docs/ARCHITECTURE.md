@@ -149,11 +149,11 @@ Rules for the table:
 
 ## 9. Frontend
 
-Server-rendered PHP templates. Home page behaviour is classic scripts under `public/assets/js/home/`
+Server-rendered PHP templates. Home page behaviour is classic scripts under `public/build/home/js/home/`
 (the original jQuery-based scroller, slider, spotlight and notifications, plus `app.js` for menus,
 panels, launcher, ticker, hire form), loaded with `defer` in a fixed order from `layouts/shell.php`.
 Inner pages keep their own legacy script. jQuery, underscore and three.js are single self-hosted
-copies in `public/assets/vendor/`. Every first-party URL is cache-busted (`?v=filemtime`) by one
+copies in `public/build/vendor/`. Every first-party URL is cache-busted (`?v=filemtime`) by one
 `$asset()` helper (moves into `View` so layouts stop copying it). Fonts, icons and images are
 self-hosted; the only third-party origin on the page is the optional Intergram frame.
 

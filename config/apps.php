@@ -8,7 +8,7 @@ declare(strict_types=1);
  * entries whose product is not rebuilt yet keep their tile and show the designed pending
  * notification instead of linking nowhere.
  *
- * Keys: name · icon (file in /assets/images/home/icons, or "avatar") · href (internal path or URL)
+ * Keys: name · icon (file in /build/home/images/home/icons, or "avatar") · href (internal path or URL)
  *       · needs (config key in integrations.destinations, or "auth") · action (JS hook)
  *       · status ("pending" = product not rebuilt yet) · round (avatar styling)
  */

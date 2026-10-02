@@ -11,7 +11,7 @@
  * @var array<string, string>|null $navbar back-link of the top bar (backHref, backIcon); null = none
  */
 $canonical = $appUrl . $meta['path'];
-$icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
+$icons = '/build/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@ $icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImm
 <?php endif; ?>
   <link rel="icon" href="<?= $e($icons) ?>/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="<?= $e($icons) ?>/apple-touch-icon.png">
-  <link rel="stylesheet" href="<?= $e($view->asset('/assets/vendor/unicons/unicons-line.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/build/vendor/unicons/unicons-line.css')) ?>">
 <?php foreach ($meta['styles'] ?? [] as $href): ?>
   <link rel="stylesheet" href="<?= $e($view->asset($href)) ?>">
 <?php endforeach; ?>

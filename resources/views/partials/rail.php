@@ -10,7 +10,7 @@ $links = [
 ?>
 <header class="rail">
   <button class="rail__toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu"><span></span></button>
-  <a class="rail__brand" href="/" aria-label="ΛLIΞV — home"><img src="/assets/brand/ALIEV.svg" alt="" width="740" height="124"></a>
+  <a class="rail__brand" href="/" aria-label="ΛLIΞV — home"><img src="/build/images/brand/ALIEV.svg" alt="" width="740" height="124"></a>
   <nav id="site-menu" class="rail__menu" aria-label="Main">
     <ul>
 <?php foreach ($links as $href => $label): ?>

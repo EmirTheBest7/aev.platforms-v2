@@ -13,6 +13,8 @@ if [ "${APP_ENV:-production}" = "local" ] || [ "${AUTO_MIGRATE:-}" = "true" ]; t
     php scripts/migrate.php || echo "WARNING: migrations did not complete" >&2
 fi
 
+php scripts/build.php
+
 mkdir -p storage/logs storage/ratelimit storage/leads storage/cache
 chown -R www-data:www-data storage 2>/dev/null || true
 

@@ -18,7 +18,7 @@ use Core\Routing\Response;
  */
 final class CareersController
 {
-    private const LOGO_DIR = '/assets/images/careers/';
+    private const LOGO_DIR = '/build/careers/images/';
     private const DEFAULT_LOGO = 'job_icon.png';
 
     /** Display names of the filter tabs of the original page (company value => label). */
@@ -49,8 +49,8 @@ final class CareersController
             'description' => 'Open roles at ΛΞV. Join a team and inspire the work.',
             'path' => '/careers',
             'bodyClass' => 'filter-main page-careers-list',
-            'styles' => ['/assets/css/core.css', '/assets/css/careers/uikit.min.css', '/assets/css/careers/list.css'],
-            'scripts' => ['/assets/vendor/jquery/jquery-3.1.0.min.js', '/assets/vendor/uikit/uikit.min.js', '/assets/js/careers/list.js'],
+            'styles' => ['/build/css/core.css', '/build/careers/css/uikit.min.css', '/build/careers/css/list.css'],
+            'scripts' => ['/build/vendor/jquery/jquery-3.1.0.min.js', '/build/vendor/uikit/uikit.min.js', '/build/careers/js/list.js'],
         ]);
     }
 
@@ -79,7 +79,7 @@ final class CareersController
             'description' => $job['job_name'] . ' — ' . $job['job_company'] . ', ' . $job['job_location'] . '.',
             'path' => '/careers/' . $job['job_url'],
             'bodyClass' => 'page-careers-job',
-            'styles' => ['/assets/css/careers/fonts.css', '/assets/css/core.css', '/assets/css/careers/desc.css'],
+            'styles' => ['/build/css/fonts/careers.css', '/build/css/core.css', '/build/careers/css/desc.css'],
         ], ['backHref' => '/careers', 'backIcon' => 'uil-step-backward-alt']);
     }
 
@@ -90,7 +90,7 @@ final class CareersController
             'description' => 'Work at ΛΞV. Join a team and inspire the work.',
             'path' => '/careers/team',
             'bodyClass' => 'page-careers-team',
-            'styles' => ['/assets/css/careers/fonts.css', '/assets/vendor/fontawesome/brands.css', '/assets/css/careers/team.css'],
+            'styles' => ['/build/css/fonts/careers.css', '/build/vendor/fontawesome/brands.css', '/build/careers/css/team.css'],
         ], null);
     }
 

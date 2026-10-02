@@ -49,10 +49,10 @@
         <div class="aev-apps-footer">
           <div class="aev-apps-footer-container">
             <a class="aev-apps-footer-button" href="/">
-              <span class="aev-apps-footer-content"><img src="/assets/brand/A.svg" alt="" class="aev-apps-footer-logo"><span class="aev-apps-footer-text">aliev.io</span></span>
+              <span class="aev-apps-footer-content"><img src="/build/images/brand/A.svg" alt="" class="aev-apps-footer-logo"><span class="aev-apps-footer-text">aliev.io</span></span>
             </a>
             <button type="button" class="aev-apps-footer-button" data-action="open-spotlight">
-              <span class="aev-apps-footer-content"><img src="/assets/brand/A.svg" alt="" class="aev-apps-footer-logo"><span class="aev-apps-footer-text">All Apps</span></span>
+              <span class="aev-apps-footer-content"><img src="/build/images/brand/A.svg" alt="" class="aev-apps-footer-logo"><span class="aev-apps-footer-text">All Apps</span></span>
             </button>
           </div>
         </div>

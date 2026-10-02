@@ -29,8 +29,8 @@ final class DownloadsController
             'description' => 'Logos, wallpapers and documents of Λ L I Ξ V for cooperation.',
             'path' => '/downloads',
             'bodyClass' => 'page-downloads',
-            'styles' => ['/assets/css/contact-fonts.css', '/assets/vendor/bootstrap-icons/bootstrap-icons.css', '/assets/css/core.css', '/assets/css/downloads.css'],
-            'scripts' => ['/assets/vendor/jquery/jquery-3.1.0.min.js', '/assets/js/ripple.js', '/assets/js/downloads.js'],
+            'styles' => ['/build/css/fonts/contact.css', '/build/vendor/bootstrap-icons/bootstrap-icons.css', '/build/css/core.css', '/build/downloads/css/downloads.css'],
+            'scripts' => ['/build/vendor/jquery/jquery-3.1.0.min.js', '/build/js/ripple.js', '/build/downloads/js/downloads.js'],
         ], 'page');
 
         return new Response($html);

@@ -7,7 +7,7 @@
  * @var \Core\Helpers\View $view
  */
 $canonical = $appUrl . ($meta['path'] === '/' ? '/' : $meta['path']);
-$icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
+$icons = '/build/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,9 +33,9 @@ $icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImm
 <?php endif; ?>
   <link rel="icon" href="<?= $e($icons) ?>/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="<?= $e($icons) ?>/apple-touch-icon-180x180.png">
-  <link rel="preload" href="/assets/fonts/Doto-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/site.css">
-  <script src="/assets/js/nav.js" type="module"></script>
+  <link rel="preload" href="/build/fonts/Doto-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/build/css/site.css">
+  <script src="/build/js/nav.js" type="module"></script>
 </head>
 <body class="<?= $e($meta['bodyClass']) ?>">
   <a class="skip-link" href="#main">Skip to content</a>
