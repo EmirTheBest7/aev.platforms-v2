@@ -79,6 +79,7 @@ logs/
 *.sql
 !init.sql
 !database/migrations/*.sql
+!database/seeds/*.sql
 
 # CACHING
 .cache/
