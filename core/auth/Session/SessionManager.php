@@ -30,6 +30,9 @@ final class SessionManager implements SessionHandlerInterface
             return;
         }
 
+        // Never adopt a session id the server did not issue (session fixation), and keep ids out of URLs.
+        ini_set('session.use_strict_mode', '1');
+        ini_set('session.use_only_cookies', '1');
         session_name($this->config->sessionName);
 
         session_set_cookie_params([
@@ -85,7 +88,19 @@ final class SessionManager implements SessionHandlerInterface
     {
         $this->start();
 
-        return isset($_SESSION[self::USER_ID_KEY]) ? (int) $_SESSION[self::USER_ID_KEY] : null;
+        if (!isset($_SESSION[self::USER_ID_KEY])) {
+            return null;
+        }
+
+        // The cookie lifetime is only a hint to the browser: enforce the lifetime on the server as well.
+        $since = (int) ($_SESSION[self::AUTHENTICATED_AT_KEY] ?? 0);
+        if ($since === 0 || time() - $since > $this->config->sessionLifetimeSeconds) {
+            unset($_SESSION[self::USER_ID_KEY], $_SESSION[self::AUTHENTICATED_AT_KEY]);
+
+            return null;
+        }
+
+        return (int) $_SESSION[self::USER_ID_KEY];
     }
 
     public function isAuthenticated(): bool

@@ -19,8 +19,8 @@
           <div class="aev-email"><?= $e($user['email']) ?></div>
           <div class="aev-profile-buttons">
 <?php if ($user['authenticated']): ?>
-            <a class="aev-profile-button" href="/account">Dashboard</a>
-            <form method="post" action="/account/logout" class="aev-profile-logout"><input type="hidden" name="_csrf" value="<?= $e($csrf) ?>"><button type="submit"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
+            <a class="aev-profile-button" href="/home/_api/UI/">Dashboard</a>
+            <form method="post" action="/home/auth/logout" class="aev-profile-logout"><input type="hidden" name="_csrf" value="<?= $e($csrf) ?>"><button type="submit"><i class="uil uil-sign-out-alt u-881d0d7" aria-hidden="true"></i> Logout</button></form>
 <?php else: ?>
             <a class="aev-profile-button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>>Sign In</a>
             <a class="aev-profile-button" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><i class="uil uil-sign-in-alt" aria-hidden="true"></i> Sign In</a>

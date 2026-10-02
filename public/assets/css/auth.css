@@ -1,8 +1,6 @@
 /* Please ❤ this if you like it! */
 
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
-@import url("https://unicons.iconscout.com/release/v4.0.0/css/line.css");
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -23,8 +21,8 @@ a:hover {
   text-decoration: none;
 }
 
-input:invalid {
-  border: 1px dashed red;
+input:user-invalid {
+  border: 1px dashed red; /* was :invalid, which flagged every empty required field on load */
 }
 
 .link {
@@ -142,7 +140,7 @@ h6 span {
 .card-front,
 .card-back {
   width: 100%;
-  height: 420px;
+  height: 470px; /* was 420px: room for the sign-up password hint */
   background-color: #0a0a0a;
   border: 1px solid #c4c3ca;
   background-position: bottom center;
@@ -150,13 +148,12 @@ h6 span {
   background-size: 300%;
   position: absolute;
   left: 0;
-  top: 0; /*
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+  top: 0;
+  /* Restored from the original pen: the flip needs backface-visibility, and the original had it commented out
+     together with display:none on .card-back, which left Sign Up unusable. (No preserve-3d on the faces: it
+     would let their children show through mirrored.) */
   -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -o-backface-visibility: hidden;
-  backface-visibility: hidden;*/
+  backface-visibility: hidden;
 }
 
 
@@ -211,7 +208,7 @@ h6 span {
 
 .card-back {
   transform: rotateY(180deg);
-  display: none;
+  /* the original had display:none here, which left the Sign Up face blank */
 }
 
 .checkbox:checked~.card-3d-wrap .card-3d-wrapper {
@@ -908,3 +905,28 @@ main {
     bottom: 100%;
   }
 }
+
+/* Additions of the PHP port (the CSP forbids the original inline styles/handlers; <button>s replace clickable <a>s/<i>s). */
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.flip-label { margin-bottom: 25px; }
+.form-group.flex-row { display: flex; }
+button.submit-btn { background: none; border: 0; cursor: pointer; font: inherit; letter-spacing: 4px; }
+.submit-btn--register { filter: hue-rotate(270deg); }
+button.input-icon--right { right: 12px; left: unset; background: none; border: 0; padding: 0; cursor: pointer; }
+.form-error { color: #ff6b6b; margin: 0 0 10px; font-size: 13px; line-height: 1.4; }
+.form-notice { color: #7dffb2; margin: 0 0 10px; font-size: 13px; line-height: 1.4; }
+.hint { margin: 12px 0 0; font-size: 12px; opacity: .7; }
+.reset-card { max-width: 420px; margin: 0 auto; padding: 30px; background: #1f2029; border-radius: 4px; }
+
+/* Top-bar home button (same look as the other inner pages). */
+.Toggle i { top: 15px; position: absolute; font-size: 25px; line-height: 30px; left: 17px; color: white; }
+
+/* The two faces sit inside <form>s: keep the 3D context through them so backface-visibility works per face. */
+.card-3d-wrapper > form { -webkit-transform-style: preserve-3d; transform-style: preserve-3d; }
+
+/* Only the visible face is interactive: the hidden one must not catch clicks or keyboard focus. */
+.card-3d-wrapper > form { transition: visibility 0s linear 0.6s; }
+.checkbox:not(:checked) ~ .card-3d-wrap form[name="form2"],
+.checkbox:checked ~ .card-3d-wrap form[name="form1"] { visibility: hidden; pointer-events: none; }
+.checkbox:checked ~ .card-3d-wrap form[name="form2"],
+.checkbox:not(:checked) ~ .card-3d-wrap form[name="form1"] { visibility: visible; transition-delay: 0s; }

@@ -23,6 +23,12 @@ use Core\Auth\Validation\LoginValidator;
  */
 final class LoginService
 {
+    /**
+     * Argon2id hash of a random, discarded value. Verified when the email is unknown so that "no such account"
+     * costs the same time as "wrong password" (no timing oracle for account enumeration). Not a credential.
+     */
+    private const string TIMING_DECOY_HASH = '$argon2id$v=19$m=65536,t=4,p=2$Um02QWNKUkUzV1BDYlVvdg$DdDGa3HTnjI4Y5kYgHWaBsJvm6i+I3HUueyl7Ycct60';
+
     public function __construct(
         private readonly LoginValidator $validator,
         private readonly UserRepositoryInterface $users,
@@ -47,6 +53,7 @@ final class LoginService
         // Generic failure path for "email not found" — deliberately
         // indistinguishable from "wrong password" to prevent enumeration.
         if ($credentials === null) {
+            $this->hasher->verify($data->password, self::TIMING_DECOY_HASH);
             $this->auditLogger->log('login.failed', null, $data->ipAddress, $data->userAgent, [
                 'reason' => 'unknown_email',
             ]);

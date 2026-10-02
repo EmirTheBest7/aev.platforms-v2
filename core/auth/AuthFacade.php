@@ -54,6 +54,7 @@ final class AuthFacade
     private readonly LogoutService $logoutService;
     private readonly CsrfProtection $csrfProtection;
     private readonly SessionHandlerInterface $session;
+    private readonly UserRepositoryInterface $users;
 
     public function __construct(
         private readonly AuthConfig $config,
@@ -62,12 +63,15 @@ final class AuthFacade
         AuditLoggerInterface $auditLogger,
         SessionHandlerInterface $session,
         TokenGeneratorInterface $tokenGenerator,
+        ?CsrfProtection $csrf = null,
     ) {
         $hasher = new PasswordHasher($config);
         $bruteForceGuard = new BruteForceGuard($config, $loginAttempts, $users);
 
         $this->session = $session;
-        $this->csrfProtection = new CsrfProtection($config, $tokenGenerator);
+        // The site shares ONE CsrfProtection (and one session) with its forms: pass it in. Standalone use builds its own.
+        $this->csrfProtection = $csrf ?? new CsrfProtection($config, $tokenGenerator);
+        $this->users = $users;
 
         $this->registrationService = new RegistrationService(
             new RegistrationValidator($config),
@@ -134,6 +138,14 @@ final class AuthFacade
     public function logout(string $ipAddress, ?string $userAgent = null): void
     {
         $this->logoutService->logout($ipAddress, $userAgent);
+    }
+
+    /** The signed-in user of this session, or null (also when the account no longer exists). */
+    public function currentUser(): ?AuthenticatedUser
+    {
+        $id = $this->session->currentUserId();
+
+        return $id === null ? null : $this->users->findAuthenticatedUserById($id);
     }
 
     public function csrf(): CsrfProtection

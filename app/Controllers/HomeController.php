@@ -23,6 +23,8 @@ final class HomeController
         private readonly Config $config,
         private readonly AppCatalog $apps,
         private readonly FormGuard $guard,
+        /** @var \Closure(): ?\Core\Auth\DTO\AuthenticatedUser */
+        private readonly \Closure $currentUser,
     ) {}
 
     public function home(Request $request): Response
@@ -33,6 +35,7 @@ final class HomeController
         unset($_SESSION[HireController::FLASH_KEY]);
 
         $authEnabled = $this->config->bool('integrations.auth_enabled');
+        $user = ($this->currentUser)();
         $launcher = $this->apps->launcher();
 
         $directory = array_map(
@@ -50,9 +53,11 @@ final class HomeController
         ];
 
         $html = $this->view->render('pages/home', [
-            'user' => ['authenticated' => false, 'name' => 'Hi, User!', 'email' => $this->config->string('integrations.destinations.email'), 'avatar' => '/assets/images/avatar.png'],
+            'user' => $user === null
+                ? ['authenticated' => false, 'name' => 'Hi, User!', 'email' => $this->config->string('integrations.destinations.email'), 'avatar' => '/assets/images/avatar.png']
+                : ['authenticated' => true, 'name' => 'Hi, ' . $user->username . '!', 'email' => $user->email, 'avatar' => '/assets/images/avatar.png'],
             'authEnabled' => $authEnabled,
-            'signInHref' => $authEnabled ? '/account/login' : '/',
+            'signInHref' => $authEnabled ? '/home/auth' : '/',
             'apps' => $launcher,
             'directoryJson' => $this->json($directory),
             'quickLinks' => $this->apps->destinations(['instagram', 'youtube', 'telegram']),

@@ -23,6 +23,12 @@ return static function (Router $router, array $make): void {
     $router->get('/careers/team', static fn(Request $r) => $make['careers']()->team($r));
     $router->get('/careers/{slug}', static fn(Request $r, array $p) => $make['careers']()->show($r, $p));
 
+    $router->get('/home/auth', static fn(Request $r) => $make['auth']()->show($r));
+    $router->post('/home/auth/login', static fn(Request $r) => $make['auth']()->login($r));
+    $router->post('/home/auth/register', static fn(Request $r) => $make['auth']()->register($r));
+    $router->post('/home/auth/logout', static fn(Request $r) => $make['auth']()->logout($r));
+    $router->get('/home/auth/reset', static fn(Request $r) => $make['auth']()->reset($r));
+
     $router->get('/downloads', static fn(Request $r) => $make['downloads']()->index($r));
 
     $router->get('/api/prices', static fn(Request $r) => $make['api']()->prices($r));

@@ -113,7 +113,7 @@ $docsAttrs = static fn(string $name): string => $docsSoon
             <li><a<?= $pending('Investor Relations') ?>>Investor Relations</a></li>
             <li><a href="/contact">Contact</a></li>
             <li>
-              <a class="u-log-in" href="<?= $e($signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><span class="ripple-button"><?= $user['authenticated'] ? 'Dashboard' : 'Log In' ?></span></a>
+              <a class="u-log-in" href="<?= $e($user['authenticated'] ? '/home/_api/UI/' : $signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><span class="ripple-button"><?= $user['authenticated'] ? 'Dashboard' : 'Log In' ?></span></a>
             </li>
           </ul>
         

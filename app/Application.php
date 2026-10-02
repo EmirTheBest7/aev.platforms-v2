@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Controllers\ApiController;
+use App\Controllers\AuthController;
 use App\Controllers\CareersController;
 use App\Controllers\ContactController;
 use App\Controllers\DownloadsController;
@@ -39,8 +40,13 @@ use App\Support\Logger;
 use App\Support\View;
 use App\Validation\ContactValidator;
 use App\Validation\HireValidator;
+use Core\Auth\Audit\AuditLogger;
+use Core\Auth\AuthFacade;
 use Core\Auth\Config\AuthConfig;
 use Core\Auth\Database\PdoConnection;
+use Core\Auth\DTO\AuthenticatedUser;
+use Core\Auth\Repository\LoginAttemptRepository;
+use Core\Auth\Repository\UserRepository;
 use Core\Auth\Security\CsrfProtection;
 use Core\Auth\Security\TokenGenerator;
 use Core\Auth\Session\SessionManager;
@@ -70,6 +76,7 @@ final class Application
     private ?SessionManager $session = null;
     private ?CsrfProtection $csrf = null;
     private ?\PDO $pdo = null;
+    private ?AuthFacade $auth = null;
     private ?HttpClient $http = null;
 
     /** @param array{notifier?: Notifier, http?: HttpClient, pdo?: \PDO} $overrides */
@@ -171,11 +178,12 @@ final class Application
     {
         $routes = require $this->root . '/routes/web.php';
         $routes($this->router, [
-            'home' => fn(): HomeController => new HomeController($this->view, $this->config, new AppCatalog($this->config), $this->guard()),
+            'home' => fn(): HomeController => new HomeController($this->view, $this->config, new AppCatalog($this->config), $this->guard(), $this->currentUser(...)),
             'contact' => fn(): ContactController => new ContactController($this->view, $this->guard(), new ContactValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger, $this->config->string('integrations.mapbox_token'), $this->config->string('integrations.destinations.email')),
             'hire' => fn(): HireController => new HireController($this->guard(), new HireValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
             'api' => fn(): ApiController => new ApiController($this->priceService()),
             'widgets' => fn(): WidgetController => new WidgetController($this->view),
+            'auth' => fn(): AuthController => new AuthController($this->config->bool('integrations.auth_enabled'), $this->view, $this->auth(), $this->guard(), $this->logger, $this->config->string('integrations.destinations.email')),
             'downloads' => fn(): DownloadsController => new DownloadsController($this->view, $this->config),
             'careers' => fn(): CareersController => new CareersController($this->view, new JobRepository($this->pdo()), $this->logger, $this->config->string('integrations.destinations.email')),
         ]);
@@ -195,6 +203,42 @@ final class Application
         }
 
         return $this->guard;
+    }
+
+    /**
+     * Accounts (core/auth) on the site's shared session, CSRF and database connection — nothing is built twice.
+     */
+    private function auth(): AuthFacade
+    {
+        $pdo = $this->pdo();
+
+        return $this->auth ??= new AuthFacade(
+            $this->authConfig(),
+            new UserRepository($pdo),
+            new LoginAttemptRepository($pdo),
+            new AuditLogger($pdo),
+            $this->session(),
+            new TokenGenerator(),
+            $this->csrf(),
+        );
+    }
+
+    /**
+     * The signed-in user for page chrome, or null. Anonymous visitors never touch the database; a database
+     * problem degrades to "signed out" instead of breaking the page.
+     */
+    private function currentUser(): ?AuthenticatedUser
+    {
+        if (!$this->config->bool('integrations.auth_enabled') || $this->session()->currentUserId() === null) {
+            return null;
+        }
+        try {
+            return $this->auth()->currentUser();
+        } catch (\Throwable $e) {
+            $this->logger->error('auth.current_user', ['exception' => $e]);
+
+            return null;
+        }
     }
 
     /** The one session manager of the site: forms, auth and the API all share it (never build a second). */
