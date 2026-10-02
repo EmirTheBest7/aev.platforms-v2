@@ -1,0 +1,28 @@
+# Local development: `docker compose up --build` → http://localhost:8080 (set WEB_PORT to change)
+# (Production images use docker/Dockerfile target `prod`; see docs/DEPLOYMENT.md.)
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: dev
+    volumes:
+      - .:/var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:${WEB_PORT:-8080}
+      APP_KEY: ${APP_KEY:-local-development-key-change-me-0123456789}
+      FORCE_HTTPS: "false"
+      LOG_CHANNEL: stderr
+      NOTIFY_DRIVER: log
+
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - ./public:/var/www/html/public:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app

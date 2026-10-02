@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controllers;
+
+use App\Http\Response;
+use App\Support\View;
+
+/** Public-safe error pages: no stack traces, paths, SQL or credentials, ever. */
+final class ErrorController
+{
+    private const PAGES = [
+        403 => ['Access denied', 'You do not have permission to view this page.'],
+        404 => ['Page not found', 'The page you are looking for does not exist or has moved.'],
+        405 => ['Method not allowed', 'That action is not supported for this address.'],
+        410 => ['Gone', 'This page has been permanently removed.'],
+        413 => ['Request too large', 'The request was larger than we accept.'],
+        429 => ['Too many requests', 'Please wait a little while before trying again.'],
+        500 => ['Something went wrong', 'An unexpected error occurred on our side. Please try again shortly.'],
+    ];
+
+    public function __construct(private readonly View $view) {}
+
+    public function render(int $status, string $path = '/'): Response
+    {
+        $status = isset(self::PAGES[$status]) ? $status : 500;
+        [$title, $text] = self::PAGES[$status];
+
+        $html = $this->view->render('errors/error', ['status' => $status, 'heading' => $title, 'text' => $text], [
+            'title' => $status . ' · ' . $title . ' | ΛΞV',
+            'path' => $path,
+            'noindex' => true,
+            'bodyClass' => 'page-error',
+        ]);
+
+        return (new Response($html, $status))->withHeader('Cache-Control', 'no-store');
+    }
+}

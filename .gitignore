@@ -32,7 +32,6 @@ Thumbs.db
 
 # PHP & COMPOSER
 /vendor/
-composer.lock
 *.phar
 
 # NODE.JS
@@ -50,10 +49,15 @@ env/
 venv/
 
 # BUILD & RUNTIME
-storage/
-storage/*
-!storage/.gitkeep
+/storage/*
+!/storage/.gitkeep
+!/storage/logs/
+/storage/logs/*
+!/storage/logs/.gitkeep
 public/build/
+.phpunit.cache/
+.php-cs-fixer.cache
+.phpstan.cache/
 dist/
 build/
 *.log
@@ -87,11 +91,7 @@ cache/
 # LEGACY AUDIT SOURCE (migration reference only, never part of production tree)
 /aev.platforms-master/
 
-# PROJECT SPECIFIC LEGACY FILES
-page/main/data.json
-home/*/data.json
-storage/cache/*
-storage/logs/*
+# RUNTIME USER DATA (leads, rate-limit state) — never commit
 uploads/*
 
 # TEST COVERAGE

@@ -1,0 +1,26 @@
+# Apache entry rules (for hosts that serve public/ as the document root).
+# Nginx equivalents live in docker/nginx/default.conf.
+Options -Indexes -MultiViews
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Never expose dotfiles (allow /.well-known/)
+  RewriteRule "(^|/)\.(?!well-known/)" - [R=404,L]
+
+  # Real files (assets, robots.txt, sitemap.xml) are served directly
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Everything else goes through the front controller; direct access to other .php files is refused
+  RewriteRule ^index\.php$ - [L]
+  RewriteRule \.php$ - [R=404,L]
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2|svg|png|ico|jpg|webp)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
