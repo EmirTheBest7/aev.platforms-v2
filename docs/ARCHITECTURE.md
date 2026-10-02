@@ -20,7 +20,7 @@ Simple, explicit, host-agnostic. No framework, no build step for PHP, no fronten
 ├── core/auth/              # existing auth module, namespace Core\Auth\ (PDO, sessions, CSRF, roles) — reused, not duplicated
 ├── apps/account/           # manual test pages for core/auth (not part of the public site)
 ├── config/                 # app.php, security.php, notify.php  (read env, return arrays)
-├── routes/                 # web.php (public routes), legacy.php (redirects + 410s)
+├── routes/                 # web.php (public routes), legacy.php (legacy redirects; no 410s — preserved work is never declared gone)
 ├── public/                 # DOCUMENT ROOT
 │   ├── index.php           # the only PHP entry point
 │   ├── .htaccess           # Apache front-controller rules
@@ -45,7 +45,7 @@ Simple, explicit, host-agnostic. No framework, no build step for PHP, no fronten
 3. `Application::handle()`:
    - canonicalises the path (`/x/` → `/x`, single-hop 301, only when a real page matched, so legacy redirects never chain);
    - optional HTTPS redirect (honours `X-Forwarded-Proto` only from `TRUSTED_PROXIES`);
-   - `Router::dispatch()` — exact-match routes; `routes/legacy.php` supplies 301 redirects and 410 prefixes;
+   - `Router::dispatch()` — exact-match routes; `routes/legacy.php` supplies legacy 301 redirects (the router also supports 410 prefixes, deliberately unused);
    - `HttpException` → `ErrorController` (403/404/405/410/413/429/500 pages, `noindex`, `no-store`); any other `Throwable` is logged and shown as the generic 500 (debug text only when `APP_ENV≠production` **and** `APP_DEBUG=true`);
    - `SecurityHeaders` is applied to every response.
 4. `Response::send()` (HEAD requests send no body).
@@ -58,9 +58,9 @@ Simple, explicit, host-agnostic. No framework, no build step for PHP, no fronten
 
 `Notifier::send(string): bool` — must not throw or block past its timeout. `TelegramNotifier` (HTTPS only, 2 s connect / `NOTIFY_TIMEOUT_SECONDS` total, no redirects, token only from env, errors logged without the token). `LogNotifier` is the default/dev driver. Selected by `NOTIFY_DRIVER`.
 
-## Authentication (staff area — not yet exposed)
+## Authentication (the account system — not yet exposed)
 
-`core/auth` provides register/login/logout, Argon2id hashing, brute-force lockout, audit log, roles/permissions and a CSRF helper over PDO (MySQL or PostgreSQL). The public agency site does not need accounts. If a staff/admin area is required it will live under `/account` using `AuthFacade`, with role checks — **no static tokens**. This is an open owner decision.
+`core/auth` provides register/login/logout, Argon2id hashing, brute-force lockout, audit log, roles/permissions and a CSRF helper over PDO (MySQL or PostgreSQL). The legacy platform's account concept (registered users, tiers/badges, profile, API tokens, staff/admin) is **kept**: it is rebuilt on `core/auth` under `/account` (and the app modules that need it) with role/permission checks — **no static tokens**. The public pages work without accounts; when accounts go live is the owner's decision (`AUTH_ENABLED`, `MIGRATION.md` phase 4).
 
 ## Data
 

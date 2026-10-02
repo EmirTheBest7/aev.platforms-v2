@@ -9,8 +9,8 @@ docker compose run --rm app vendor/bin/phpunit
 | Suite | File | Covers |
 |---|---|---|
 | unit | `tests/Unit/SupportTest.php` | `.env` parsing (real env wins), typed getters, HMAC signer (tamper/short key), rate limiter (limit, isolation, hashed keys), client-IP resolution (spoofing, CIDR, forwarded chain), seasonal icon boundaries, logger redaction (keys + token-shaped text), lead reference format/uniqueness, lead file mode 0600 |
-| unit | `tests/Unit/ValidationAndRoutingTest.php` | contact validation/normalisation/limits, router (match, HEAD, redirect, 410 prefix boundary, 405, 404), path normalisation |
-| feature | `tests/Feature/SiteTest.php` | home (headers, SEO, no inline script/style), no dead `#` links, safe 404, legacy 301/410, 405 + `Allow`, HTTPS redirect trust model + HSTS, trailing-slash canonicalisation (single hop), contact: form tokens, valid submission end-to-end, client cannot choose reference, CSRF failure/missing, honeypot, too-fast/stale/forged timestamp, validation errors escaped, rate limit (429), oversize (413), notifier failure keeps lead, exception never leaks detail |
+| unit | `tests/Unit/ValidationAndRoutingTest.php` | contact validation/normalisation/limits, router (match, HEAD, redirect, 410 prefix-boundary mechanism kept but unused by routes, 405, 404), path normalisation |
+| feature | `tests/Feature/SiteTest.php` | home (headers, SEO, no inline script/style), no dead `#` links, safe 404, legacy 301 and honest 404 (never 410) for preserved paths, 405 + `Allow`, HTTPS redirect trust model + HSTS, trailing-slash canonicalisation (single hop), contact: form tokens, valid submission end-to-end, client cannot choose reference, CSRF failure/missing, honeypot, too-fast/stale/forged timestamp, validation errors escaped, rate limit (429), oversize (413), notifier failure keeps lead, exception never leaks detail |
 
 Static analysis: `vendor/bin/phpstan analyse` (level 8, must be clean). Style: `vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes`. CI (`.github/workflows/ci.yml`) runs lint (8.3, 8.4), composer validate, PHPUnit, PHPStan, CS and a production Docker build.
 

@@ -68,6 +68,21 @@
 | `docs.aliev.io` / `aliev.io` / `qirimtalk.com` | launcher targets | docs/site | **NXDOMAIN** | Owner supplies destinations (`DOCS_URL` etc.) |
 | PHP 7-style `mysqli`, globals | everywhere | DB | n/a | PDO repositories |
 
+### Licences of third-party material (verified where stated)
+
+| Material | Licence | Verified | Note |
+|---|---|---|---|
+| three.js r128 | MIT | yes (upstream repo) | self-hosted |
+| Doto font | SIL OFL 1.1 | yes (`OFL.txt` fetched) | interim display font |
+| Roboto Thin | SIL OFL 1.1 / Apache (Google Fonts) | by publisher | calculator widget |
+| Unicons (line) v4 | **IconScout Simple License** | yes (upstream README) | attribution requirement to review; not Apache-2.0 |
+| 3D "Room" images/CSS (Ricardo Oliva Alonso CodePen) | **none stated** (source repo has no LICENSE) | yes (404 on licence endpoint) | owner: seek permission or replace |
+| Globe texture (imgur) | unknown | no | source of the map overlay unclear |
+| Coin logos (BTC, ETH, USDT, SOL, TON, DOT, SUI, APT) | trademarks of their projects | n/a | self-hosting copies of third-party logos — owner review |
+| AEVT/AEVD logos | owner's | — | |
+| Games/tools from CodePen, Pac-Man, Doom, SmartyQR, nsfwjs, face-api, DevExtreme, bensound music | various | **not yet audited** | audit when those parts are ported |
+| Ndot-55 / SF Pro / DotlineBold | restricted / Apple / unknown | partially | see `DESIGN-SYSTEM.md` |
+
 ## 5. Security audit
 
 | ID | Sev. | Finding | Where | Action (feature is kept) |

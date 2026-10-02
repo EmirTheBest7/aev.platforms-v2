@@ -44,7 +44,7 @@ See `.env.example`. Required in production: `APP_ENV=production`, `APP_URL` (htt
 1. CI green (lint, composer validate, PHPUnit, PHPStan, CS, Docker build).
 2. `APP_ENV=production`, `APP_DEBUG` unset/false, HTTPS in place (HSTS is emitted automatically for https `APP_URL` in production).
 3. `storage/` writable by the PHP user and on a persistent volume; not web-reachable.
-4. Smoke tests: `GET /` 200, `GET /contact` 200 and form submission end-to-end, `/nope` 404, `/.env` 404, `/home/auth` 410, security headers present.
+4. Smoke tests: `GET /` 200, `GET /contact` 200 and form submission end-to-end, `/nope` 404, `/.env` 404, `/home/auth` 404 (unbuilt legacy paths are never 410), security headers present.
 5. Rotate/restrict credentials if anything was exposed.
 
 ## Rollback

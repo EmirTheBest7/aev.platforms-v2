@@ -21,13 +21,13 @@ Canonical form: lowercase, **no trailing slash** (`/contact/` → 301 `/contact`
 | `/page/main` | `/` |
 | `/page/contact` | `/contact` |
 
-## Gone (410)
+## Preserved legacy paths not yet rebuilt (404)
 
-`/home/**` (social-platform experiment), `/page/maps`, `/page/empty`, `/page/design_store`, `/page/material`, `/page/universal`, `/page/qirimcz`.
+`/home/**` (Space, Messenger, Videos, Wallet, Store, Studio, `_api` terminal/docs), `/page/{maps,design_store,material,universal,qirimcz,DC25,history,legal,…}`. These are **not declared gone**: the products are being preserved and will return (`MIGRATION.md`); until then they answer an honest 404. As each is rebuilt it gets a real route or a single-hop 301 (`URL-MIGRATION.md`).
 
 ## Error pages
 
-403, 404, 405 (with `Allow`), 410, 413, 429, 500 — `noindex`, `no-store`, no internal detail.
+403, 404, 405 (with `Allow`), 413, 429, 500 (410 exists in the handler but is currently unused) — `noindex`, `no-store`, no internal detail.
 
 ## Not routes (blocked at the web server)
 

@@ -19,7 +19,11 @@ Checked for *this* repository (`aev.platforms-v2`): the legacy tree was never co
 Procedure for the legacy repository (owner-run, destructive — requires explicit approval and a backup; **this does not delete features from the project**, only sensitive history):
 
 1. Make a private backup clone: `git clone --mirror <url> legacy-backup.git`.
-2. Prefer **archiving or deleting the public repository** if it has no value as open source; otherwise rewrite history with `git filter-repo` (not `filter-branch`): remove paths `_inc/functions.php`, `cron.php`, `_inc/cron.php`, `home/_uploads/`, `home/2be_deleted/`, `home/2be_created/**/config.php`, `home/_api/UI/terminal/Page/valentine/yes_page.php`, `page/hester/script.js` (key), `test.php`, `script.sh`, and any `*.sql` dumps — then re-add cleaned versions of the files that remain part of the project; or use `--replace-text` for specific literals (do **not** paste the secret values into tickets or chat).
+2. Do **not** delete the public repository — it is the project's history and the documented reference. Make a mirror backup, then either make the repository **private/archived** while cleaning, or rewrite it with `git filter-repo` (not `filter-branch`). Purge only the **sensitive content**, then re-add cleaned versions of files that remain part of the project:
+   - whole-folder purge (private data): `home/_uploads/` (`PII_EXPOSURE_02`);
+   - file-level purge of secrets/PII, then re-add sanitised copies: `_inc/functions.php`, `cron.php` and `_inc/cron.php` (private-individual list), `home/2be_deleted/messenger/chat/hester/index.php` (token — **keep the rest of `2be_deleted/`**), `home/_api/UI/terminal/Page/valentine/yes_page.php`, `page/hester/script.js` (Gemini key), `home/2be_created/**/config.php`, and any `*.sql` dumps;
+   - drop `test.php`/`script.sh` only if the owner agrees (they are dev leftovers, not secrets);
+   - or use `--replace-text` to blank specific literals while keeping the files (do **not** paste secret values into tickets or chat).
 3. Force-push all branches and tags; ask GitHub Support to purge cached views/dangling commits and to disable access to old forks/PR refs (`refs/pull/*`) which still serve removed objects.
 4. Contact forks' owners if forks exist; assume anything ever public may have been scraped — **treat every exposed secret as compromised regardless of the purge**.
 5. Confirm the affected individuals' data (birthdays) is handled according to applicable privacy law; notify them if required.

@@ -104,5 +104,5 @@ Nothing is deleted; this lists what v2 does differently *for now* and why.
 | `device-notification` overlay ("rotate your device") | Rules not carried; layout is responsive on all sizes | It blocked landscape phones, <360 px and short 480–600 px screens; the underlying responsive rules still apply |
 | `@import` open-props (unpkg) | Not carried | No variable from it is referenced anywhere |
 | normalize.css 5.0.0 (CDN) | Replaced by the ported base rules | Same reset, no third-party request |
-| Unicons / Material Symbols icon fonts | Unicons line font **self-hosted** (Apache-2.0); Material Symbols was only in the spotlight web-search row | Same glyphs, no CDN |
+| Unicons / Material Symbols icon fonts | Unicons line font **self-hosted** (licence: *IconScout Simple License* — attribution terms to be reviewed by the owner); Material Symbols was only in the spotlight web-search row | Same glyphs, no CDN |
 | Google/other web fonts declared but never loaded (`Montserrat`, `Roboto`, `Inter`) | Not loaded (the fallbacks are what visitors saw) | Reproduces the real rendering; Roboto Thin is self-hosted for the calculator widget which does load it |

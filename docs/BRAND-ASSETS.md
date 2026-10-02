@@ -40,7 +40,7 @@ Each set contains `favicon.ico` and `apple-touch-icon` 57 – 180 px. The legacy
 | `Ndot-55.otf` (legacy `_assets/fonts`) | Nothing brand notice — restricted | Settings heading, clock date readout | **Kept untouched in the legacy tree.** Owner decides (license / permission / replace) |
 | `DotlineBold.ttf` (legacy) | Unknown | Unreferenced — possible link to the "my own font" idea | Kept; `Purpose unclear — requires owner review` |
 | `SF-Pro.ttf` (legacy) | Apple — web self-hosting not permitted | Committed deliberately (2024-09-09); only `font-family` fallback names reference it | Kept in the legacy tree; not shipped by v2; owner review |
-| `Roboto-Thin-latin.woff2` (v2, staged) | SIL OFL (Roboto) | Calculator widget (the legacy widget loaded it from Google Fonts) | Staged for the widget port |
+| `Roboto-Thin-latin.woff2` (v2, staged) | per publisher (Apache-2.0 or OFL; not independently verified) | Calculator widget (the legacy widget loaded it from Google Fonts) | Staged for the widget port |
 
 Nothing was deleted. See `DESIGN-SYSTEM.md` ("Fonts — status") for the evidence trail.
 

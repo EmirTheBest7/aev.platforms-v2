@@ -120,7 +120,7 @@ Every control is preserved. Where the original destination no longer exists, the
 ## 6. Integration design (v2)
 
 - **Layout `shell`**: preloader, notifications, spotlight, PWA modal, HesterGPT box, user panel, navbar. `pages/home` = the five sections. Other pages reuse the shell (legacy `core.css` + `main.css` are the shared chrome).
-- **Assets** (staged): `public/assets/css/{main,core,fonts}.css` (mechanical edits only — header lists them), `widgets/*.css`, `images/home/*` (byte-identical), `images/{avatar.png,crypto/*,globe/earth-map.png,room/*}`, `vendor/three/three.r128.min.js`, `vendor/unicons/*` (Apache-2.0), `fonts/Roboto-Thin-latin.woff2`.
+- **Assets** (staged): `public/assets/css/{main,core,fonts}.css` (mechanical edits only — header lists them), `widgets/*.css`, `images/home/*` (byte-identical), `images/{avatar.png,crypto/*,globe/earth-map.png,room/*}`, `vendor/three/three.r128.min.js`, `vendor/unicons/*` (IconScout Simple License — review attribution), `fonts/Roboto-Thin-latin.woff2`.
 - **Inline styles → classes** (`utilities.css`, generated): the CSP forbids `style=""`.
 - **JS** as native ES modules under `public/assets/js/home/`, one per concern.
 - **Endpoints**: `POST /hire`, `GET /api/prices` (cached, same-origin), `POST /api/hester`, `GET /hester`, `GET /widgets/{clock,calculator}`.
