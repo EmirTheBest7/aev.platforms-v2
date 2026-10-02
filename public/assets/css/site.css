@@ -1,0 +1,191 @@
+/* ALIEV.IO — site base. Values extracted from the legacy site (see docs/DESIGN-SYSTEM.md).
+   Dark-only by design: the legacy site never shipped a light skin. */
+
+@font-face {
+  font-family: "Doto";
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/Doto-latin.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --c-bg: #000;              /* effective legacy body bg (main.css says #0c0c0c but core.css, loaded later, wins) */
+  --c-bg-rail: #000;         /* legacy .Navbar */
+  --c-surface: #1b1b1b;      /* legacy .apps panel */
+  --c-surface-edge: #282a2c; /* legacy .apps border / hover tile */
+  --c-card: #18181b;         /* legacy .noticard inner */
+  --c-card-edge: #29292c;    /* legacy .noticard border */
+
+  /* Text */
+  --c-text: #fff;
+  --c-text-muted: #99999d;   /* legacy .notidesc */
+  --c-text-dim: #666;        /* legacy .Navbar-menu-minor */
+  --c-hairline: #555;        /* legacy side-nav line */
+
+  /* Brand */
+  --c-accent: #0f33ff;       /* legacy primary blue (button, full stop) */
+  --c-info: #32a6ff;         /* legacy notification title */
+  --c-focus: #2eadff;
+  --grad-accent: linear-gradient(to bottom, #2eadff, #3d83ff, #7e61ff);
+
+  /* Status (legacy palette) */
+  --c-ok: #62f754;
+  --c-error: #f44336;
+
+  /* Type */
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif; /* legacy declared Montserrat but never loaded it; this is what visitors actually saw */
+  --font-dot: "Doto", "Courier New", monospace;                /* replaces Ndot-55 (see DESIGN-SYSTEM.md) */
+
+  /* Layout */
+  --rail-w: 6rem;            /* legacy --navbar-height on >=544px */
+  --radius-card: 1rem;       /* legacy .noticard */
+  --radius-panel: 28px;      /* legacy .apps */
+  --radius-tile: 8px;
+  --ease-ui: cubic-bezier(0.333, 0, 0, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 62.5%; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font: 1.4rem/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  padding-left: var(--rail-w);
+}
+
+a { color: inherit; }
+img { max-width: 100%; height: auto; }
+
+:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 3px; }
+
+.skip-link {
+  position: absolute; left: 1rem; top: -5rem; z-index: 10001;
+  padding: 0.8rem 1.2rem; background: var(--c-accent); color: #fff; text-decoration: none;
+}
+.skip-link:focus { top: 1rem; }
+
+.accent { color: var(--c-accent); }
+
+/* ---- Rail (legacy .Navbar, >=544px: fixed 60px vertical rail) ---- */
+.rail {
+  position: fixed; inset: 0 auto 0 0; width: var(--rail-w); z-index: 9999;
+  background: var(--c-bg-rail); border-right: 1px solid var(--c-surface-edge); /* legacy 1px #282828 edge */
+  display: flex; flex-direction: column; align-items: center;
+}
+.rail__toggle {
+  width: var(--rail-w); height: var(--rail-w); flex: none;
+  background: none; border: 0; color: #fff; cursor: pointer;
+  display: grid; place-items: center;
+}
+.rail__toggle span, .rail__toggle span::before, .rail__toggle span::after {
+  display: block; width: 2rem; height: 2px; background: currentColor; content: "";
+  transition: transform 0.35s var(--ease-ui), opacity 0.2s;
+}
+.rail__toggle span { position: relative; }
+.rail__toggle span::before { position: absolute; top: -6px; }
+.rail__toggle span::after { position: absolute; top: 6px; }
+.rail__toggle[aria-expanded="true"] span { background: transparent; }
+.rail__toggle[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+.rail__toggle[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+
+/* The wordmark is a horizontal SVG; the legacy rail rotates it -90deg. */
+.rail__brand { display: block; width: var(--rail-w); height: 16rem; position: relative; flex: none; }
+.rail__brand img {
+  /* Rotating -90deg about the top-left corner makes the image extend upward
+     (its width) and rightward (its height) from this point. */
+  position: absolute; top: 9.5rem; left: calc(50% - 0.75rem);
+  width: 9rem; max-width: none; height: auto;
+  transform: rotate(-90deg); transform-origin: 0 0;
+}
+
+.rail__menu {
+  position: fixed; inset: 0 auto 0 var(--rail-w); width: 0; overflow: hidden; visibility: hidden; opacity: 0;
+  background: rgba(0, 0, 0, 0.92); padding: 5.2rem 0;
+  transition: opacity 0.35s, visibility 0.25s, width 0.2s;
+  z-index: 9998;
+}
+.rail__menu.is-open { width: 26rem; opacity: 1; visibility: visible; }
+.rail__menu ul { list-style: none; margin: 0; padding: 0 1rem; }
+.rail__menu a {
+  display: block; padding: 1.6rem 14%; color: #fff; text-decoration: none;
+  font-size: 1.4rem; font-weight: 700; letter-spacing: 0.28rem; text-transform: uppercase; white-space: nowrap;
+}
+.rail__menu a:hover, .rail__menu a:focus-visible { background: rgba(255, 255, 255, 0.06); border-radius: var(--radius-tile); }
+.rail__menu a[aria-current="page"] { color: var(--c-accent); }
+
+/* ---- Hero ---- */
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 4rem; padding: 4rem 6vw; }
+.hero__title { margin: 0; font-size: 68px; font-weight: 900; line-height: 1; }
+
+/* ---- Button (legacy .intro--banner button: blue slab starts 23px in, slides to 0 on hover) ---- */
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 5px; z-index: 0;
+  padding: 5px 17px 5px 12px; border: 0; background: transparent; color: #fff;
+  font: 700 1.4rem/1.6 var(--font-body); text-transform: uppercase; text-decoration: none; cursor: pointer;
+}
+.btn::before {
+  content: ""; position: absolute; top: 0; bottom: 0; right: 0; left: 23px; background: var(--c-accent); z-index: -1;
+  transition: left 0.2s ease-in-out;
+}
+.btn:hover::before, .btn:focus-visible::before { left: 0; }
+
+/* ---- Pages ---- */
+.page-title { margin: 0 0 3rem; font-size: 55px; font-weight: 900; line-height: 1; }
+.contact, .error-page { max-width: 72rem; padding: 8rem 6vw 6rem; }
+.error-page__code { margin: 0; font: 400 12rem/1 var(--font-dot); color: var(--c-accent); }
+
+/* ---- Notice (legacy toast card: dark card, 1px edge, gradient bar) ---- */
+.notice {
+  position: relative; display: flex; flex-direction: column; gap: 0.4rem; margin: 0 0 3rem;
+  padding: 1.4rem 1.6rem 1.4rem 3rem; background: var(--c-card); border: 1px solid var(--c-card-edge); border-radius: var(--radius-card);
+}
+.notice::before { content: ""; position: absolute; left: 1rem; top: 1.4rem; bottom: 1.4rem; width: 0.4rem; border-radius: 0.2rem; background: var(--grad-accent); }
+.notice strong { color: var(--c-info); font-weight: 500; }
+.notice ul { margin: 0; padding-left: 1.8rem; color: var(--c-text-muted); }
+.notice span, .notice li { color: var(--c-text-muted); }
+.notice--error::before { background: var(--c-error); }
+.notice--ok::before { background: var(--c-ok); }
+
+/* ---- Form (legacy contact: transparent fields with white hairline, blue submit) ---- */
+.form { display: flex; flex-direction: column; gap: 2rem; }
+.field { display: flex; flex-direction: column; gap: 0.6rem; margin: 0; padding: 0; border: 0; }
+.field label, .field legend { color: var(--c-text-muted); font-size: 1.3rem; padding: 0; }
+.optional { color: var(--c-text-dim); }
+.field input[type="text"], .field input[type="email"], .field textarea {
+  width: 100%; padding: 1rem 1.2rem; background: transparent; color: #fff;
+  border: 1px solid #fff; border-radius: 0; font: inherit;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--c-text-dim); }
+.field [aria-invalid="true"] { border-color: var(--c-error); }
+.field--services { gap: 1rem; }
+.check { display: flex; align-items: center; gap: 1rem; color: #fff !important; font-size: 1.4rem !important; }
+.check input { width: 1.8rem; height: 1.8rem; accent-color: var(--c-accent); }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form .btn { align-self: flex-start; }
+
+/* ---- Small screens (legacy: top bar instead of rail below 544px) ---- */
+@media (max-width: 543px) {
+  body { padding-left: 0; padding-top: 5.6rem; }
+  .rail { inset: 0 0 auto 0; width: 100%; height: 5.6rem; flex-direction: row; justify-content: space-between; }
+  .rail__toggle { width: 5.6rem; height: 5.6rem; }
+  .rail__brand { width: 10rem; height: 100%; display: grid; place-items: center; }
+  .rail__brand img { position: static; transform: none; width: 8.4rem; }
+  .rail__menu { inset: 5.6rem 0 0 0; }
+  .rail__menu.is-open { width: 100%; }
+  .hero { min-height: calc(100vh - 5.6rem); padding: 3rem 6vw; }
+  .hero__title { font-size: 44px; }
+  .page-title { font-size: 40px; }
+}
+@media (min-width: 544px) and (max-width: 900px) { .hero__title { font-size: 55px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
