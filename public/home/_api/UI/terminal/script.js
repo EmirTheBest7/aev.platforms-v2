@@ -1,26 +1,43 @@
+/* ALIEV.IO web terminal (retained part of the _api bundle).
+ *
+ * Port of the original UI/terminal/script.js. Same look, prompt, history and clock; the changes are:
+ *  - the prompt user comes from GET /home/_api/me (the original read it from a PHP session echoed into the page),
+ *  - the game launchers, the store/v2/gtin/admin entries and the dead helpers were removed with the
+ *    features they opened (see docs/ARCHITECTURE.md §6),
+ *  - everything typed or fetched is inserted as text, never as HTML; `cat` only reads same-origin paths,
+ *  - ?Page= / ?Tools= redirects accept only the pages that exist.
+ */
 $(function () {
+  var promptUser = 'user';
+  var render = function () { $('.prompt').text(promptUser + '@eros:~$'); };
+  render();
 
-  // Set the command-line prompt to include the user's IP Address
-  //$('.prompt').html('[' + codehelper_ip["IP"] + '@HTML5] # ');
-  $('.prompt').html(name);
+  if (window.fetch) {
+    fetch('/home/_api/me', { credentials: 'same-origin', headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (me) {
+        if (me && me.authenticated && typeof me.username === 'string') {
+          promptUser = me.username.toLowerCase().split(' ')[0];
+          render();
+        }
+      })
+      .catch(function () { /* stay anonymous */ });
+  }
 
-  // Initialize a new terminal object
   var term = new Terminal('#input-line .cmdline', '#container output');
   term.init();
 
   // Update the clock every second
-  setInterval(function() {
+  setInterval(function () {
     function r(cls, deg) {
-      $('.' + cls).attr('transform', 'rotate('+ deg +' 50 50)')
+      $('.' + cls).attr('transform', 'rotate(' + deg + ' 50 50)');
     }
-    var d = new Date()
-    r("sec", 6*d.getSeconds())  
-    r("min", 6*d.getMinutes())
-    r("hour", 30*(d.getHours()%12) + d.getMinutes()/2)
+    var d = new Date();
+    r('sec', 6 * d.getSeconds());
+    r('min', 6 * d.getMinutes());
+    r('hour', 30 * (d.getHours() % 12) + d.getMinutes() / 2);
   }, 1000);
-
 });
-
 
 var util = util || {};
 util.toArray = function (list) {
@@ -28,74 +45,33 @@ util.toArray = function (list) {
 };
 
 var Terminal = Terminal || function (cmdLineContainer, outputContainer) {
-  window.URL = window.URL || window.webkitURL;
-  window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-
   var cmdLine_ = document.querySelector(cmdLineContainer);
   var output_ = document.querySelector(outputContainer);
 
-  // Error handler
-  /*
-  const error_code = new URLSearchParams(window.location.search).get('0x');
-  if (error_code !== null) {
-    window.location.href = 'Admin/error/?0x=' +error_code;
-    window.history.pushState({}, document.title, window.location.pathname);
-  }*/
+  // Pages that exist; ?Page=<name> and ?Tools=<name> may only point at these.
+  var PAGES_ = ['4ukraine', 'donate', 'valentine'];
+  var TOOLS_ = ['currency', 'crypto', 'domain', 'editor', 'qr', 'math'];
+  var CMDS_ = ['cat', 'clear', 'clock', 'color', 'date', 'docs', 'echo', 'help', 'uname', 'whoami'];
 
-  // URL Redirects
-  const urlVar = location.search.replace('?', '').split('=');
-  switch(urlVar[0]) {
-    case 'Page':
-      window.location.href = urlVar[0]+'/'+urlVar[1];
-      break;
-    case 'Tools':
-      window.location.href = urlVar[0]+'/'+urlVar[1];
-      break;
-    case '0x': // Error
-      window.location.href = 'Admin/error/?'+urlVar[0]+'=' + urlVar[1];
-      window.history.pushState({}, document.title, window.location.pathname);
-      break;
-    default:
-      break;
+  var urlVar = location.search.replace('?', '').split('=');
+  if (urlVar[0] === 'Page' && PAGES_.indexOf(urlVar[1]) !== -1) {
+    window.location.href = 'Page/' + urlVar[1] + '/';
+  } else if (urlVar[0] === 'Tools' && TOOLS_.indexOf(urlVar[1]) !== -1) {
+    window.location.href = 'Tools/' + urlVar[1] + '/';
   }
 
-
-  const CMDS_ = [
-    'cat', 'clear', 'clock', 'date', 'echo', 'help', 'uname', 'whoami', 'controls', 'v2', 'store'
-  ];
-
-  const GAMES_ = [
-    'pacman', 'mario', 'dino', 'dino3d', 'Pong', 'Rubik', 'Blocks', 'crossy', 'sticky', 'rabbit', 'snake'
-  ];
-
-  const TOOLS_ = [
-    'currency', 'crypto', 'domain', 'editor', 'donate', 'qr', 'math'
-  ];
-
-  const ADMIN_ = [
-    'resume', 'bday'
-  ];
-
-  var fs_ = null;
-  var cwd_ = null;
   var history_ = [];
   var histpos_ = 0;
   var histtemp_ = 0;
 
-  window.addEventListener('click', function (e) {
+  window.addEventListener('click', function () {
     cmdLine_.focus();
   }, false);
 
-  cmdLine_.addEventListener('click', inputTextClick_, false);
+  cmdLine_.addEventListener('click', function () { this.value = this.value; }, false);
   cmdLine_.addEventListener('keydown', historyHandler_, false);
   cmdLine_.addEventListener('keydown', processNewCommand_, false);
 
-  //
-  function inputTextClick_(e) {
-    this.value = this.value;
-  }
-
-  //
   function historyHandler_(e) {
     if (history_.length) {
       if (e.keyCode == 38 || e.keyCode == 40) {
@@ -125,227 +101,143 @@ var Terminal = Terminal || function (cmdLineContainer, outputContainer) {
     }
   }
 
-  
   function processNewCommand_(e) {
-
     if (e.keyCode == 9) { // tab
       e.preventDefault();
-      // Implement tab suggest.
-    } else if (e.keyCode == 13) { // enter
-      // Save shell history.
-      if (this.value) {
-        history_[history_.length] = this.value;
-        histpos_ = history_.length;
-      }
-
-      // Duplicate current input and append to output section.
-      var line = this.parentNode.parentNode.cloneNode(true);
-      line.removeAttribute('id')
-      line.classList.add('line');
-      var input = line.querySelector('input.cmdline');
-      input.autofocus = false;
-      input.readOnly = true;
-      output_.appendChild(line);
-
-      if (this.value && this.value.trim()) {
-        var args = this.value.split(' ').filter(function (val, i) {
-          return val;
-        });
-        var cmd = args[0].toLowerCase();
-        args = args.splice(1); // Remove cmd from arg list.
-      }
-
-
-      // CMDs
-      switch (cmd) {
-        case 'cat':
-          var url = args.join(' ');
-          if (!url) {
-            output('Usage: ' + cmd + 'aliev.io' + '</br>');
-            output('Example: ' + cmd + 'aliev.io');
-            break;
-          }
-          $.get(url, function (data) {
-            var encodedStr = data.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
-              return '&>' + i.charCodeAt(0) + ';';
-            });
-            output('<pre>' + encodedStr + '</pre>');
-          });
-          break;
-        case 'color':
-          $('.prompt').attr('style', 'color: aqua;') // Aqua
-          this.value = '';
-          return;
-        case 'clear':
-          output_.innerHTML = '';
-          this.value = '';
-          return;
-        case 'clock':
-          var appendDiv = jQuery($('.clock-container')[0].outerHTML);
-          appendDiv.attr('style', 'display:inline-block');
-          output_.appendChild(appendDiv[0]);
-          break;
-        case 'date':
-          output(new Date());
-          break;
-        case 'whoami':
-          output('user');
-          break;
-        case 'store':
-        output(window.location.href = 'Page/store/');
-          break;
-        case 'docs':
-          output('[AEV|Docs] is openned in new window!');
-          output(window.open("../../Docs", "_blank"));
-          break;
-
-          // Games
-        case 'pacman':
-          output(window.location.href = 'Games/PacMan/');
-          break;
-        case 'doom':
-          output(window.location.href = 'Games/doom/');
-          break;
-        case 'dino':
-          output(window.location.href = 'Games/Dino/');
-          break;
-        case 'dino3d':
-          output(window.location.href = 'Games/Dino3D/');
-          break;
-        case 'pong':
-          output(window.location.href = 'Games/Pong/');
-          break;
-        case 'rubik':
-          output(window.location.href = 'Games/Rubik/');
-          break;
-        case 'blocks':
-          output(window.location.href = 'Games/Blocks/');
-          break;
-        case 'crossy':
-          output(window.location.href = 'Games/crossy/');
-          break;
-        case 'sticky':
-          output(window.location.href = 'Games/sticky/');
-          break;
-        case 'rabbit':
-          output(window.location.href = 'Games/rabbit/');
-          break;
-        case 'snake':
-          output(window.location.href = 'Games/snake/');
-          break;
-
-
-          // /Games
-
-        case 'echo':
-          output(args.join(' '));
-          break;
-        case 'help':
-          output('<div class="ls-files">Commands:<br>' + CMDS_.join('<br>') + '</div>');
-          output('<div class="ls-files">Games:<br>' + GAMES_.join('<br>') + '</div>');
-          output('<div class="ls-files">Tools:<br>' + TOOLS_.join('<br>') + '</div>');
-          break;
-
-        /* Admin Tools */
-        case 'help_emir':
-          output('<div class="ls-files">Admin:<br>' + ADMIN_.join('<br>') + '</div>');
-          break;
-        case 'resume':
-          output(window.location.href = 'Admin/resume/');
-          break;
-        case 'v2':
-          output(window.location.href = 'Page/v2/');
-          break;
-        case 'nofap':
-        case 'bday':
-          output(window.location.href = 'Admin/bday/');
-          break;
-        /* Admin Tools */
-
-        /* Tools */
-        case 'currency':
-          output(window.location.href = 'Tools/currency/');
-          break;
-        case 'gtin':
-          output(window.location.href = 'Page/gtin/');
-          break;
-        case 'crypto':
-          output(window.location.href = 'Tools/crypto/');
-          break;
-        case 'domain':
-          output(window.location.href = 'Tools/domain/');
-          break;
-        case 'editor':
-          output(window.location.href = 'Tools/editor/');
-          break;
-        case 'donate':
-          output(window.location.href = 'Tools/donate/');
-          break;
-        case 'qr':
-          output(window.location.href = 'Tools/qr/');
-          break;
-        case 'math':
-          output(window.location.href = 'Tools/math/');
-          break;
-        /* Tools */
-
-        
-
-
-        case 'uname':
-          output(navigator.appVersion);
-          break;
-        case 'aev&nbsp;core-set&nbsp;-gpu&nbsp;-y': case 'gpu': 
-          // setCookie
-          var gpuStatus = true;
-          const d = new Date();
-          d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000));
-          document.cookie = "gpu_core="+gpuStatus+"; expires="+d.toUTCString() + ";path=/";
-          output("GPU Core status: "+gpuStatus);
-          break;
-
-        
-        case 'whoami':
-          var result = "<img src=\"" + codehelper_ip["Flag"] + "\"><br><br>";
-          for (var prop in codehelper_ip)
-            result += prop + ": " + codehelper_ip[prop] + "<br>";
-          output(result);
-          break;
-        default:
-          if (cmd) {
-            output(cmd + ': command not found. Type "help" for all available commands');
-          }
-      };
-
-      window.scrollTo(0, getDocHeight_());
-      this.value = ''; // Clear/setup line for next input.
+      return;
     }
+    if (e.keyCode != 13) { // enter
+      return;
+    }
+
+    // Save shell history.
+    if (this.value) {
+      history_[history_.length] = this.value;
+      histpos_ = history_.length;
+    }
+
+    // Duplicate current input and append to output section.
+    var line = this.parentNode.parentNode.cloneNode(true);
+    line.removeAttribute('id');
+    line.classList.add('line');
+    var input = line.querySelector('input.cmdline');
+    input.autofocus = false;
+    input.readOnly = true;
+    output_.appendChild(line);
+
+    var cmd = '';
+    var args = [];
+    if (this.value && this.value.trim()) {
+      args = this.value.split(' ').filter(function (val) {
+        return val;
+      });
+      cmd = args[0].toLowerCase();
+      args = args.splice(1); // Remove cmd from arg list.
+    }
+
+    switch (cmd) {
+      case 'cat':
+        var url = args.join(' ');
+        if (!url) {
+          text('Usage: cat <path>   (same-origin files only)');
+          break;
+        }
+        var target;
+        try {
+          target = new URL(url, window.location.href);
+        } catch (err) {
+          text('cat: invalid path');
+          break;
+        }
+        if (target.origin !== window.location.origin) {
+          text('cat: only files of this site can be read');
+          break;
+        }
+        $.get(target.pathname, function (data) {
+          pre(typeof data === 'string' ? data : JSON.stringify(data, null, 2));
+        }).fail(function () {
+          text('cat: ' + url + ': cannot read');
+        });
+        break;
+      case 'color':
+        $('.prompt').css('color', 'aqua');
+        this.value = '';
+        return;
+      case 'clear':
+        output_.innerHTML = '';
+        this.value = '';
+        return;
+      case 'clock':
+        var clock = $('.clock-container').first().clone();
+        clock.css('display', 'inline-block');
+        output_.appendChild(clock[0]);
+        break;
+      case 'date':
+        text(String(new Date()));
+        break;
+      case 'whoami':
+        text($('.prompt').text().split('@')[0]);
+        break;
+      case 'docs':
+        text('[AEV|Docs] is opened in a new window!');
+        window.open('../../Docs/', '_blank', 'noopener');
+        break;
+      case 'echo':
+        text(args.join(' '));
+        break;
+      case 'help':
+        list('Commands', CMDS_);
+        list('Tools', TOOLS_);
+        break;
+      case 'uname':
+        text(navigator.appVersion);
+        break;
+      case 'gpu':
+        var d = new Date();
+        d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000));
+        document.cookie = 'gpu_core=true; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+        text('GPU Core status: true');
+        break;
+      default:
+        if (TOOLS_.indexOf(cmd) !== -1) {
+          window.location.href = 'Tools/' + cmd + '/';
+          break;
+        }
+        if (cmd === 'donate') {
+          window.location.href = 'Page/donate/';
+          break;
+        }
+        if (cmd) {
+          text(cmd + ': command not found. Type "help" for all available commands');
+        }
+    }
+
+    window.scrollTo(0, getDocHeight_());
+    this.value = ''; // Clear/setup line for next input.
   }
 
-  //
-  function formatColumns_(entries) {
-    var maxName = entries[0].name;
-    util.toArray(entries).forEach(function (entry, i) {
-      if (entry.name.length > maxName.length) {
-        maxName = entry.name;
-      }
+  // Output helpers: everything is inserted as text.
+  function text(value) {
+    var p = document.createElement('div');
+    p.textContent = value;
+    output_.appendChild(p);
+  }
+
+  function pre(value) {
+    var el = document.createElement('pre');
+    el.textContent = value;
+    output_.appendChild(el);
+  }
+
+  function list(title, items) {
+    var box = document.createElement('div');
+    box.className = 'ls-files';
+    box.appendChild(document.createTextNode(title + ':'));
+    items.forEach(function (item) {
+      box.appendChild(document.createElement('br'));
+      box.appendChild(document.createTextNode(item));
     });
-
-    var height = entries.length <= 3 ?
-      'height: ' + (entries.length * 15) + 'px;' : '';
-
-    // 12px monospace font yields ~7px screen width.
-    var colWidth = maxName.length * 7;
-
-    return ['<div class="ls-files" style="-webkit-column-width:',
-      colWidth, 'px;', height, '">'
-    ];
-  }
-
-  //
-  function output(html) {
-    //output_.insertAdjacentHTML('beforeEnd', '<p>' + html + '</p>');
-    output_.insertAdjacentHTML('beforeEnd', html);
+    output_.appendChild(box);
   }
 
   // Cross-browser impl to get document's height.
@@ -358,11 +250,10 @@ var Terminal = Terminal || function (cmdLineContainer, outputContainer) {
     );
   }
 
-  //
   return {
     init: function () {
-      output('');
+      text('');
     },
-    output: output
-  }
+    output: text
+  };
 };

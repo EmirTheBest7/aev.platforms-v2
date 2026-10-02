@@ -86,15 +86,14 @@ $docsAttrs = static fn(string $name): string => $docsSoon
               <li>
                 <button type="button" class="aDHieSVT-link" aria-expanded="false">Learn <i class="uil uil-plus" aria-hidden="true"></i></button>
                 <ul class="aDHieSVT-submenu">
-                  <li><a class="uil uil-corner-down-right u-b2dd4f5"<?= $pending('Journal') ?>>Journal</a></li>
+                  <li><a class="uil uil-book-open u-b2dd4f5"<?= $docsAttrs('Docs') ?>>Documentation</a></li>
                 </ul>
               </li>
               <li>
                 <button type="button" class="aDHieSVT-link" aria-expanded="false">Build <i class="uil uil-plus" aria-hidden="true"></i></button>
                 <ul class="aDHieSVT-submenu">
                   <li><a class="uil uil-bolt-alt u-b2dd4f5"<?= $docsAttrs('Docs') ?>>Quickstart</a></li>
-                  <li><a class="uil uil-book-open u-b2dd4f5"<?= $docsAttrs('Docs') ?>>Documentation</a></li>
-                  <li><a class="uil uil-code-branch u-b2dd4f5"<?= $pending('CLI') ?>>CLI</a></li>
+                  <li><a class="uil uil-code-branch u-b2dd4f5" href="/home/_api/UI/" target="_blank" rel="noopener">CLI</a></li>
                 </ul>
               </li>
             </ul>
@@ -104,13 +103,11 @@ $docsAttrs = static fn(string $name): string => $docsSoon
         
         <div class="Navbar-menu-minor">
           <ul>
-            <li><a<?= $pending('Store') ?>>Store</a></li>
             <li><a href="/careers">Careers</a></li>
             <li><a href="/downloads">Downloads</a></li>
           </ul>
           <ul>
             <li><a<?= $pending('Privacy Policy') ?>>Privacy Policy</a></li>
-            <li><a<?= $pending('Investor Relations') ?>>Investor Relations</a></li>
             <li><a href="/contact">Contact</a></li>
             <li>
               <a class="u-log-in" href="<?= $e($user['authenticated'] ? '/home/_api/UI/' : $signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><span class="ripple-button"><?= $user['authenticated'] ? 'Dashboard' : 'Log In' ?></span></a>

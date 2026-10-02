@@ -23,9 +23,23 @@ function handleNoClick() {
 }
 
 function handleYesClick() {
-    window.location.href = "yes_page.html";
+    // The original opened the next page, which sent a Telegram message with an embedded bot token.
+    // Now the browser only asks this site's API (CSRF-protected, rate-limited); the token never leaves the server.
+    var go = function () { window.location.href = "yes_page.html"; };
+    if (!window.fetch) { go(); return; }
 
-    // The legacy page sent a Telegram message straight from the browser with an embedded bot token.
-    // Removed (the token is compromised and must never ship). Notification returns server-side via the
-    // Notifier in the dedicated _api step (docs/ARCHITECTURE.md §6).
+    fetch("/home/_api/csrf", { credentials: "same-origin" })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            return fetch("/home/_api/valentine/yes", {
+                method: "POST",
+                credentials: "same-origin",
+                headers: { "X-CSRF-Token": data.token, "Accept": "application/json" }
+            });
+        })
+        .catch(function () { /* the page must work even if the notification does not */ })
+        .then(go);
 }
+
+document.querySelector('.yes-button').addEventListener('click', handleYesClick);
+document.querySelector('.no-button').addEventListener('click', handleNoClick);

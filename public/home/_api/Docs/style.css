@@ -1,7 +1,4 @@
 @charset "UTF-8";
-@import url("https://unicons.iconscout.com/release/v4.0.0/css/line.css");
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900");
-@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:500");
 
 *,
 *::after,
@@ -417,3 +414,6 @@ hr {
 
 
 /**/
+
+/* Entries of the docs menu that have no page yet (the original linked them to "#"). */
+.side-menu .is-pending { opacity: .5; cursor: default; }

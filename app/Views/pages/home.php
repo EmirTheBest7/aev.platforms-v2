@@ -54,7 +54,7 @@
                 <div id="globeCanvas"></div>
               </div>
               <div class="intro--options">
-              <a class="u-f66e76d" href="/" data-soon="StopTheWar">
+              <a class="u-f66e76d" href="/home/_api/UI/terminal/Page/4ukraine/">
                 <h3 class="u-6ea5894">#StopTheWar <img class="u-fa8cf5d" alt="Ukraine" src="/assets/images/home/ukr_flag.svg"></h3>
                 <p class="u-8df98a9">Help Ukraine win this war by donating to local charities.</p>
                 <span class="ripple-button u-62ea1e5">

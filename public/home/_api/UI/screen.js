@@ -655,7 +655,11 @@ const shape = {
     });
 
     prepaint();
-    render();
+    // The original called render() here, but no render() exists in this bundle (it lived in the main page's core.js),
+    // so the call threw and stopped initialisation after the grid was drawn. Guarded: the page works, the grid shows.
+    if (typeof render === 'function') {
+      render();
+    }
 
     this.unbindEvents = handlePointer();
     this.isAlive = true;
@@ -663,7 +667,16 @@ const shape = {
 };
 
 
-shape.init();
+// The background grid is drawn by init() before it reaches the pointer/animation helpers that the original bundle
+// never contained (render(), handlePointer() belonged to the main page's core.js). Those calls threw an uncaught
+// ReferenceError in the original too; here the failure is contained so the rest of the page keeps working.
+try {
+  shape.init();
+} catch (error) {
+  if (window.console) {
+    console.warn('[_api/UI] background animation unavailable:', error && error.message);
+  }
+}
 
 // prevent zoom
 document.addEventListener('touchmove', e => e.preventDefault());

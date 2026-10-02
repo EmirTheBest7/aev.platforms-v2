@@ -452,3 +452,43 @@ body {
 .menu > a:hover {
   background-color: #ECEFF1;
 }
+
+/* Inline <style> of the original UI/index.php, moved here. */
+        main {
+            position: relative;
+        }
+
+        canvas {
+            position: fixed !important;
+        }
+
+
+        .Navbar-quickLinks {
+            padding-left: 0 !important;
+            transform: none;
+            display: grid;
+
+        }
+
+        .Navbar-quickLinks a {
+            position: relative;
+            padding: 1rem;
+
+        }
+
+        .quickLinks-btn {
+            width: 100%;
+            font-size: 25px;
+            border: 1px solid white;
+            border-radius: 4px;
+            height: 100%;
+            background: transparent;
+            color: white;
+        }
+
+        @media (max-width: 767px) {
+            .Navbar-quickLinks, .window__tabs, .windows__add, .window__minimize, .window__maximize  {
+                display: none!important;
+            }
+        }
+    

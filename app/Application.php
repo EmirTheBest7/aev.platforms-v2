@@ -23,6 +23,7 @@ use App\Security\FormGuard;
 use App\Security\RateLimiter;
 use App\Security\SecurityHeaders;
 use App\Security\Signer;
+use App\Services\DomainLookup;
 use App\Services\Http\CurlHttpClient;
 use App\Services\Http\HttpClient;
 use App\Services\LeadStore;
@@ -79,7 +80,7 @@ final class Application
     private ?AuthFacade $auth = null;
     private ?HttpClient $http = null;
 
-    /** @param array{notifier?: Notifier, http?: HttpClient, pdo?: \PDO} $overrides */
+    /** @param array{notifier?: Notifier, http?: HttpClient, pdo?: \PDO, dns?: \Closure(string): bool} $overrides */
     public function __construct(
         private readonly string $root,
         ?Config $config = null,
@@ -181,7 +182,7 @@ final class Application
             'home' => fn(): HomeController => new HomeController($this->view, $this->config, new AppCatalog($this->config), $this->guard(), $this->currentUser(...)),
             'contact' => fn(): ContactController => new ContactController($this->view, $this->guard(), new ContactValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger, $this->config->string('integrations.mapbox_token'), $this->config->string('integrations.destinations.email')),
             'hire' => fn(): HireController => new HireController($this->guard(), new HireValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
-            'api' => fn(): ApiController => new ApiController($this->priceService()),
+            'api' => fn(): ApiController => new ApiController($this->priceService(), $this->guard(), $this->notifier(), new DomainLookup($this->overrides['dns'] ?? null), $this->logger, $this->currentUser(...), $this->config->string('app.url')),
             'widgets' => fn(): WidgetController => new WidgetController($this->view),
             'auth' => fn(): AuthController => new AuthController($this->config->bool('integrations.auth_enabled'), $this->view, $this->auth(), $this->guard(), $this->logger, $this->config->string('integrations.destinations.email')),
             'downloads' => fn(): DownloadsController => new DownloadsController($this->view, $this->config),

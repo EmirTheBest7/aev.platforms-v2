@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ΛΞV | Domain check</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="domain">
+    <h1>Domain check</h1>
+    <p>Does a name have DNS records? (A name without records can still be registered.)</p>
+    <form id="domain-form" autocomplete="off">
+      <input type="text" id="domain-name" name="name" placeholder="example.com" aria-label="Domain name" maxlength="253" required>
+      <button type="submit">Check</button>
+    </form>
+    <p id="domain-result" role="status"></p>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

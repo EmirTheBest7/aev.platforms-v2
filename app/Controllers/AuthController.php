@@ -52,7 +52,7 @@ final class AuthController
         $flash = is_array($flash) ? $flash : [];
 
         $referral = $request->query['refer'] ?? '';
-        $referral = is_string($referral) && preg_match('/^[A-Za-z0-9_-]{1,40}$/', $referral) === 1 ? $referral : '';
+        $referral = is_string($referral) && preg_match('/^[A-Za-z0-9_-]{1,40}$/D', $referral) === 1 ? $referral : '';
 
         $html = $this->view->render('pages/auth/index', [
             'csrf' => $tokens['csrf'],

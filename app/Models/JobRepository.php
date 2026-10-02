@@ -17,7 +17,7 @@ final class JobRepository
     private const COLUMNS = 'job_url, job_name, job_company, job_location, job_logo, job_salary, job_type, job_lead, job_desc, job_responsibilities, job_skills';
 
     /** Shape a requested slug must have before it reaches the database (job_url is VARCHAR(32)). */
-    public const SLUG_PATTERN = '/^[A-Za-z0-9_-]{1,32}$/';
+    public const SLUG_PATTERN = '/^[A-Za-z0-9_-]{1,32}$/D';
 
     public function __construct(private readonly PDO $pdo) {}
 

@@ -24,9 +24,8 @@ return [
     ],
 
     'destinations' => [
-        // Owner-declared docs home is https://docs.aliev.io (README), but aliev.io is currently unregistered;
-        // set DOCS_URL once it resolves. Empty = pending notification.
-        'docs' => Env::get('DOCS_URL', ''),
+        // The documentation viewer of the retained _api bundle; set DOCS_URL to point somewhere else.
+        'docs' => Env::get('DOCS_URL', '') ?: '/home/_api/Docs/',
         'instagram' => Env::get('SOCIAL_INSTAGRAM', 'https://www.instagram.com/aev.platforms/'),
         'telegram' => Env::get('SOCIAL_TELEGRAM', 'https://t.me/aev_platforms'),
         'telegram_news' => Env::get('SOCIAL_TELEGRAM_NEWS', 'https://t.me/s/aev_platforms'),

@@ -127,7 +127,7 @@ final class CareersController
     private function present(array $job): array
     {
         $logo = (string) ($job['job_logo'] ?? '');
-        $safe = preg_match('/^[A-Za-z0-9._-]{1,120}$/', $logo) === 1 ? $logo : self::DEFAULT_LOGO;
+        $safe = preg_match('/^[A-Za-z0-9._-]{1,120}$/D', $logo) === 1 ? $logo : self::DEFAULT_LOGO;
 
         return $job + ['logo_url' => self::LOGO_DIR . $safe];
     }
