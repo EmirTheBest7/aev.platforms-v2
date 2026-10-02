@@ -111,6 +111,33 @@ final class SiteTest extends TestCase
         }
     }
 
+    public function testHomePageContainsNoHesterGpt(): void
+    {
+        $html = $this->get($this->app(), '/')->body();
+        self::assertStringNotContainsStringIgnoringCase('hester', $html);
+        self::assertStringContainsString('slider--item-left', $html, 'the carousel keeps its three visible slots');
+    }
+
+    public function testAssetsAreCacheBustedWithTheFileModificationTime(): void
+    {
+        $html = $this->get($this->app(), '/')->body();
+        self::assertMatchesRegularExpression('#/assets/css/main\.css\?v=\d{6,}#', $html);
+        self::assertMatchesRegularExpression('#/assets/js/home/app\.js\?v=\d{6,}#', $html);
+    }
+
+    public function testApiBundleKeepsItsTrailingSlashOtherPathsLoseIt(): void
+    {
+        // No route for the static bundle exists in PHP (Apache serves it): the router must answer 404 itself,
+        // never redirect /home/_api/UI/ to /home/_api/UI (that would break the bundle's relative paths).
+        $kept = $this->get($this->app(), '/home/_api/UI/');
+        self::assertSame(404, $kept->status);
+        self::assertNull($kept->header('Location'));
+
+        $stripped = $this->get($this->app(), '/contact/');
+        self::assertSame(301, $stripped->status);
+        self::assertSame('/contact', $stripped->header('Location'));
+    }
+
     public function testUnknownPathGivesSafe404(): void
     {
         $r = $this->get($this->app(), '/does-not-exist');

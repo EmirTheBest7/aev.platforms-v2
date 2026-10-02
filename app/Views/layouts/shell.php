@@ -12,8 +12,6 @@
  * @var string $intergramJson
  */
 $canonical = $appUrl . ($meta['path'] === '/' ? '/' : $meta['path']);
-/** Cache-busting URL for first-party assets (long Cache-Control on /assets is safe because the URL changes with the file). */
-$asset = static fn(string $path): string => $path . '?v=' . (@filemtime(dirname(__DIR__, 3) . '/public' . $path) ?: 1);
 $icons = '/assets/icons/' . \App\Support\SeasonalIcons::folder(new \DateTimeImmutable());
 ?>
 <!DOCTYPE html>
@@ -39,22 +37,22 @@ $icons = '/assets/icons/' . \App\Support\SeasonalIcons::folder(new \DateTimeImmu
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="<?= $e($icons) ?>/favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="<?= $e($icons) ?>/apple-touch-icon.png">
-  <link rel="stylesheet" href="/assets/vendor/unicons/unicons-line.css?v=4.0.8">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/fonts.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/main.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/core.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/widgets/3droom.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/utilities.css')) ?>">
-  <link rel="stylesheet" href="<?= $e($asset('/assets/css/shell.css')) ?>">
-  <script src="<?= $e($asset('/assets/vendor/jquery/jquery-3.1.0.min.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/vendor/underscore/underscore-1.8.3.min.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/vendor/three/three.r128.min.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/planet.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/sections.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/notify.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/spotlight.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/room.js')) ?>" defer></script>
-  <script src="<?= $e($asset('/assets/js/home/app.js')) ?>" defer></script>
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/vendor/unicons/unicons-line.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/fonts.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/main.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/core.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/widgets/3droom.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/utilities.css')) ?>">
+  <link rel="stylesheet" href="<?= $e($view->asset('/assets/css/shell.css')) ?>">
+  <script src="<?= $e($view->asset('/assets/vendor/jquery/jquery-3.1.0.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/vendor/underscore/underscore-1.8.3.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/vendor/three/three.r128.min.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/planet.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/sections.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/notify.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/spotlight.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/room.js')) ?>" defer></script>
+  <script src="<?= $e($view->asset('/assets/js/home/app.js')) ?>" defer></script>
 </head>
 <body class="<?= $e($meta['bodyClass']) ?>">
   <a class="skip-link" href="#main">Skip to content</a>

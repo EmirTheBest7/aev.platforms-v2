@@ -49,6 +49,9 @@ use Core\Auth\Session\SessionManager;
  */
 final class Application
 {
+    /** URL prefix whose trailing slash is part of its identity (retained static _api bundle). */
+    private const SLASH_PREFIX = '/home/_api/';
+
     public readonly Config $config;
     public readonly Logger $logger;
     private readonly Router $router;
@@ -59,6 +62,9 @@ final class Application
     private readonly string $storage;
     private readonly bool $secureUrl;
     private ?FormGuard $guard = null;
+    private ?AuthConfig $authConfig = null;
+    private ?SessionManager $session = null;
+    private ?CsrfProtection $csrf = null;
     private ?HttpClient $http = null;
 
     /** @param array{notifier?: Notifier, http?: HttpClient} $overrides */
@@ -77,7 +83,7 @@ final class Application
             $this->config->string('app.log_level', 'info'),
         );
 
-        $this->view = new View($root . '/app/Views', $this->config->string('app.url'));
+        $this->view = new View($root . '/app/Views', $this->config->string('app.url'), $root . '/public');
         $this->errors = new ErrorController($this->view);
         $this->clientIp = new ClientIp($this->config->get('security.trusted_proxies', []) ?: []);
 
@@ -99,7 +105,7 @@ final class Application
     public function handle(Request $request): Response
     {
         try {
-            $canonicalPath = Request::normalizePath($request->path);
+            $canonicalPath = $this->canonicalPath($request->path);
             $response = $this->httpsRedirect($request->withPath($canonicalPath))
                 ?? $this->router->dispatch($request->withPath($canonicalPath));
 
@@ -128,6 +134,18 @@ final class Application
         }
 
         return $this->headers->apply($response);
+    }
+
+    /**
+     * Application routes have no trailing slash (`/x/` → `/x`). The retained static bundle under
+     * /home/_api/ keeps it: its relative asset paths only resolve with the slash (docs/ARCHITECTURE.md §6).
+     */
+    private function canonicalPath(string $path): string
+    {
+        $normalized = Request::normalizePath($path);
+        $collapsed = '/' . ltrim((string) preg_replace('#/{2,}#', '/', $path), '/');
+
+        return str_starts_with($collapsed, self::SLASH_PREFIX) ? $collapsed : $normalized;
     }
 
     private function httpsRedirect(Request $request): ?Response
@@ -159,10 +177,9 @@ final class Application
     private function guard(): FormGuard
     {
         if ($this->guard === null) {
-            $auth = new AuthConfig(sessionName: 'aliev_session', sessionLifetimeSeconds: 3600, sessionCookieSecure: $this->secureUrl);
             $this->guard = new FormGuard(
-                new SessionManager($auth),
-                new CsrfProtection($auth, new TokenGenerator()),
+                $this->session(),
+                $this->csrf(),
                 new Signer($this->config->string('app.key')),
                 new RateLimiter($this->storage . '/ratelimit'),
                 $this->clientIp,
@@ -171,6 +188,23 @@ final class Application
         }
 
         return $this->guard;
+    }
+
+    /** The one session manager of the site: forms, auth and the API all share it (never build a second). */
+    private function session(): SessionManager
+    {
+        return $this->session ??= new SessionManager($this->authConfig());
+    }
+
+    /** The one CSRF implementation of the site (core/auth). */
+    private function csrf(): CsrfProtection
+    {
+        return $this->csrf ??= new CsrfProtection($this->authConfig(), new TokenGenerator());
+    }
+
+    private function authConfig(): AuthConfig
+    {
+        return $this->authConfig ??= new AuthConfig(sessionName: 'aliev_session', sessionLifetimeSeconds: 3600, sessionCookieSecure: $this->secureUrl);
     }
 
     private function http(): HttpClient

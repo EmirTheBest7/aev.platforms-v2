@@ -16,7 +16,19 @@ final class View
     public function __construct(
         private readonly string $directory,
         private readonly string $appUrl,
+        private readonly string $publicDirectory = '',
     ) {}
+
+    /**
+     * Cache-busting URL for a first-party file under public/ (`/assets/css/x.css` → `…?v=<mtime>`).
+     * Assets are served with a long Cache-Control, so the URL must change with the file.
+     */
+    public function asset(string $path): string
+    {
+        $mtime = $this->publicDirectory !== '' ? @filemtime($this->publicDirectory . $path) : false;
+
+        return $path . '?v=' . ($mtime !== false ? $mtime : 1);
+    }
 
     /**
      * @param array<string, mixed> $data
