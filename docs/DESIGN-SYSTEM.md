@@ -6,7 +6,9 @@ Status legend: ✅ implemented in `site.css` · 🔜 extracted, ported with its 
 
 ## Theme
 
-**Dark only.** `main.css` contains no `[data-theme]` rules; the legacy "Toggle theme" spotlight action switched an attribute that styled nothing on the homepage. A light skin would be a new design, so it is not shipped (`color-scheme: dark`). If the owner wants light mode it must be designed and approved first.
+**Dark.** The legacy home page has no light skin: `main.css` contains no `[data-theme]` rules and `core.css` defines `--bg-*`/`--text-*` variables for `[data-theme=light|dark]` that the home page does not use. The spotlight "Toggle theme" action sets the attribute (initial value from `prefers-color-scheme`) but nothing on the home page restyles, so it was never visibly effective there. v2 therefore ships `color-scheme: dark` and does **not** invent a light design (that would be a redesign). The action itself is preserved (attribute + persistence) so a future light skin only needs CSS.
+
+**"Liquid Glass".** The owner's current repository description says *"innovative 'Liquid Glass' UI/UX"*. The legacy tree contains no glass/blur styling on the pages that shipped; candidates for where that idea lives are `page/material`, `page/universal` and the sibling `QIRIM.CZ-Template` repository (Apple "material system"). `Purpose unclear — requires owner review`: do not add glass effects to the public pages without instruction.
 
 ## Colour
 
@@ -35,19 +37,22 @@ Not carried over: the teal/green palette in `_assets/css/header.css` (`#1b5955`,
 | Role | Value | Notes |
 |---|---|---|
 | Body/UI | `"Helvetica Neue", Helvetica, Arial, sans-serif` | Legacy declared `Montserrat`/`Roboto`/`Inter` but **never loaded** them (no `@font-face`, no font links), so visitors saw the platform sans-serif. The stack reproduces what was actually rendered. No webfont is shipped for body text. ✅ |
-| Display (dot-matrix) | **Doto** (variable, wght 100–900), fallback `"Courier New", monospace` | Replaces **Ndot-55**. ✅ |
+| Display (dot-matrix) | **Doto** (variable, wght 100–900), fallback `"Courier New", monospace` | Interim stand-in for **Ndot-55** (see "Fonts — status"). ✅ |
 | Base size | `html{font-size:62.5%}` → `1rem = 10px`; `body 14px/1.6` | ✅ |
 | Hero H1 | 68 px / 900 / line-height 1 (55 px ≤1180/900, 44 px ≤767) | ✅ |
 | Buttons | 14 px / 700 / uppercase | ✅ |
 | Rail menu | 14 px / 700 / uppercase / letter-spacing 0.28 rem | ✅ |
 
-### Font decision: Ndot-55 → Doto
+### Fonts — status and owner decision
 
-Ndot-55's embedded notice limits it to Nothing's own brand materials, so it is **not** shipped. The legacy used it in only two places: the clock widget's time readout and the "Settings" panel heading. Candidates were compared against the original render (screenshot in the Phase 3 notes): **Doto** (round dots on a grid — closest match; weight ~600–700 matches Ndot's dot size) vs **DotGothic16** (square pixels — visibly different). Doto was chosen; DotGothic16 was not needed.
+| Font | Where it appears | Evidence of intent | Licence | Status |
+|---|---|---|---|---|
+| **Ndot-55** (`_assets/fonts/Ndot-55.otf`) | The date/weekday readout above the clock widget and the "Settings" panel heading (`font-family:'Ndot'` inline) | Release notes v168.7.2: *"Custom Fonts Support for CVX Arch … your settings and widgets menu on the main page"*; commit "Ndot + Support Fix" 2024-09-04 `[git][owner]` | Embedded notice: Nothing's brand material, not for other uses | **Kept in the historical tree, untouched.** Not copied into v2 pending the owner's decision |
+| **DotlineBold** (`DotlineBold.ttf`) | Not referenced by any CSS/PHP | Added with the same "Added Fonts" commit; the notes mention *"Menu → Log In written in ΛΞV Font"* and *"My Own Font version"* — it may relate `[inference]` | Unknown | Kept; `Purpose unclear — requires owner review` |
+| **SF Pro** (`SF-Pro.ttf`, 5.9 MB) | `font-family: "SF Pro Display"` fallback names in careers/wallet CSS; never loaded via `@font-face` | Committed deliberately ("Create SF-Pro.ttf", 2024-09-09) `[git]` | Apple licence — web self-hosting not permitted | Kept in the legacy tree; not shipped by v2; the stack `-apple-system` renders SF on Apple devices |
+| **Doto** (v2) | Interim stand-in for the Ndot display role | Compared with Ndot on the same strings: round dots on a grid match; DotGothic16 (square pixels) did not | SIL OFL 1.1 (`public/assets/fonts/Doto-OFL.txt`) | Interim only. If the owner licenses or approves Ndot, restore it by changing `--font-dot` and one `@font-face` |
 
-- Font: Doto — © 2024 The Doto Project Authors (<https://github.com/oliverlalan/Doto>), **SIL Open Font License 1.1**. Licence text shipped at `public/assets/fonts/Doto-OFL.txt`.
-- Shipped file: `Doto-latin.woff2` (5.3 KB, latin subset), `font-display: swap`, preloaded.
-- Swap point: the single `--font-dot` token + one `@font-face` in `site.css`.
+Display-font use is limited to those two spots, so either choice is a small, reversible change.
 
 ## Layout & spacing
 
@@ -89,6 +94,15 @@ Transitions: UI `0.2s ease-in-out` (button slab), `0.35s` (menu open), `0.4s eas
 
 Skip link; `:focus-visible` ring (`#2eadff`); real `<button>` for the menu with `aria-expanded`/`aria-controls`; `aria-current` on the active link; zoom is not blocked (legacy viewport used `user-scalable=no`); reduced-motion support; labelled form controls.
 
-## Dropped legacy design artefacts
+## Legacy design artefacts — status
 
-Unused teal header palette; `device-notification` overlay; `open-props` CSS import from unpkg (no variable from it is referenced); `normalize.css` CDN (replaced by a minimal reset); Material Symbols / Unicons icon fonts (to be replaced with inline SVG from the legacy `page/main/img/icons/` set).
+Nothing is deleted; this lists what v2 does differently *for now* and why.
+
+| Artefact | v2 treatment | Why |
+|---|---|---|
+| Teal/green header palette (`_assets/css/header.css`) | Kept in the legacy tree; not loaded by the ported pages | Not used by any rendered page; may belong to an earlier header — owner review |
+| `device-notification` overlay ("rotate your device") | Rules not carried; layout is responsive on all sizes | It blocked landscape phones, <360 px and short 480–600 px screens; the underlying responsive rules still apply |
+| `@import` open-props (unpkg) | Not carried | No variable from it is referenced anywhere |
+| normalize.css 5.0.0 (CDN) | Replaced by the ported base rules | Same reset, no third-party request |
+| Unicons / Material Symbols icon fonts | Unicons line font **self-hosted** (Apache-2.0); Material Symbols was only in the spotlight web-search row | Same glyphs, no CDN |
+| Google/other web fonts declared but never loaded (`Montserrat`, `Roboto`, `Inter`) | Not loaded (the fallbacks are what visitors saw) | Reproduces the real rendering; Roboto Thin is self-hosted for the calculator widget which does load it |

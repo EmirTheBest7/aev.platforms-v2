@@ -6,7 +6,7 @@ use App\Http\Router;
 
 /**
  * Legacy (aev.platforms-master) public URLs. Single-hop 301s only, and only
- * for destinations that exist; removed products answer 410 Gone.
+ * for destinations that exist. Nothing is declared permanently gone (410) during the revival.
  * Extended as pages are migrated — keep in sync with docs/URL-MIGRATION.md.
  */
 return static function (Router $router): void {
@@ -15,13 +15,8 @@ return static function (Router $router): void {
         '/page/contact' => ['/contact'],
     ]);
 
-    $router->gone([
-        '/home',            // social-platform experiment: auth, timeline, messenger, wallet, studio, _api …
-        '/page/maps',
-        '/page/empty',
-        '/page/design_store',
-        '/page/material',
-        '/page/universal',
-        '/page/qirimcz',
-    ]);
+    // Intentionally NO 410 (Gone) entries. The legacy platform (home/*), the terminal/tools, the experiments
+    // under page/* and the event pages are being preserved and revived (see docs/PROJECT-VISION.md and
+    // docs/HISTORICAL-FEATURES.md). Until a path is rebuilt it answers an honest 404; as each one returns
+    // it gets a real route (or a 301 to its new location) here and in docs/URL-MIGRATION.md.
 };

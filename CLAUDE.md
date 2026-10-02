@@ -1,84 +1,71 @@
 # CLAUDE.md — ALIEV.IO
 
-Permanent instructions for Claude Code sessions in this repository. Read this first; then `docs/ARCHITECTURE.md`.
+Permanent instructions for Claude Code sessions in this repository. Read this first, then `docs/PROJECT-VISION.md` (why the project is what it is) and `docs/ARCHITECTURE.md` (how v2 is built).
 
 ## Project identity
 
-ALIEV.IO ("ΛΞV | Digital studio") is a digital agency / technology-studio website: home, services, projects, about, contact, careers, journal, brand assets, legal. It is a **revival** of the legacy site kept (git-ignored, read-only reference) in `./aev.platforms-master`. The legacy `home/*` social-platform experiment (messenger, timeline, wallet, studio, games, ML) is **out of scope and must not be revived** without an explicit request.
+ALIEV.IO ("ΛΞV", "Λ L I Ξ V Platforms") is a **long-term personal project of its owner**, built over years: an **ecosystem** — a public face (agency/studio, lead generation, careers, investors, events), a registered-user platform (accounts, Space social feed, Studio, Messenger, Videos, Wallet/Store), a developer layer (terminal tools, Docs, API keys, the HesterGPT AI assistant) and user hosting. This repository (v2) **revives** it; it is not a redesign and not "an agency website". The historical reference is `./aev.platforms-master` (git-ignored, read-only; public mirror `EmirTheBest7/aev.platforms`).
 
-## Critical design rule
+Revival goal: **preserve the project and its identity; improve the engineering underneath.** Same experience, better engine.
 
-**Never redesign the visual identity.** The target is *same ALIEV.IO identity + clean architecture + secure implementation*. Do not introduce generic agency/SaaS styling, new colour palettes, gradients, glassmorphism, card systems, Tailwind/Bootstrap/Material defaults, or a new type scale. If a change would be visible, it needs explicit approval from the owner. The extracted system is in `docs/DESIGN-SYSTEM.md`; the tokens live in `public/assets/css/site.css`. The identity is **dark-only** (the legacy site never shipped a light skin — do not invent one).
+## The seven standing rules
 
-## Brand rules
+1. **ALIEV.IO preservation rule.** Never redesign the existing visual identity (logo, colours, typography treatment, spacing, navigation, animations, panels, launcher, globe, spotlight, ticker, chat, settings, interaction patterns) without explicit owner instruction. Do not substitute a generic agency/SaaS template, new palette, new type scale, Bootstrap/Tailwind/Material defaults.
+2. **Historical preservation rule.** Do not delete features, pages, widgets, experiments, assets, fonts, icons, integrations or launcher entries because they are old, verbose, unconventional, unused-looking or "you'd do it differently". Default is **KEEP**. If something looks useless mark it `POSSIBLE DEPRECATION` with the reason and ask. Delete only if it is demonstrably accidental, a proven duplicate, malicious, contains sensitive material that must not remain, technically dangerous — or the owner explicitly approves. Record every such decision in `docs/CHANGE-LOG.md`.
+3. **Functional modernization rule.** Repair or rewrite *internals* while preserving *intended behaviour*. Separate **idea** from **implementation**: an insecure login is replaced by a secure login, the account feature stays. Prefer same-behaviour/better-implementation for algorithms; document original behaviour, bugs, edge cases.
+4. **Security rule.** Fix vulnerabilities **without removing the capability** behind them. Never hard-code or commit secrets; never carry legacy credentials, personal data, uploads or biometric data; no raw SQL string building; no dynamic code execution; CSRF on every state-changing request; never trust client input.
+5. **Investigation rule.** Understand why a subsystem exists before modifying it: read its code, neighbours, git history (`EmirTheBest7/aev.platforms`), the owner's notes (`antitup/*.md`, release notes in `page/updates`, `home/_api/Docs/mds`), and sibling repos. Use evidence; when the purpose can't be established write **`Purpose unclear — requires owner review`** instead of guessing or deleting.
+6. **Documentation rule.** Document significant changes in `docs/CHANGE-LOG.md` (original behaviour → problem → new implementation → reason → visual impact → functional impact) and update the affected doc (`ARCHITECTURE`, `ROUTES`, `URL-MIGRATION`, `SECURITY`, `DESIGN-SYSTEM`, `MAIN-PAGE`, `MIGRATION`, `HISTORICAL-FEATURES`…) in the same change.
+7. **Testing rule.** Test *behaviour*, not just that a page loads: exercise controls in a real browser (Playwright, `scripts/visual/`), at desktop 1440 / tablet 820 / phone 390 / phone-landscape 844×390, compare against the legacy baseline (`docs/visual-baseline/`), check the console, failure modes (offline third party, no WebGL) and keyboard use. Every behaviour change ships with an automated test.
 
-- Logos in `public/assets/brand/` are copied **byte-for-byte** from the legacy `page/downloads/logo/`. Never redraw, recolour, simplify, re-export or "optimise" them. Verify with `cmp` against the legacy file.
-- Favicons/PWA icons come from the legacy `season1`/`season3` sets (`SeasonalIcons` keeps the legacy date rule).
-- Display font: **Doto** (SIL OFL 1.1, `public/assets/fonts/`). It replaces Ndot-55, whose licence forbids reuse. Never add Ndot, SF Pro, or any font without a verified open licence recorded in `docs/DESIGN-SYSTEM.md`.
-- Details: `docs/BRAND-ASSETS.md`.
+## Classifying problems (use these words)
 
-## Architecture (one paragraph; full detail in `docs/ARCHITECTURE.md`)
+`BROKEN` (exists, doesn't work → fix) · `INCOMPLETE` (started/announced → preserve, complete without changing the concept) · `LEGACY IMPLEMENTATION` (works, code should improve → rewrite internally) · `EXPERIMENTAL` (preserve, document) · `OBSOLETE` (external dependency gone → investigate alternatives before removing anything) · `DUPLICATE` (document; defer deletion unless clearly safe) · `SECURITY RISK` (fix the implementation now; keep the feature). The inventory is `docs/HISTORICAL-FEATURES.md`.
 
-PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`** (only `public/index.php` is an entry point). `app/Application.php` is the composition root; `app/Http` (Request/Response/Router), `app/Controllers`, `app/Services` (Notifier, LeadStore), `app/Security` (headers, rate limiter, signer, client IP), `app/Validation`, `app/Support` (Env, Config, Logger, View), `app/Views` (plain PHP templates), `config/`, `routes/`, `storage/` (runtime, not committed), `tests/`, `docker/`. `core/auth` is the existing authentication module — **reuse** it (`SessionManager`, `CsrfProtection`, `TokenGenerator`, roles/permissions); do not write a second session/CSRF implementation.
+## Architecture (full detail in `docs/ARCHITECTURE.md`)
+
+PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`**. `app/Application.php` is the composition root: `app/Http` (Request/Response/Router), `app/Controllers`, `app/Services` (Notifier, LeadStore), `app/Security`, `app/Validation`, `app/Support`, `app/Views` (plain-PHP templates; shell partials in `partials/shell`), `config/`, `routes/`, `storage/` (runtime, not committed), `tests/`, `docker/`. New code follows `route → controller → service → repository → view`. `core/auth` is the account system — **reuse it**, don't write a second session/CSRF implementation. The v2 README's module plan (`apps/{social,messenger,forum,store,wallet,studio,terminal}`, `api/*`) is the legacy platform re-planned: follow it as apps return.
 
 ## Coding standards
 
-- **PHP:** `declare(strict_types=1)` everywhere; PER-CS 2.0 (`composer cs:fix`); PHPStan level 8 must stay clean (`composer stan`); typed properties/returns; `final` classes by default; constructor injection, explicit wiring in `Application` (no service locator/magic container); no globals; no `@` suppression except around filesystem calls that have a handled failure path.
-- **Templates:** every dynamic value goes through `$e()`. No logic beyond loops/conditionals. No inline `<script>`, `<style>`, `style=""`, or `on*=` attributes — the CSP forbids them.
-- **JavaScript:** native ES modules, `type="module"`, strict by default, no jQuery, no CDN scripts, defensive DOM access, event delegation, cleanup of listeners/animation loops, keyboard-accessible, `prefers-reduced-motion` respected. Small focused files in `public/assets/js/`.
-- **CSS:** tokens as custom properties in `:root`; reuse existing tokens; rem-based (html is 62.5%); legacy breakpoints 1180/900/767/600/543; no `!important` unless overriding third-party code.
-- **HTML:** semantic landmarks, one `<h1>` per page, labelled controls, real `<button>`/`<a>` (never `href="#"` as a button), meaningful `alt`.
-- **Naming:** classes `PascalCase`, methods `camelCase`, CSS BEM-ish (`block__element--modifier`), routes lowercase-kebab, config keys snake_case.
+- **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (`app/Views` templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
+- **Templates:** every dynamic value through `$e()`. No inline `<script>`, `<style>`, `style=""`, `on*=` — the CSP forbids them (legacy inline styles are extracted into generated utility classes).
+- **JavaScript:** native ES modules, defensive DOM access, event delegation, listener/animation cleanup, keyboard access, `prefers-reduced-motion`. jQuery is not required; if used to preserve exact legacy behaviour it must be a single self-hosted copy.
+- **CSS:** reuse the legacy classes/tokens (`public/assets/css/{core,main}.css` are ported with mechanical edits only — see their headers); tokens in `site.css` for new pages.
+- **HTML:** semantic landmarks, labelled controls, real `<button>`/`<a>` (never `href="#"` as a control), meaningful `alt`.
+- **Naming:** `PascalCase` classes, `camelCase` methods, BEM-ish CSS, lowercase-kebab routes.
 
-## Security rules (non-negotiable)
+## Brand and fonts
 
-1. **Never hardcode secrets.** Configuration comes from the environment (`Env`/`config/*.php`). `.env.example` holds placeholders only. Never print or log secrets; the `Logger` redacts, but do not rely on it.
-2. **Never bypass CSRF.** Every state-changing request validates `CsrfProtection`. Forms also use the honeypot, signed form-age token, and rate limiting (see `ContactController`).
-3. **No dynamic PHP execution** (`eval`, `assert` with strings, `include` of user/DB/remote content, `create_function`, `preg_replace /e`). **No `shell_exec/exec/system/passthru/proc_open`** without an explicit, reviewed need.
-4. **No raw SQL string building.** Use PDO prepared statements through a repository (`Core\Auth\Database\PdoConnection`).
-5. **Never trust client input**, including hidden fields, headers (`Host`, `X-Forwarded-*` only via `TRUSTED_PROXIES`), identifiers and totals. IDs are generated server-side.
-6. **No third-party scripts/styles/fonts at runtime.** Self-host. The CSP is `default-src 'self'`; widening it needs a documented reason in `docs/SECURITY.md`.
-7. **Errors:** never show stack traces, SQL, paths or credentials to users. Throw `HttpException(status)` for expected failures; unexpected ones are logged and rendered as the generic 500.
-8. Treat all credentials found in the legacy repo as **compromised** and never copy them, their values, or personal data (PII, uploads, biometric/face data) into this repo or its docs. Refer to them by label (`SECRET_EXPOSURE_01`, `PII_EXPOSURE_01`…).
+- Logos in `public/assets/brand/` are byte-identical copies from the legacy `page/downloads/logo/`. Never redraw/recolour/re-export. Verify with `cmp`.
+- Fonts: the legacy tree holds `Ndot-55.otf` (used in Settings/Widgets; **licence restricts it to Nothing's brand materials**), `DotlineBold.ttf` (unreferenced, licence unknown) and `SF-Pro.ttf` (committed on purpose; Apple licence forbids web self-hosting). **None is deleted.** v2 currently renders the display role with **Doto (SIL OFL)** as an interim; whether to keep, license or replace Ndot is the owner's decision (`docs/DESIGN-SYSTEM.md`).
+- The identity is dark; the legacy home page has no light skin. Do not invent one. The repository description mentions "Liquid Glass UI/UX" — intent unclear, ask before adding any glass effect.
 
-## Legacy rules
+## Security specifics
 
-- `aev.platforms-master/` is reference only: read it, never import from it, never commit it (it is git-ignored).
-- Do not revive deleted legacy systems (Messenger, Space/timeline, Wallet/Finance, Videos, Studio, `_api` terminal/games, HesterGPT embed, crypto ticker, Intergram chat, Mapbox embed, `eval` calculator widget) without a written justification and owner approval.
-- Removals and their evidence are recorded in `docs/LEGACY-REMOVAL.md`; the audit is `docs/AUDIT.md`.
+Secrets only via environment (`.env.example` placeholders). Treat every credential in the legacy tree as compromised and never copy it (`SECRET_EXPOSURE_01…09` in `docs/AUDIT.md`). Third-party scripts only when the owner wants the integration (Intergram: self-hosted pinned copy, `disableLoadmill: true`); never load scripts that can redirect or script visitors remotely (Web4Ukraine). Strict CSP is the default; each exception is documented in `docs/SECURITY.md`.
 
 ## URL rules
 
-Preserve important public URLs. Legacy → new mapping lives in `routes/legacy.php` and `docs/URL-MIGRATION.md`; keep them in sync. Single-hop 301 only (no chains), 410 for removed products, no trailing-slash duplicates (`/x/` → `/x`). New routes go in `routes/web.php` and `docs/ROUTES.md`; update `public/sitemap.xml` (when it exists) and canonical URLs.
+Preserve public URLs. Legacy → new mapping lives in `routes/legacy.php` + `docs/URL-MIGRATION.md`. Single-hop 301 only. **Do not return 410 for work that is being preserved** — unbuilt paths return 404 until rebuilt. No trailing-slash duplicates.
 
-## Testing rules
+## Deployment
 
-Every behaviour change ships with a test. Before finishing any task run, inside Docker:
+Docker-first, host-agnostic: image from `docker/Dockerfile` (`prod` stage), nginx or Apache with **document root `public/`**, PHP 8.3+, non-root, persistent `storage/`, config via environment. `docs/DEPLOYMENT.md`.
+
+## Git
+
+Work on a branch; coherent commits (`docs:`, `refactor:`, `security:`, `fix:`, `feat:`, `test:`). Never commit `.env`, secrets, `storage/`, `vendor/`, caches, `.DS_Store`, user data, or the legacy tree. `composer.lock` is committed.
+
+## Commands
 
 ```bash
-docker compose run --rm app vendor/bin/phpunit          # tests
-docker compose run --rm app vendor/bin/phpstan analyse  # level 8
+docker compose run --rm app vendor/bin/phpunit
+docker compose run --rm app vendor/bin/phpstan analyse --memory-limit=512M
 docker compose run --rm app vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes
+scripts/visual/legacy-baseline.sh up   # sanitised legacy copy for visual comparison (never submit its forms)
 ```
-
-Verify UI changes in a real browser (Playwright scripts in `scripts/visual/`) at desktop 1440, tablet 820, phone 390 and phone-landscape 844×390, and compare against the legacy baseline. See `docs/TESTING.md`.
-
-## Documentation rules
-
-Update the relevant doc in the same change whenever architecture, routes, config, security policy, design tokens or deployment change. Index: `docs/` (ARCHITECTURE, ROUTES, URL-MIGRATION, SECURITY, DESIGN-SYSTEM, BRAND-ASSETS, DEPLOYMENT, DEVELOPMENT, TESTING, OPERATIONS, LEGACY-REMOVAL, MIGRATION, CHANGELOG).
-
-## Design preservation rules
-
-Visual change = approval required. Fidelity checks compare against the legacy rendering (screenshots in `docs/visual-baseline/`, reproducible via `scripts/visual/`). Accessibility, performance and responsive improvements are welcome **as long as the look stays recognisably the same**.
-
-## Deployment rules
-
-Docker-first, host-agnostic. Production = image built from `docker/Dockerfile` (default final stage `prod`), nginx or Apache in front, **document root `public/`**, PHP 8.3+, non-root user, `storage/` writable and persistent, configuration via environment. Do not hard-code a hosting provider. Details: `docs/DEPLOYMENT.md`.
-
-## Git rules
-
-Work on a branch, commit coherently (`docs:`, `refactor:`, `security:`, `fix:`, `cleanup:`, `test:`). **Never commit:** `.env`, secrets, credentials, anything from `storage/`, `vendor/`, caches, `.DS_Store`, machine-specific files, user data, or the legacy tree. `composer.lock` **is** committed. Commits end with the co-author trailer configured for the session.
 
 ## Open owner decisions (do not assume)
 
-Hosting provider; whether `/account` (staff login on `core/auth`) is exposed; company contact details (phone/CIN/offices appear on the legacy contact page — confirm before publishing); legal-page text; Git-history purge (see `docs/SECURITY.md`).
+See `docs/PROJECT-VISION.md` §10 and `docs/MIGRATION.md` "Decisions": which platform apps return first; fonts; Liquid Glass; destinations for Docs/Finance/Maps/social links; `AEVT`/`AEVD` price sources; Intergram target; "Functional key" intent; whether `/account` is exposed; history purge of the public legacy repo.

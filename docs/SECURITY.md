@@ -5,8 +5,9 @@
 | # | Action | Status |
 |---|---|---|
 | 1 | Rotate the legacy database password (`SECRET_EXPOSURE_01`) | Owner — "will rotate separately" |
-| 2 | Revoke both legacy Telegram bot tokens in BotFather (`SECRET_EXPOSURE_02`, `_03`); create a **new** bot for production | Owner |
-| 3 | Review the Mapbox public (`pk.`) token embedded in the legacy `page/contact/script.js` (`SECRET_EXPOSURE_06`, low severity — public tokens are designed to be visible, but must be URL-restricted): restrict or delete it in the Mapbox account. The new site does not embed Mapbox | Owner |
+| 2 | Revoke the legacy Telegram bot tokens in BotFather (`SECRET_EXPOSURE_02`, `_03`, `_08`); create a **new** bot for production | Owner |
+| 2b | **Revoke the Google Gemini API key** embedded in the legacy HesterGPT page (`SECRET_EXPOSURE_07`) and create a new one for the server-side proxy | Owner |
+| 3 | Review the Mapbox public (`pk.`) token embedded in the legacy `page/contact/script.js` (`SECRET_EXPOSURE_06`, low severity — public tokens are designed to be visible, but must be URL-restricted): restrict it by URL in the Mapbox account. Whether v2 keeps a Mapbox map or uses another provider is pending (`MIGRATION.md`) | Owner |
 | 4 | Git-history purge (below) | Planned, needs owner go-ahead |
 
 ## 2. Git-history cleanup / purge (documented task)
@@ -15,10 +16,10 @@ The **public** legacy repository (`EmirTheBest7/aev.platforms`) contains in its 
 
 Checked for *this* repository (`aev.platforms-v2`): the legacy tree was never committed here (`git log --all -- aev.platforms-master` is empty; it is git-ignored). Nothing in this repo's history needs purging for that reason.
 
-Procedure for the legacy repository (owner-run, destructive — requires explicit approval and a backup):
+Procedure for the legacy repository (owner-run, destructive — requires explicit approval and a backup; **this does not delete features from the project**, only sensitive history):
 
 1. Make a private backup clone: `git clone --mirror <url> legacy-backup.git`.
-2. Prefer **archiving or deleting the public repository** if it has no value as open source; otherwise rewrite history with `git filter-repo` (not `filter-branch`): remove paths `_inc/functions.php`, `cron.php`, `_inc/cron.php`, `home/_uploads/`, `home/2be_deleted/`, `home/2be_created/**/config.php`, `test.php`, `script.sh`, and any `*.sql` dumps; or use `--replace-text` for specific literals (do **not** paste the secret values into tickets or chat).
+2. Prefer **archiving or deleting the public repository** if it has no value as open source; otherwise rewrite history with `git filter-repo` (not `filter-branch`): remove paths `_inc/functions.php`, `cron.php`, `_inc/cron.php`, `home/_uploads/`, `home/2be_deleted/`, `home/2be_created/**/config.php`, `home/_api/UI/terminal/Page/valentine/yes_page.php`, `page/hester/script.js` (key), `test.php`, `script.sh`, and any `*.sql` dumps — then re-add cleaned versions of the files that remain part of the project; or use `--replace-text` for specific literals (do **not** paste the secret values into tickets or chat).
 3. Force-push all branches and tags; ask GitHub Support to purge cached views/dangling commits and to disable access to old forks/PR refs (`refs/pull/*`) which still serve removed objects.
 4. Contact forks' owners if forks exist; assume anything ever public may have been scraped — **treat every exposed secret as compromised regardless of the purge**.
 5. Confirm the affected individuals' data (birthdays) is handled according to applicable privacy law; notify them if required.
@@ -64,12 +65,15 @@ Consequences: no inline `<script>`/`<style>`/`style=""`/`on*=`; no third-party h
 
 | ID | Resolution |
 |---|---|
-| `SECRET_EXPOSURE_01–06` | Not migrated; env config; owner rotation (§1) |
+| `SECRET_EXPOSURE_01–09` | Not migrated; env config; owner rotation/revocation (§1). `_09` (Intergram chat id) is public by design of Intergram — value comes from env, owner may prefer a dedicated bot/group |
 | `LOGIC_BUG_01` (always-true host check) | `APP_ENV` from environment; no host comparison anywhere |
 | `RCE_RISK_01` (`eval` include) | Removed; explicit templates only |
-| `INJECTION_SQL_*`, `CRYPTO_WEAK_01` (MD5) | `home/*` not migrated; `core/auth` uses PDO + Argon2id |
+| `INJECTION_SQL_*`, `CRYPTO_WEAK_01` (MD5) | Features are **kept** and rebuilt: `core/auth` (PDO + Argon2id) for accounts; prepared statements via repositories for careers and each app as it returns |
 | `XSS_01/02`, `CSRF_01`, `DOS_01`, `DATA_INTEGRITY_01` | Contact flow redesign (§3); spotlight rewrite in Phase 5 |
-| `DB_DUMP_01`, `PII_EXPOSURE_01/02`, `UPLOAD_01` | Deleted, never migrated |
+| `DB_DUMP_01`, `PII_EXPOSURE_01/02`, `UPLOAD_01` | The sensitive *data* is never committed or copied; the capabilities (backups, birthday notices for consenting users, user hosting, uploads) are re-implemented safely when scheduled |
+| `THIRD_PARTY_RISK_01` (Web4Ukraine redirector) | Not loaded; cause content kept self-hosted |
+| `THIRD_PARTY_RISK_02` (Intergram hidden tracker) | Self-hosted pinned widget, `disableLoadmill: true`; CSP `frame-src` limited to `https://www.intergram.xyz` on the home page only |
+| `INJECTION_SQL_02` (careers `job_url`), `ERROR_DISCLOSURE_01` | Fixed when careers is ported; until then the path is not served |
 | `HEADERS_01`, `REDIRECT_01`, `ROBOTS_01`, `UA_BLOCK_01`, `THIRD_PARTY_01` | §4; explicit routes; static robots; rate limiting instead of UA blocklist; self-hosted assets |
 
 ## 6. Reporting

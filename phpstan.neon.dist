@@ -5,3 +5,6 @@ parameters:
         - config
         - routes
         - public/index.php
+    excludePaths:
+        # Plain-PHP templates receive their variables at render time; they are exercised by tests/Feature.
+        - app/Views

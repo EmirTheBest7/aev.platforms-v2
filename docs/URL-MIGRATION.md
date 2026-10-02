@@ -1,30 +1,36 @@
-# URL migration (draft — finalized in Phase 4)
+# URL migration
 
-New URLs are proposals; the router and `ROUTES.md` are created in Phase 2/4. Redirects are single-hop 301s (no chains). Query-string job URLs are not preserved (the job data source changes).
+Principles: preserve public URLs; **single-hop 301** to the new location; **no 410** for anything being preserved (unbuilt paths answer an honest 404 until rebuilt); canonical form has no trailing slash. Implemented in `routes/legacy.php`; this table is the plan.
 
-| Old URL | New URL | Action | HTTP | Notes |
+Status: ✅ live in v2 · 🟡 planned (page being ported) · ⏳ waiting for the product to return.
+
+| Old URL | New URL | Action | Status | Notes |
 |---|---|---|---|---|
-| `/` | `/` | Serve home directly | 200 | Old: 302/301 to `/page/main/` |
-| `/page/main/` | `/` | Redirect | 301 | Also listed in old sitemap |
-| `/page/contact/` | `/contact/` | Redirect | 301 | In old sitemap |
-| `/page/careers/` | `/careers/` | Redirect | 301 | Old index redirected to `list/` |
-| `/page/careers/list/` | `/careers/` | Redirect | 301 | In old sitemap |
-| `/page/careers/desc/?job_url=*` | `/careers/` | Redirect | 301 | IDs were DB-backed; unrecoverable |
-| `/page/downloads/` | `/brand/` | Redirect | 301 | Brand assets page |
-| `/page/downloads/logo/*` | `/assets/brand/*` | Redirect (same filenames) | 301 | Keep stable logo URLs — may be hotlinked externally |
-| `/page/updates/` | `/journal/` | Redirect | 301 | |
-| `/page/investor-relations/` | `/investors/` | Redirect (if kept) | 301 | Owner decision |
-| `/page/legal/` | `/legal/` | Redirect | 301 | |
-| `/page/history/` | `/about/` | Redirect | 301 | Merged into About |
-| `/page/services/` | `/services/` | Redirect | 301 | |
-| `/page/services/pragueflow/` | `/projects/pragueflow/` | Redirect | 301 | |
-| `/page/hester/` | `/` (or bot link) | Redirect | 301 | Depends on bot liveness |
-| `/page/maps/`, `/page/empty/` | `/` | Gone | 410 | Coming-soon stubs |
-| `/page/design_store/**`, `/page/DC25/`, `/page/qirimcz/`, `/page/material/`, `/page/universal/` | — | Gone (or redirect to `/` for DC25 if kept) | 410 | No inbound references |
-| `/home/auth/` | `/account/login` (staff only) or gone | Redirect/410 | 301/410 | Owner decision |
-| `/home/auth/reset/` | gone | 410 | 410 | Was in sitemap — remove |
-| `/home/timeline/`, `/home/messenger/`, `/home/videos/`, `/home/profile/`, `/home/store/`, `/home/wallet/`, `/home/studio/**`, `/home/finance/`, `/home/_api/**` | — | Gone | 410 | Archived/unrebuilt platform |
-| `/@<nick>` | — | Gone | 410 | Profiles not migrated |
-| `/robots.txt` | `/robots.txt` | Static file | 200 | Was a 301 to PHP |
-| `/sitemap.xml` | `/sitemap.xml` | Generated static | 200 | |
-| `/manifest.json` | `/manifest.webmanifest` | Redirect | 301 | Icons use relative paths |
+| `/` (was 301 → `/page/main/`) | `/` | serve | ✅ | |
+| `/page/main/` | `/` | 301 | ✅ | |
+| `/page/contact/` | `/contact` | 301 | ✅ | map + fish pending |
+| `/page/careers/`, `/page/careers/list/` | `/careers` | 301 | 🟡 | |
+| `/page/careers/desc/?job_url=<token>` | `/careers/<token>` | 301 (token preserved) | 🟡 | **SQL-injection site — port with prepared statements.** Job rows live in the DB, not the repo |
+| `/page/careers/team/` | `/careers/team` | 301 | 🟡 | |
+| `/page/downloads/` | `/downloads` | 301 | 🟡 | |
+| `/page/downloads/logo/*`, `/page/downloads/docs/*` | `/assets/brand/*`, `/downloads/docs/*` | 301 (same file names) | 🟡 | logos may be hot-linked externally |
+| `/page/updates/` | `/journal` | 301 | 🟡 | launcher "Journal" |
+| `/page/investor-relations/` | `/investor-relations` | 301 | 🟡 | |
+| `/page/services/`, `/page/services/pragueflow/` | `/services`, `/services/pragueflow` | 301 | 🟡 | |
+| `/page/hester/`, `/page/hester/avrora/`, `/page/hester/1o/` | `/hester`, `/hester/avrora`, `/hester/1o` | 301 | 🟡 | AI endpoints server-side |
+| `/page/maps/` | `/maps` | 301 | ⏳ | INCOMPLETE app |
+| `/page/design_store/**` | `/store-concept/**` | 301 | ⏳ | |
+| `/page/DC25/`, `/page/qirimcz/` | `/events/dc25`, `/events/qirimcz` | 301 | 🟡 | archive pages |
+| `/page/material/`, `/page/universal/`, `/page/history/`, `/page/legal/`, `/page/empty/` | same slugs without `/page` | 301 | 🟡 | `empty` = designed pending state |
+| `/home/auth/`, `/home/auth/reset/` | `/account/login`, `/account/reset` | 301 | ⏳ | do not index |
+| `/home/timeline/**` (Space) | `/space/**` | 301 | ⏳ | |
+| `/home/profile/?nickname=` and `/@<nick>` | `/@<nick>` | keep | ⏳ | |
+| `/home/messenger/`, `/home/videos/`, `/home/store/`, `/home/wallet/`, `/home/studio/**`, `/home/finance/` | `/messenger`, `/videos`, `/store`, `/wallet`, `/studio/**`, `/finance` | 301 | ⏳ | per `MIGRATION.md` order |
+| `/home/_api/UI/**` (terminal) | `/terminal/**` | 301 | ⏳ | pages/tools/admin/games |
+| `/home/_api/UI/?0x=<code>` (error pages) | rendered by the error handler | — | ✅ | |
+| `/home/_api/UI/?Page=4ukraine` | `/4ukraine` | 301 | 🟡 | |
+| `/home/_api/Docs/**` | `DOCS_URL` or `/docs` | 301 | ⏳ | `docs.aliev.io` does not resolve |
+| `/robots.txt` | `/robots.txt` (static) | serve | 🟡 | |
+| `/sitemap.xml` | generated | serve | 🟡 | exclude auth/reset |
+| `/manifest.json` | `/manifest.webmanifest` | 301 | 🟡 | icons relative |
+| `/.well-known/brave-rewards-verification.txt` | same | serve | 🟡 | owner's Brave verification file |

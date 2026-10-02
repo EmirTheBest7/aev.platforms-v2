@@ -126,8 +126,9 @@ final class SiteTest extends TestCase
         self::assertSame(301, $r->status);
         self::assertSame('/', $r->header('Location'));
         self::assertSame(301, $this->get($app, '/page/contact')->status);
-        self::assertSame(410, $this->get($app, '/home/auth/')->status);
-        self::assertSame(410, $this->get($app, '/home/_uploads/anything')->status);
+        // Preserved-but-not-yet-rebuilt products are NOT declared gone: honest 404, never 410.
+        self::assertSame(404, $this->get($app, '/home/auth/')->status);
+        self::assertSame(404, $this->get($app, '/home/timeline')->status);
     }
 
     public function testTrailingSlashIsCanonicalisedWithASingleHop(): void

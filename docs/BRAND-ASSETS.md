@@ -32,13 +32,17 @@ Monochrome note: every SVG is white. A dark-on-light variant does not exist in t
 
 Each set contains `favicon.ico` and `apple-touch-icon` 57 – 180 px. The legacy PWA icons (`_assets/icon/pwa/{android,ios,windows11}`) are of the season3 look and are migrated with the PWA manifest in Phase 5 (only if install behaviour is verified to work).
 
-## Fonts — `public/assets/fonts/`
+## Fonts — `public/assets/fonts/` and the legacy tree
 
-| File | Licence | Notes |
-|---|---|---|
-| `Doto-latin.woff2` | SIL OFL 1.1 (`Doto-OFL.txt`) | Display/dot-matrix; replaces Ndot-55 |
+| File | Licence | Where | Status |
+|---|---|---|---|
+| `Doto-latin.woff2` (v2) | SIL OFL 1.1 (`Doto-OFL.txt`) | Display/dot-matrix role | **Interim** stand-in for Ndot-55 |
+| `Ndot-55.otf` (legacy `_assets/fonts`) | Nothing brand notice — restricted | Settings heading, clock date readout | **Kept untouched in the legacy tree.** Owner decides (license / permission / replace) |
+| `DotlineBold.ttf` (legacy) | Unknown | Unreferenced — possible link to the "my own font" idea | Kept; `Purpose unclear — requires owner review` |
+| `SF-Pro.ttf` (legacy) | Apple — web self-hosting not permitted | Committed deliberately (2024-09-09); only `font-family` fallback names reference it | Kept in the legacy tree; not shipped by v2; owner review |
+| `Roboto-Thin-latin.woff2` (v2, staged) | SIL OFL (Roboto) | Calculator widget (the legacy widget loaded it from Google Fonts) | Staged for the widget port |
 
-**Not migrated:** `Ndot-55.otf` (Nothing brand licence), `SF-Pro.ttf` (Apple licence; unreferenced), `DotlineBold.ttf` (unreferenced, licence unknown).
+Nothing was deleted. See `DESIGN-SYSTEM.md` ("Fonts — status") for the evidence trail.
 
 ## Other brand imagery (pending Phase 4)
 
