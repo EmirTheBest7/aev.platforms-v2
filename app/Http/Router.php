@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http;
 
 /**
- * Exact-match router with explicit redirect and "gone" tables for legacy URLs, plus single-segment
+ * Exact-match router with an explicit redirect table for legacy URLs, plus single-segment
  * `{name}` parameters (`/careers/{slug}`); exact routes always win over parameterised ones.
  * Handlers are `callable(Request, array<string, string>): Response` (the parameter array is empty for exact routes).
  */
@@ -19,9 +19,6 @@ final class Router
 
     /** @var array<string, array{0: string, 1: int}> */
     private array $redirects = [];
-
-    /** @var array<string, true> */
-    private array $gone = [];
 
     /** @param callable(Request, array<string, string>): Response $handler */
     public function get(string $path, callable $handler): void
@@ -70,14 +67,6 @@ final class Router
         }
     }
 
-    /** @param list<string> $paths path prefixes answered with 410 Gone */
-    public function gone(array $paths): void
-    {
-        foreach ($paths as $path) {
-            $this->gone[Request::normalizePath($path)] = true;
-        }
-    }
-
     public function dispatch(Request $request): Response
     {
         $path = $request->path;
@@ -86,12 +75,6 @@ final class Router
             [$to, $status] = $this->redirects[$path];
 
             return Response::redirect($to, $status);
-        }
-
-        foreach (array_keys($this->gone) as $prefix) {
-            if ($path === $prefix || str_starts_with($path, $prefix . '/')) {
-                throw new HttpException(410);
-            }
         }
 
         $handler = $this->routes[$request->method][$path] ?? null;

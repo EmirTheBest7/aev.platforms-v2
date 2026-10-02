@@ -79,11 +79,9 @@ final class SiteTest extends TestCase
         return [
             '_csrf' => $csrf,
             '_ts' => (new Signer(self::KEY))->sign((string) (time() - 30)),
-            'name' => 'Ada Lovelace',
-            'email' => 'ada@example.com',
-            'company' => 'Analytical Engines',
-            'services' => ['web', 'ai'],
-            'message' => 'We would like a new website and some automation.',
+            'contact_email' => 'ada@example.com',
+            'contact_subject' => 'A new website',
+            'contact_message' => 'We would like a new website and some automation.',
             'website' => '',
         ];
     }
@@ -206,7 +204,12 @@ final class SiteTest extends TestCase
         self::assertMatchesRegularExpression('/name="_csrf" value="[0-9a-f]{64}"/', $r->body());
         self::assertStringContainsString('name="_ts"', $r->body());
         self::assertStringContainsString('name="website"', $r->body());
-        self::assertSame(1, preg_match_all('/<label for="/', $r->body()) > 3 ? 1 : 0, 'inputs have labels');
+        foreach (['contact_email', 'contact_subject', 'contact_message'] as $field) {
+            self::assertMatchesRegularExpression('/<(input|textarea)[^>]*aria-label="[^"]+"[^>]*name="' . $field . '"/', $r->body(), $field . ' is labelled');
+        }
+        self::assertDoesNotMatchRegularExpression('/data-mapbox-token/', $r->body(), 'no token configured: no map');
+        self::assertStringNotContainsString('mapbox-gl.js', $r->body());
+        self::assertStringNotContainsString('api.mapbox.com', (string) $r->header('Content-Security-Policy'));
     }
 
     public function testValidSubmissionIsPersistedNotifiedAndRedirected(): void
@@ -215,10 +218,10 @@ final class SiteTest extends TestCase
         $r = $this->post($app, $this->validForm($app));
 
         self::assertSame(303, $r->status);
-        self::assertSame('/contact#sent', $r->header('Location'));
+        self::assertSame('/contact', $r->header('Location'));
         self::assertCount(1, $this->notifier->sent);
         self::assertStringContainsString('ada@example.com', $this->notifier->sent[0]);
-        self::assertStringContainsString('Websites & web apps, AI-assisted tooling', $this->notifier->sent[0]);
+        self::assertStringContainsString('Subject: A new website', $this->notifier->sent[0]);
 
         $file = (string) glob($this->storage . '/leads/*.jsonl')[0];
         $row = json_decode((string) file_get_contents($file), true);
@@ -282,7 +285,7 @@ final class SiteTest extends TestCase
             $form['_ts'] = is_int($stamp) ? $signer->sign((string) $stamp) : 'forged.value';
             $r = $this->post($app, $form);
             self::assertSame(303, $r->status);
-            self::assertSame('/contact#form', $r->header('Location'));
+            self::assertSame('/contact', $r->header('Location'));
         }
         self::assertSame([], $this->notifier->sent);
     }
@@ -291,15 +294,26 @@ final class SiteTest extends TestCase
     {
         $app = $this->app();
         $form = $this->validForm($app);
-        $form['email'] = '"><script>alert(1)</script>';
-        $form['name'] = '<b>Bob</b>';
+        $form['contact_email'] = '"><script>alert(1)</script>';
+        $form['contact_subject'] = '<b>Bob</b>';
         $r = $this->post($app, $form);
 
-        self::assertSame('/contact#form', $r->header('Location'));
+        self::assertSame('/contact', $r->header('Location'));
         $page = $this->get($app, '/contact')->body();
         self::assertStringContainsString('valid email', $page);
         self::assertStringNotContainsString('<script>alert(1)</script>', $page);
         self::assertSame([], $this->notifier->sent);
+    }
+
+    public function testMapboxTokenComesFromConfigurationAndWidensCspOnlyForThisPage(): void
+    {
+        $app = $this->app(['integrations' => ['mapbox_token' => 'pk.test-token-from-config']]);
+        $r = $this->get($app, '/contact');
+        self::assertStringContainsString('data-mapbox-token="pk.test-token-from-config"', $r->body());
+        self::assertStringContainsString('/assets/vendor/mapbox-gl/mapbox-gl.js', $r->body());
+        self::assertStringContainsString('https://api.mapbox.com', (string) $r->header('Content-Security-Policy'));
+        self::assertStringNotContainsString('api.mapbox.com', (string) $this->get($app, '/')->header('Content-Security-Policy'));
+        self::assertStringNotContainsString('pk.', (string) file_get_contents(dirname(__DIR__, 2) . '/public/assets/js/contact.js'), 'no token in the script');
     }
 
     public function testRateLimitReturns429(): void
@@ -327,7 +341,7 @@ final class SiteTest extends TestCase
         $app = $this->app();
         $r = $this->post($app, $this->validForm($app));
 
-        self::assertSame('/contact#sent', $r->header('Location'));
+        self::assertSame('/contact', $r->header('Location'));
         self::assertCount(1, glob($this->storage . '/leads/*.jsonl') ?: []);
     }
 

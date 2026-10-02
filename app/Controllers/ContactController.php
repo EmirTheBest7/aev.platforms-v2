@@ -30,6 +30,8 @@ final class ContactController
         private readonly LeadStore $leads,
         private readonly Notifier $notifier,
         private readonly Logger $logger,
+        private readonly string $mapboxToken,
+        private readonly string $contactEmail,
     ) {}
 
     public function show(Request $request): Response
@@ -58,11 +60,9 @@ final class ContactController
         }
 
         $result = $this->validator->validate(
-            $request->input('name'),
-            $request->input('email'),
-            $request->input('company'),
-            $request->inputList('services'),
-            $request->input('message'),
+            $request->input('contact_email'),
+            $request->input('contact_subject'),
+            $request->input('contact_message'),
         );
         if ($result['errors'] !== []) {
             return $this->fail($result['errors'], $result['data']);
@@ -76,10 +76,8 @@ final class ContactController
             'created_at' => gmdate('c'),
             'source' => 'contact',
             'who' => $guard['who'],
-            'name' => $data['name'],
             'email' => $data['email'],
-            'company' => $data['company'],
-            'services' => $data['services'],
+            'subject' => $data['subject'],
             'message' => $data['message'],
         ]);
         if (!$stored) {
@@ -101,14 +99,24 @@ final class ContactController
      */
     private function page(array $tokens, array $state): Response
     {
-        $html = $this->view->render('pages/contact', $state + $tokens + ['services' => ContactValidator::SERVICES], [
-            'title' => 'Contact | ΛΞV',
-            'description' => 'Tell us about your project — ALIEV.IO is a digital studio building websites, platforms and automation.',
+        $mapboxToken = $this->mapboxToken;
+        $html = $this->view->render('pages/contact', $state + $tokens + ['mapboxToken' => $mapboxToken, 'email' => $this->contactEmail, 'navbar' => ['backHref' => '/', 'backIcon' => 'uil-estate']], [
+            'title' => 'ΛΞV | Contact',
+            'description' => 'Contact ΛΞV — tell us about your project.',
             'path' => '/contact',
             'bodyClass' => 'page-contact',
-        ]);
+            'styles' => ['/assets/css/contact-fonts.css', '/assets/css/core.css', '/assets/vendor/mapbox-gl/mapbox-gl.css', '/assets/css/contact.css'],
+            'scripts' => $mapboxToken === '' ? ['/assets/js/contact.js'] : ['/assets/vendor/mapbox-gl/mapbox-gl.js', '/assets/js/contact.js'],
+        ], 'page');
+        $response = (new Response($html))->withHeader('Cache-Control', 'no-store');
 
-        return (new Response($html))->withHeader('Cache-Control', 'no-store');
+        // Mapbox GL needs its tile/event hosts, blob workers and data/blob images — only on this page, only with a token.
+        return $mapboxToken === '' ? $response : $response->withCsp([
+            'connect-src' => "'self' https://api.mapbox.com https://events.mapbox.com",
+            'img-src' => "'self' data: blob: https://api.mapbox.com",
+            'worker-src' => "'self' blob:",
+            'child-src' => 'blob:',
+        ]);
     }
 
     /**
@@ -117,28 +125,24 @@ final class ContactController
      */
     private function fail(array $errors, array $old = []): Response
     {
-        $_SESSION[self::FLASH_KEY] = ['errors' => $errors, 'old' => array_intersect_key($old, array_flip(['name', 'email', 'company', 'services', 'message']))];
+        $_SESSION[self::FLASH_KEY] = ['errors' => $errors, 'old' => array_intersect_key($old, array_flip(['email', 'subject', 'message']))];
 
-        return Response::redirect('/contact#form');
+        return Response::redirect('/contact');
     }
 
     private function redirectSent(string $reference): Response
     {
         $_SESSION[self::FLASH_KEY] = ['reference' => $reference];
 
-        return Response::redirect('/contact#sent');
+        return Response::redirect('/contact');
     }
 
-    /** @param array{name: string, email: string, company: string, services: list<string>, message: string} $data */
+    /** @param array{email: string, subject: string, message: string} $data */
     private function summary(string $reference, array $data): string
     {
-        $labels = array_map(static fn(string $s): string => ContactValidator::SERVICES[$s] ?? $s, $data['services']);
-
-        return "New request {$reference}\n"
-            . 'Name: ' . $data['name'] . "\n"
+        return "[ New Contact Request {$reference} ]\n\n"
             . 'Email: ' . $data['email'] . "\n"
-            . ($data['company'] !== '' ? 'Company: ' . $data['company'] . "\n" : '')
-            . 'Services: ' . ($labels === [] ? '—' : implode(', ', $labels)) . "\n\n"
-            . $data['message'];
+            . 'Subject: ' . $data['subject'] . "\n\n"
+            . 'Message: ' . $data['message'];
     }
 }

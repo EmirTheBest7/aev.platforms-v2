@@ -171,7 +171,7 @@ final class Application
         $routes = require $this->root . '/routes/web.php';
         $routes($this->router, [
             'home' => fn(): HomeController => new HomeController($this->view, $this->config, new AppCatalog($this->config), $this->guard()),
-            'contact' => fn(): ContactController => new ContactController($this->view, $this->guard(), new ContactValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
+            'contact' => fn(): ContactController => new ContactController($this->view, $this->guard(), new ContactValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger, $this->config->string('integrations.mapbox_token'), $this->config->string('integrations.destinations.email')),
             'hire' => fn(): HireController => new HireController($this->guard(), new HireValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
             'api' => fn(): ApiController => new ApiController($this->priceService()),
             'widgets' => fn(): WidgetController => new WidgetController($this->view),

@@ -12,6 +12,9 @@ use App\Support\Env;
 return [
     'auth_enabled' => Env::bool('AUTH_ENABLED', false),
 
+    // Public (pk.) token of the Contact page map; restrict it by URL in the Mapbox dashboard. Empty = no map.
+    'mapbox_token' => Env::get('MAPBOX_TOKEN', ''),
+
     'intergram' => [
         'chat_id' => Env::get('INTERGRAM_CHAT_ID', ''),
         'server' => 'https://www.intergram.xyz',
