@@ -324,3 +324,6 @@ h1, h2, h3, h4, h5, h6 {
   left: 17px;
   color: white;
 }
+/* Former inline styles of the original markup (the CSP forbids style=""). */
+.job-logo { max-width: 128px; border-radius: 30px; }
+.apply-mail { background: #073B4C; color: white; }

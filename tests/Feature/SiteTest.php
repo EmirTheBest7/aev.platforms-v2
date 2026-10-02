@@ -115,7 +115,10 @@ final class SiteTest extends TestCase
     {
         $html = $this->get($this->app(), '/')->body();
         self::assertStringNotContainsStringIgnoringCase('hester', $html);
-        self::assertStringContainsString('slider--item-left', $html, 'the carousel keeps its three visible slots');
+        self::assertStringNotContainsStringIgnoringCase('avrora', $html);
+        foreach (['slider--item-left', 'slider--item-center', 'slider--item-right'] as $slot) {
+            self::assertSame(1, substr_count($html, $slot . '"'), "the carousel keeps exactly one $slot");
+        }
     }
 
     public function testAssetsAreCacheBustedWithTheFileModificationTime(): void

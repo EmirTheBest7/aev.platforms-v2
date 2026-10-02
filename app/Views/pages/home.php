@@ -91,18 +91,6 @@
                   <li class="slider--item slider--item-right">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/assets/images/home/AVRORA.jpeg" alt="Avrora">
-                      </div>
-                      <p class="slider--item-title">Avrora 🎨 [SOON]</p>
-                      <p class="slider--item-description">
-                        Your creative AI artist. Bring your imagination to life
-                      </p>
-                    </a>
-                  </li>
-                  
-                  <li class="slider--item">
-                    <a>
-                      <div class="slider--item-image">
                         <img src="/assets/images/home/work-alex-nowak.jpg" alt="Dreamers">
                       </div>
                       <p class="slider--item-title">Dreamers</p>
@@ -173,7 +161,7 @@
             <div class="about">
               <div class="about--banner">
                 <h2>We<br>believe in<br>passionate<br>people</h2>
-                <a href="/" data-soon="Careers">Career
+                <a href="/careers">Career
                   <span>
                     <svg version="1.1" id="Layer_1" 
                        x="0px" y="0px" viewBox="0 0 150 118"
@@ -189,7 +177,7 @@
                 <?= $view->partial('partials/widgets/room') ?>
               </div>
               <div class="about--options">
-                <a href="/" data-soon="Our Team">
+                <a href="/careers/team">
                   <h3>Our Team</h3>
                 </a>
                 <a>

@@ -29,6 +29,7 @@ services:
       DB_USERNAME: ${DB_USERNAME:-aliev}
       DB_PASSWORD: ${DB_PASSWORD:-dev-only-change-me}
       AUTH_ENABLED: "true"
+      SEED_DEV_DATA: "true"      # fictional sample job postings (database/seeds), development only
     depends_on:
       db:
         condition: service_healthy

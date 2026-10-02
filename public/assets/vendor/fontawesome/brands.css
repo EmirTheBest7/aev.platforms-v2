@@ -1,0 +1,22 @@
+/* Font Awesome Free 6.5.2 — brand icons used by the team page (x-twitter, linkedin-in, instagram).
+   Icons: CC BY 4.0 · Font: SIL OFL 1.1 · Code: MIT — https://fontawesome.com/license/free */
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/assets/vendor/fontawesome/fa-brands-400.woff2") format("woff2");
+}
+.fa-brands {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-family: "Font Awesome 6 Brands";
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  text-rendering: auto;
+}
+.fa-x-twitter::before { content: "\e61b"; }
+.fa-linkedin-in::before { content: "\f0e1"; }
+.fa-instagram::before { content: "\f16d"; }

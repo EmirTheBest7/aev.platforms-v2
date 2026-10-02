@@ -220,3 +220,7 @@ body {
   background: #0073b1;
   color: white;
 }
+/* Former inline styles / dead-link markup of the original page (the CSP forbids style=""). */
+.filter-divider { border-left: 1px solid #000; }
+.comp-filter li a[role="button"] { cursor: pointer; }
+.actions-menu a[aria-disabled="true"] { cursor: default; }

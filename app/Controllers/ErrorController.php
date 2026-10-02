@@ -18,6 +18,7 @@ final class ErrorController
         413 => ['Request too large', 'The request was larger than we accept.'],
         422 => ['Invalid request', 'The request could not be processed. Please check it and try again.'],
         429 => ['Too many requests', 'Please wait a little while before trying again.'],
+        503 => ['Temporarily unavailable', 'This page cannot be shown right now. Please try again shortly.'],
         500 => ['Something went wrong', 'An unexpected error occurred on our side. Please try again shortly.'],
     ];
 

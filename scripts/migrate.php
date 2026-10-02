@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /**
  * Applies database/migrations/*.sql in order, once each (tracked in `schema_migrations`).
+ * With SEED_DEV_DATA=true (never in production) it also applies database/seeds/*.sql — fictional development data.
  * Usage:  php scripts/migrate.php          (reads DB_* from the environment or .env)
  * Exit codes: 0 ok · 1 failure.  Statements are split on ";" at end of line (no ";" inside literals).
  */
@@ -72,3 +73,22 @@ foreach ($files as $file) {
 }
 
 echo $applied === 0 ? "database is up to date\n" : "done ({$applied} applied)\n";
+
+if (Env::bool('SEED_DEV_DATA', false) && Env::get('APP_ENV', 'production') !== 'production') {
+    $seeds = glob(dirname(__DIR__) . '/database/seeds/*.sql') ?: [];
+    sort($seeds);
+    foreach ($seeds as $file) {
+        try {
+            foreach (preg_split('/;\s*\n/', (string) file_get_contents($file)) ?: [] as $statement) {
+                $statement = trim((string) preg_replace('/^\s*--.*$/m', '', $statement));
+                if ($statement !== '') {
+                    $pdo->exec($statement);
+                }
+            }
+        } catch (Throwable $e) {
+            fwrite(STDERR, 'Seed ' . basename($file) . ' failed: ' . $e->getMessage() . "\n");
+            exit(1);
+        }
+        echo 'seeded ' . basename($file) . "\n";
+    }
+}

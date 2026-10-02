@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Controllers\ApiController;
+use App\Controllers\CareersController;
 use App\Controllers\ContactController;
 use App\Controllers\ErrorController;
 use App\Controllers\HireController;
@@ -14,6 +15,7 @@ use App\Http\HttpException;
 use App\Http\Request;
 use App\Http\Response;
 use App\Http\Router;
+use App\Models\JobRepository;
 use App\Security\ClientIp;
 use App\Security\FormGuard;
 use App\Security\RateLimiter;
@@ -37,6 +39,7 @@ use App\Support\View;
 use App\Validation\ContactValidator;
 use App\Validation\HireValidator;
 use Core\Auth\Config\AuthConfig;
+use Core\Auth\Database\PdoConnection;
 use Core\Auth\Security\CsrfProtection;
 use Core\Auth\Security\TokenGenerator;
 use Core\Auth\Session\SessionManager;
@@ -65,9 +68,10 @@ final class Application
     private ?AuthConfig $authConfig = null;
     private ?SessionManager $session = null;
     private ?CsrfProtection $csrf = null;
+    private ?\PDO $pdo = null;
     private ?HttpClient $http = null;
 
-    /** @param array{notifier?: Notifier, http?: HttpClient} $overrides */
+    /** @param array{notifier?: Notifier, http?: HttpClient, pdo?: \PDO} $overrides */
     public function __construct(
         private readonly string $root,
         ?Config $config = null,
@@ -171,6 +175,7 @@ final class Application
             'hire' => fn(): HireController => new HireController($this->guard(), new HireValidator(), new LeadStore($this->storage . '/leads'), $this->notifier(), $this->logger),
             'api' => fn(): ApiController => new ApiController($this->priceService()),
             'widgets' => fn(): WidgetController => new WidgetController($this->view),
+            'careers' => fn(): CareersController => new CareersController($this->view, new JobRepository($this->pdo()), $this->logger, $this->config->string('integrations.destinations.email')),
         ]);
     }
 
@@ -205,6 +210,21 @@ final class Application
     private function authConfig(): AuthConfig
     {
         return $this->authConfig ??= new AuthConfig(sessionName: 'aliev_session', sessionLifetimeSeconds: 3600, sessionCookieSecure: $this->secureUrl);
+    }
+
+    /**
+     * The one database connection (lazy: pages that do not need the database never open it).
+     * A connection failure surfaces as PDOException; controllers log it and answer with a generic 503.
+     */
+    private function pdo(): \PDO
+    {
+        return $this->pdo ??= $this->overrides['pdo'] ?? PdoConnection::forMysql(
+            $this->config->string('database.host'),
+            $this->config->string('database.database'),
+            $this->config->string('database.username'),
+            $this->config->string('database.password'),
+            $this->config->int('database.port', 3306),
+        )->connect();
     }
 
     private function http(): HttpClient

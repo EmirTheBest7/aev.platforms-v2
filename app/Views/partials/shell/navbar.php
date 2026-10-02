@@ -105,7 +105,7 @@ $docsAttrs = static fn(string $name): string => $docsSoon
         <div class="Navbar-menu-minor">
           <ul>
             <li><a<?= $pending('Store') ?>>Store</a></li>
-            <li><a<?= $pending('Careers') ?>>Careers</a></li>
+            <li><a href="/careers">Careers</a></li>
             <li><a<?= $pending('Downloads') ?>>Downloads</a></li>
           </ul>
           <ul>

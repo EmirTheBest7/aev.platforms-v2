@@ -1,3 +1,5 @@
+// Careers list: search + company filter. Port of the original page/careers/list/script.js (behaviour unchanged;
+// inline handlers replaced by listeners below, search text escaped before it enters a selector).
 // CODE FOR Search OR filter
 
 function filterSearch(){
@@ -5,7 +7,9 @@ function filterSearch(){
     if(!search){
       $(".uk-search-input").eq(0).attr("uk-filter-control", "");
     }else{
-      $(".uk-search-input").eq(0).attr("uk-filter-control", "filter: [data-name*='" + search + "']");
+      // the text is used inside a CSS attribute selector: escape the characters that could end it
+      var safe = search.replace(/[\\'\]]/g, "\\$&");
+      $(".uk-search-input").eq(0).attr("uk-filter-control", "filter: [data-name*='" + safe + "']");
     }
     $(".uk-search-input").eq(0).click();
   }
@@ -37,3 +41,8 @@ function filterSearch(){
     $(".uk-search-input").eq(0).val('').attr("uk-filter-control", "");
   }
   
+
+// Event wiring (the original used inline onkeyup/onclick/onsubmit attributes, which the CSP forbids)
+$(".uk-search-input").on("keyup", filterSearch);
+$("[data-reset-search]").on("click", resetSearchBar);
+$("[data-search-form]").on("submit", function (event) { event.preventDefault(); });

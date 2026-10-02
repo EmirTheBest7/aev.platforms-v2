@@ -19,6 +19,10 @@ return static function (Router $router, array $make): void {
 
     $router->post('/hire', static fn(Request $r) => $make['hire']()->submit($r));
 
+    $router->get('/careers', static fn(Request $r) => $make['careers']()->index($r));
+    $router->get('/careers/team', static fn(Request $r) => $make['careers']()->team($r));
+    $router->get('/careers/{slug}', static fn(Request $r, array $p) => $make['careers']()->show($r, $p));
+
     $router->get('/api/prices', static fn(Request $r) => $make['api']()->prices($r));
 
 
