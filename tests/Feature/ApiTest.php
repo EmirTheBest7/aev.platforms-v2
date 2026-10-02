@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Application;
-use App\Http\Request;
-use App\Http\Response;
-use App\Services\DomainLookup;
-use App\Services\Notifier\Notifier;
-use App\Support\Config;
+use Api\Terminal\DomainLookup;
+use Core\Application;
+use Core\Helpers\Config;
+use Core\Routing\Request;
+use Core\Routing\Response;
+use Core\Services\Notifier\Notifier;
 use PHPUnit\Framework\TestCase;
 
 final class ApiTest extends TestCase

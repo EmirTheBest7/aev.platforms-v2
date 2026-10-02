@@ -15,8 +15,7 @@ final readonly class Permission
     public function __construct(
         public string $key,           // e.g. "posts.delete"
         public ?string $label = null, // human readable label
-    ) {
-    }
+    ) {}
 
     public function equals(Permission|string $other): bool
     {

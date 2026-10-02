@@ -18,6 +18,5 @@ final readonly class LoginData
         public string $password,
         public string $ipAddress,
         public ?string $userAgent = null,
-    ) {
-    }
+    ) {}
 }

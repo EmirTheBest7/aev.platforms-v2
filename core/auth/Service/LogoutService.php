@@ -15,8 +15,7 @@ final class LogoutService
     public function __construct(
         private readonly SessionHandlerInterface $session,
         private readonly AuditLoggerInterface $auditLogger,
-    ) {
-    }
+    ) {}
 
     public function logout(string $ipAddress, ?string $userAgent = null): void
     {

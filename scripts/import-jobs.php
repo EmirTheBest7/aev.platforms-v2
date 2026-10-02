@@ -13,9 +13,9 @@ declare(strict_types=1);
  * Job content belongs to the owner: nothing is shipped with the repository.
  */
 
-use App\Models\JobRepository;
-use App\Support\Env;
-use Core\Auth\Database\PdoConnection;
+use Website\Careers\JobRepository;
+use Core\Helpers\Env;
+use Core\Database\PdoConnection;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 Env::load(dirname(__DIR__) . '/.env');

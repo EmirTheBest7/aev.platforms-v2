@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\Env;
+use Core\Helpers\Env;
 
 return [
     'driver' => Env::get('NOTIFY_DRIVER', 'log'),

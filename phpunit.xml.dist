@@ -11,6 +11,10 @@
         <testsuite name="feature"><directory>tests/Feature</directory></testsuite>
     </testsuites>
     <source>
-        <include><directory>app</directory></include>
+        <include>
+            <directory>core</directory>
+            <directory>website</directory>
+            <directory>api</directory>
+        </include>
     </source>
 </phpunit>

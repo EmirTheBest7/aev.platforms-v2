@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Application;
-use App\Http\Request;
-use App\Http\Response;
-use App\Security\Signer;
-use App\Support\Config;
-use Core\Auth\Database\PdoConnection;
+use Core\Application;
+use Core\Database\PdoConnection;
+use Core\Helpers\Config;
+use Core\Routing\Request;
+use Core\Routing\Response;
+use Core\Security\Signer;
 use PDO;
 use PHPUnit\Framework\TestCase;
 

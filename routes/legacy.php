@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Http\Request;
-use App\Http\Response;
-use App\Http\Router;
-use App\Models\JobRepository;
+use Core\Routing\Request;
+use Core\Routing\Response;
+use Core\Routing\Router;
+use Website\Careers\JobRepository;
 
 /**
  * Legacy (aev.platforms-master) public URLs. Single-hop 301s only, and only

@@ -30,6 +30,8 @@ use Core\Auth\Service\RegistrationService;
 use Core\Auth\Session\SessionManager;
 use Core\Auth\Validation\LoginValidator;
 use Core\Auth\Validation\RegistrationValidator;
+use Core\Database\DatabaseDriver;
+use Core\Database\PdoConnection;
 use PDO;
 
 /**

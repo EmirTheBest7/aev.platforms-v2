@@ -14,9 +14,7 @@ use Core\Auth\Exception\ValidationException;
  */
 final class RegistrationValidator
 {
-    public function __construct(private readonly AuthConfig $config)
-    {
-    }
+    public function __construct(private readonly AuthConfig $config) {}
 
     /**
      * @throws ValidationException if any field fails validation.

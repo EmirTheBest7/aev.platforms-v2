@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Core\Auth\Repository;
 
 use Core\Auth\Contracts\UserRepositoryInterface;
-use Core\Auth\Database\DatabaseDriver;
 use Core\Auth\DTO\AuthenticatedUser;
 use Core\Auth\Value\Role;
+use Core\Database\DatabaseDriver;
 use DateTimeImmutable;
 use PDO;
 
@@ -197,6 +197,6 @@ final class UserRepository implements UserRepositoryInterface
         $stmt = $this->pdo->prepare('SELECT role FROM user_roles WHERE user_id = :id ORDER BY role');
         $stmt->execute(['id' => $userId]);
 
-        return array_map(static fn (mixed $key): Role => new Role((string) $key), $stmt->fetchAll(PDO::FETCH_COLUMN));
+        return array_values(array_map(static fn(mixed $key): Role => new Role((string) $key), $stmt->fetchAll(PDO::FETCH_COLUMN)));
     }
 }

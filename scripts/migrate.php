@@ -9,8 +9,8 @@ declare(strict_types=1);
  * Exit codes: 0 ok · 1 failure.  Statements are split on ";" at end of line (no ";" inside literals).
  */
 
-use App\Support\Env;
-use Core\Auth\Database\PdoConnection;
+use Core\Helpers\Env;
+use Core\Database\PdoConnection;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 Env::load(dirname(__DIR__) . '/.env');

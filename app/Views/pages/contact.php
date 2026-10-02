@@ -3,7 +3,7 @@
  * Contact page (port of the original page/contact): map + locations on the left, the form on the right.
  *
  * @var callable(mixed): string $e
- * @var \App\Support\View $view
+ * @var \Core\Helpers\View $view
  * @var string $csrf
  * @var string $ts
  * @var array<string, string> $errors

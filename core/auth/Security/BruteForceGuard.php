@@ -23,8 +23,7 @@ final class BruteForceGuard
         private readonly AuthConfig $config,
         private readonly LoginAttemptRepositoryInterface $attempts,
         private readonly UserRepositoryInterface $users,
-    ) {
-    }
+    ) {}
 
     /**
      * Call before attempting password verification.

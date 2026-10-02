@@ -1,6 +1,6 @@
 # ALIEV.IO V2 — Authentication Module (`core/auth/`)
 
-Developer documentation for the authentication core. In this project it is used through `App\Controllers\AuthController` and `Application` (shared session, CSRF and PDO) — see `ARCHITECTURE.md` §7.
+Developer documentation for the authentication core. In this project it is used through `Core\Auth\Web\AuthController` and `Application` (shared session, CSRF and PDO) — see `ARCHITECTURE.md` §7.
 
 - [1. Overview](#1-overview)
 - [2. Requirements](#2-requirements)
@@ -74,7 +74,7 @@ it sets safe defaults (exceptions on error, no emulated prepares, etc.).
 
 ```php
 use Core\Auth\AuthFacade;
-use Core\Auth\Database\PdoConnection;
+use Core\Database\PdoConnection;
 
 $pdo = PdoConnection::forMysql(
     host: 'localhost',
@@ -90,7 +90,7 @@ $auth = AuthFacade::create($pdo);
 
 ```php
 use Core\Auth\AuthFacade;
-use Core\Auth\Database\PdoConnection;
+use Core\Database\PdoConnection;
 
 $pdo = PdoConnection::forPostgres(
     host: 'localhost',
@@ -417,7 +417,7 @@ which `PdoConnection` factory you call (§4) — everything downstream
 engine.
 
 Internally, `UserRepository` and `LoginAttemptRepository` detect the
-active driver via `Core\Auth\Database\DatabaseDriver::fromPdo($pdo)` and
+active driver via `Core\Database\DatabaseDriver::fromPdo($pdo)` and
 branch only the handful of genuinely engine-specific SQL fragments
 (auto-increment retrieval, unix-timestamp conversion, interval arithmetic).
 You never need to think about this as a consumer of `AuthFacade`.

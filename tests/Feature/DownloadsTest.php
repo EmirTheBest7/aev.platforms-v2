@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Application;
-use App\Http\Request;
-use App\Support\Config;
+use Core\Application;
+use Core\Helpers\Config;
+use Core\Routing\Request;
 use PHPUnit\Framework\TestCase;
 
 final class DownloadsTest extends TestCase

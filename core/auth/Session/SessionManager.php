@@ -20,9 +20,7 @@ final class SessionManager implements SessionHandlerInterface
     private const string USER_ID_KEY = '_auth_user_id';
     private const string AUTHENTICATED_AT_KEY = '_auth_authenticated_at';
 
-    public function __construct(private readonly AuthConfig $config)
-    {
-    }
+    public function __construct(private readonly AuthConfig $config) {}
 
     public function start(): void
     {
@@ -41,7 +39,7 @@ final class SessionManager implements SessionHandlerInterface
             'domain' => '',
             'secure' => $this->config->sessionCookieSecure,
             'httponly' => $this->config->sessionCookieHttpOnly,
-            'samesite' => $this->config->sessionCookieSameSite,
+            'samesite' => in_array($this->config->sessionCookieSameSite, ['Lax', 'Strict', 'None'], true) ? $this->config->sessionCookieSameSite : 'Lax',
         ]);
 
         session_start();
@@ -68,7 +66,7 @@ final class SessionManager implements SessionHandlerInterface
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie(
-                session_name(),
+                (string) session_name(),
                 '',
                 [
                     'expires' => time() - 42000,

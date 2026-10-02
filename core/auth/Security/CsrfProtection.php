@@ -22,8 +22,7 @@ final class CsrfProtection
     public function __construct(
         private readonly AuthConfig $config,
         private readonly TokenGeneratorInterface $tokenGenerator,
-    ) {
-    }
+    ) {}
 
     /**
      * Returns the current CSRF token, generating one if none exists yet.

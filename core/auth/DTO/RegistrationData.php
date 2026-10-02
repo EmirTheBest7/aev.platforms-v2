@@ -19,6 +19,5 @@ final readonly class RegistrationData
         public string $passwordConfirmation,
         public ?string $displayName = null,   // "Your Full Name" on the legacy form (optional, <= 80 chars)
         public ?string $referralCode = null,  // stored as entered after validation; no behaviour attached
-    ) {
-    }
+    ) {}
 }

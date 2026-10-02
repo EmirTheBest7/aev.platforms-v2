@@ -20,7 +20,7 @@ directory unnecessary (no `apps/{social,messenger,wallet,…}`, no `packages/`, 
 2. **No abstraction without a second consumer.** No container, no event bus, no repository interface
    unless two implementations exist. (`Notifier` has two — Telegram and Log. `JobRepository` has one,
    so it is a class, not an interface + class.)
-3. **Explicit wiring.** `App\Application` is the only place objects are constructed.
+3. **Explicit wiring.** `Core\Application` is the only place objects are constructed.
 4. **One of each security primitive.** One session manager, one CSRF implementation, one password
    hasher: those of `core/auth`. Controllers never build their own.
 5. **Templates are dumb.** Every dynamic value goes through `$e()`. No inline `<script>`, `<style>`,

@@ -24,8 +24,7 @@ final class RegistrationService
         private readonly UserRepositoryInterface $users,
         private readonly PasswordHasher $hasher,
         private readonly AuditLoggerInterface $auditLogger,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws ValidationException if input fails validation rules.

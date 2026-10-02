@@ -16,8 +16,7 @@ final readonly class Role
     public function __construct(
         public string $key,          // stable machine identifier, e.g. "admin"
         public ?string $label = null, // human readable label, e.g. "Administrator"
-    ) {
-    }
+    ) {}
 
     public function equals(Role|string $other): bool
     {

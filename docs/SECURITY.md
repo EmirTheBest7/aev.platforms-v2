@@ -26,7 +26,7 @@ Body-size limit → session + CSRF (the one `core/auth` instance) → honeypot �
 Argon2id; policy ≥10 chars with upper/lower/digit; per-account lockout + per-IP limits; one failure message for unknown email / wrong password / lockout and a decoy hash on unknown emails (no timing oracle); one "not available" message for duplicate email/nickname; no availability lookups; `session.use_strict_mode`, `use_only_cookies`, HttpOnly + SameSite=Lax (+Secure on https) cookie, id regenerated on login, server-side lifetime enforcement, session emptied and cookie expired on logout; audit log table. Password reset by e-mail is not offered (no mail server) and says so.
 
 ## Data access
-All SQL is in `core/auth` repositories and `App\Models\JobRepository`: prepared statements, slugs validated before any query, only published rows, database errors → logged + generic 503. Job text is plain text and always escaped.
+All SQL is in `core/auth` repositories and `Website\Careers\JobRepository`: prepared statements, slugs validated before any query, only published rows, database errors → logged + generic 503. Job text is plain text and always escaped.
 
 ## `_api`
 Explicit allow-list (no function dispatch from the URL, no credentials in URLs, no CORS, `no-store`); POST needs the CSRF header; rate limits on the domain tool and the notification; the terminal inserts everything as text and reads same-origin paths only; the domain tool validates host names and returns only a boolean.

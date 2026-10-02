@@ -13,6 +13,4 @@ use RuntimeException;
  * "any auth failure" generically, or catch the specific subclasses below
  * for precise HTTP status mapping.
  */
-abstract class AuthException extends RuntimeException
-{
-}
+abstract class AuthException extends RuntimeException {}

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\Env;
+use Core\Helpers\Env;
 
 /** MariaDB/MySQL connection settings (accounts and job postings). Values come from the environment only. */
 return [

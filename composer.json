@@ -16,9 +16,25 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Core\\Auth\\": "core/auth/"
-        }
+            "Core\\Auth\\Web\\": "core/auth/web/",
+            "Core\\Auth\\": "core/auth/",
+            "Core\\Routing\\": "core/routing/",
+            "Core\\Security\\": "core/security/",
+            "Core\\Validation\\": "core/validation/",
+            "Core\\Logging\\": "core/logging/",
+            "Core\\Helpers\\": "core/helpers/",
+            "Core\\Database\\": "core/database/",
+            "Core\\Services\\": "core/services/",
+            "Website\\Home\\": "website/home/",
+            "Website\\Careers\\": "website/careers/",
+            "Website\\Contact\\": "website/contact/",
+            "Website\\Downloads\\": "website/downloads/",
+            "Api\\Internal\\": "api/internal/",
+            "Api\\Terminal\\": "api/terminal/"
+        },
+        "classmap": [
+            "core/Application.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -35,8 +35,7 @@ final readonly class AuthenticatedUser
         public DateTimeImmutable $createdAt,
         public array $roles = [],
         public array $permissions = [],
-    ) {
-    }
+    ) {}
 
     public function hasRole(Role|string $role): bool
     {
@@ -80,8 +79,8 @@ final readonly class AuthenticatedUser
             'username' => $this->username,
             'last_login_at' => $this->lastLoginAt?->format(DATE_ATOM),
             'created_at' => $this->createdAt->format(DATE_ATOM),
-            'roles' => array_map(static fn (Role $r): string => $r->key, $this->roles),
-            'permissions' => array_map(static fn (Permission $p): string => $p->key, $this->permissions),
+            'roles' => array_map(static fn(Role $r): string => $r->key, $this->roles),
+            'permissions' => array_map(static fn(Permission $p): string => $p->key, $this->permissions),
         ];
     }
 }

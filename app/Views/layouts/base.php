@@ -4,10 +4,10 @@
  * @var array{title: string, description: string, path: string, noindex: bool, bodyClass: string} $meta
  * @var string $appUrl
  * @var callable(mixed): string $e
- * @var \App\Support\View $view
+ * @var \Core\Helpers\View $view
  */
 $canonical = $appUrl . ($meta['path'] === '/' ? '/' : $meta['path']);
-$icons = '/assets/icons/' . \App\Support\SeasonalIcons::folder(new \DateTimeImmutable());
+$icons = '/assets/icons/' . \Core\Helpers\SeasonalIcons::folder(new \DateTimeImmutable());
 ?>
 <!DOCTYPE html>
 <html lang="en">

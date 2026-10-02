@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Request;
-use App\Http\Router;
+use Core\Routing\Request;
+use Core\Routing\Router;
 
 /**
  * Public routes. Controllers are resolved lazily through the factories passed in by
@@ -32,16 +32,16 @@ return static function (Router $router, array $make): void {
     $router->get('/downloads', static fn(Request $r) => $make['downloads']()->index($r));
 
     // Retained `_api` (the static UI/Docs bundle under /home/_api/ is served by Apache; these are its PHP endpoints).
-    $router->get('/home/_api/', static fn(Request $r) => $make['api']()->root($r));
-    $router->get('/home/_api/hello', static fn(Request $r) => $make['api']()->hello($r));
-    $router->get('/home/_api/info', static fn(Request $r) => $make['api']()->info($r));
-    $router->get('/home/_api/me', static fn(Request $r) => $make['api']()->me($r));
-    $router->get('/home/_api/updates', static fn(Request $r) => $make['api']()->updates($r));
-    $router->get('/home/_api/csrf', static fn(Request $r) => $make['api']()->csrf($r));
-    $router->get('/home/_api/tools/domain', static fn(Request $r) => $make['api']()->domain($r));
-    $router->post('/home/_api/valentine/yes', static fn(Request $r) => $make['api']()->valentineYes($r));
+    $router->get('/home/_api/', static fn(Request $r) => $make['terminal']()->root($r));
+    $router->get('/home/_api/hello', static fn(Request $r) => $make['terminal']()->hello($r));
+    $router->get('/home/_api/info', static fn(Request $r) => $make['terminal']()->info($r));
+    $router->get('/home/_api/me', static fn(Request $r) => $make['terminal']()->me($r));
+    $router->get('/home/_api/updates', static fn(Request $r) => $make['terminal']()->updates($r));
+    $router->get('/home/_api/csrf', static fn(Request $r) => $make['terminal']()->csrf($r));
+    $router->get('/home/_api/tools/domain', static fn(Request $r) => $make['terminal']()->domain($r));
+    $router->post('/home/_api/valentine/yes', static fn(Request $r) => $make['terminal']()->valentineYes($r));
 
-    $router->get('/api/prices', static fn(Request $r) => $make['api']()->prices($r));
+    $router->get('/api/prices', static fn(Request $r) => $make['prices']()->prices($r));
 
 
     $router->get('/widgets/clock', static fn(Request $r) => $make['widgets']()->clock($r));

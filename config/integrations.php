@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\Env;
+use Core\Helpers\Env;
 
 /**
  * Third-party integrations and public destinations. Every value comes from the environment.

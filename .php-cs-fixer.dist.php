@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__ . '/app', __DIR__ . '/config', __DIR__ . '/routes', __DIR__ . '/tests', __DIR__ . '/public'])
+    ->in([__DIR__ . '/core', __DIR__ . '/website', __DIR__ . '/api', __DIR__ . '/config', __DIR__ . '/routes', __DIR__ . '/tests', __DIR__ . '/public'])
     ->name('*.php')
-    ->notPath('#^public/assets/#');
+    ->notPath('#^(public/build|public/home)/#');
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)

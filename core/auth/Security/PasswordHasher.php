@@ -14,25 +14,16 @@ use Core\Auth\Config\AuthConfig;
  */
 final class PasswordHasher
 {
-    public function __construct(private readonly AuthConfig $config)
-    {
-    }
+    public function __construct(private readonly AuthConfig $config) {}
 
     public function hash(string $plainPassword): string
     {
-        $hash = password_hash(
+        // Since PHP 8 password_hash() throws (ValueError) on a bad algorithm/options combination instead of returning false.
+        return password_hash(
             $plainPassword,
             PASSWORD_ARGON2ID,
             $this->config->argon2Options(),
         );
-
-        if ($hash === false) {
-            // password_hash() only returns false on catastrophic failure
-            // (e.g. misconfigured environment) — never on bad input.
-            throw new \RuntimeException('Password hashing failed.');
-        }
-
-        return $hash;
     }
 
     public function verify(string $plainPassword, string $hash): bool

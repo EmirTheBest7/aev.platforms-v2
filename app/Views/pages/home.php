@@ -3,7 +3,7 @@
  * The five sections of the ecosystem entry point (legacy page/main), unchanged in structure.
  *
  * @var callable(mixed): string $e
- * @var \App\Support\View $view
+ * @var \Core\Helpers\View $view
  * @var list<array{symbol: string, icon: string}> $ticker
  * @var string $telegram
  * @var string $telegramNews

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\Env;
+use Core\Helpers\Env;
 
 $proxies = array_values(array_filter(array_map('trim', explode(',', Env::get('TRUSTED_PROXIES', '') ?? ''))));
 

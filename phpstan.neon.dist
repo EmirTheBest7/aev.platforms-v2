@@ -1,7 +1,9 @@
 parameters:
     level: 8
     paths:
-        - app
+        - core
+        - website
+        - api
         - config
         - routes
         - public/index.php

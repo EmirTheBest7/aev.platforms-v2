@@ -43,8 +43,7 @@ final class AuthConfig
 
         // --- Tokens (generic secure tokens: CSRF, future reset/remember-me) ---
         public readonly int $tokenLength = 32, // bytes, before hex encoding
-    ) {
-    }
+    ) {}
 
     /**
      * Options array as expected by password_hash() for PASSWORD_ARGON2ID.

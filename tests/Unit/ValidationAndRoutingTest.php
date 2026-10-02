@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Http\HttpException;
-use App\Http\Request;
-use App\Http\Response;
-use App\Http\Router;
-use App\Validation\ContactValidator;
+use Core\Routing\HttpException;
+use Core\Routing\Request;
+use Core\Routing\Response;
+use Core\Routing\Router;
 use PHPUnit\Framework\TestCase;
+use Website\Contact\ContactValidator;
 
 final class ValidationAndRoutingTest extends TestCase
 {

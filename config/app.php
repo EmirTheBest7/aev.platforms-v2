@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\Env;
+use Core\Helpers\Env;
 
 return [
     'env' => Env::get('APP_ENV', 'production'),

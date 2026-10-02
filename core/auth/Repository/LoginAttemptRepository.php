@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Core\Auth\Repository;
 
 use Core\Auth\Contracts\LoginAttemptRepositoryInterface;
-use Core\Auth\Database\DatabaseDriver;
+use Core\Database\DatabaseDriver;
 use PDO;
 
 /**

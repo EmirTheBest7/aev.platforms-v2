@@ -5,8 +5,9 @@ FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-progress
-COPY app ./app
 COPY core ./core
+COPY website ./website
+COPY api ./api
 RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
 
 FROM php:8.3-apache AS base
@@ -33,6 +34,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git unzip \
 FROM base AS prod
 COPY --chown=www-data:www-data app ./app
 COPY --chown=www-data:www-data core ./core
+COPY --chown=www-data:www-data website ./website
+COPY --chown=www-data:www-data api ./api
 COPY --chown=www-data:www-data config ./config
 COPY --chown=www-data:www-data routes ./routes
 COPY --chown=www-data:www-data database ./database

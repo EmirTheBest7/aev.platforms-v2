@@ -2,7 +2,7 @@
 
 ## Logging
 
-Structured JSON lines via `App\Support\Logger` (`LOG_CHANNEL=stderr|file|null`, `LOG_LEVEL`). In containers use `stderr` and collect with the platform's log driver; `file` writes `storage/logs/app-YYYY-MM-DD.log` (dir 0750).
+Structured JSON lines via `Core\Logging\Logger` (`LOG_CHANNEL=stderr|file|null`, `LOG_LEVEL`). In containers use `stderr` and collect with the platform's log driver; `file` writes `storage/logs/app-YYYY-MM-DD.log` (dir 0750).
 
 Never logged: passwords, tokens, session/CSRF values, authorization/cookie headers, e-mail addresses, message bodies, raw IPs (a keyed 16-hex pseudonym `who` is used to correlate abuse). Context keys matching `pass|secret|token|authorization|cookie|api_key|csrf|session|email|message` are redacted automatically, and bot-token-shaped strings in free text are scrubbed. Exceptions are logged as class + scrubbed message + `file:line` (no trace).
 

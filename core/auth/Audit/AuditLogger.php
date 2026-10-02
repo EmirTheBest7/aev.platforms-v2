@@ -35,9 +35,7 @@ use PDO;
  */
 final class AuditLogger implements AuditLoggerInterface
 {
-    public function __construct(private readonly PDO $pdo)
-    {
-    }
+    public function __construct(private readonly PDO $pdo) {}
 
     public function log(
         string $eventType,

@@ -36,8 +36,7 @@ final class LoginService
         private readonly BruteForceGuard $bruteForceGuard,
         private readonly SessionHandlerInterface $session,
         private readonly AuditLoggerInterface $auditLogger,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws ValidationException if input is malformed.

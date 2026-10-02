@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Http\Request;
-use App\Security\ClientIp;
-use App\Security\RateLimiter;
-use App\Security\Signer;
-use App\Services\LeadStore;
-use App\Support\Env;
-use App\Support\Logger;
-use App\Support\SeasonalIcons;
+use Core\Helpers\Env;
+use Core\Helpers\SeasonalIcons;
+use Core\Logging\Logger;
+use Core\Routing\Request;
+use Core\Security\ClientIp;
+use Core\Security\RateLimiter;
+use Core\Security\Signer;
+use Core\Services\LeadStore;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

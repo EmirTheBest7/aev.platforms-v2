@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Application;
-use App\Http\Request;
+use Core\Application;
+use Core\Routing\Request;
 
 $root = dirname(__DIR__);
 
