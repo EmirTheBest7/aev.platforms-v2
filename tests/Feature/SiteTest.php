@@ -316,6 +316,18 @@ final class SiteTest extends TestCase
         self::assertStringNotContainsString('pk.', (string) file_get_contents(dirname(__DIR__, 2) . '/public/assets/js/contact.js'), 'no token in the script');
     }
 
+    public function testIntergramIsLoadedOnlyWhenConfigured(): void
+    {
+        $plain = $this->get($this->app(['integrations' => ['intergram' => ['chat_id' => '']]]), '/');
+        self::assertStringNotContainsString('id="aev-intergram"', $plain->body());
+        self::assertStringNotContainsString('intergram', (string) $plain->header('Content-Security-Policy'));
+
+        $r = $this->get($this->app(['integrations' => ['intergram' => ['chat_id' => '12345', 'server' => 'https://www.intergram.xyz', 'title_open' => 'Support', 'intro' => 'Hi', 'main_color' => '#000']]]), '/');
+        self::assertStringContainsString('id="aev-intergram"', $r->body());
+        self::assertStringContainsString('frame-src \'self\' https://www.intergram.xyz', (string) $r->header('Content-Security-Policy'));
+        self::assertFileExists(dirname(__DIR__, 2) . '/public/assets/vendor/intergram/widget.js');
+    }
+
     public function testRateLimitReturns429(): void
     {
         $app = $this->app();

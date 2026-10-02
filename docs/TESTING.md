@@ -1,29 +1,29 @@
 # Testing
 
-## Automated (PHPUnit 11, PHP 8.3 — run in Docker)
-
 ```bash
-docker compose run --rm app vendor/bin/phpunit
+docker compose exec app vendor/bin/phpunit                                  # 88 tests
+docker compose exec app vendor/bin/phpstan analyse --memory-limit=512M      # level 8
+docker compose exec app vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes
 ```
 
-| Suite | File | Covers |
-|---|---|---|
-| unit | `tests/Unit/SupportTest.php` | `.env` parsing (real env wins), typed getters, HMAC signer (tamper/short key), rate limiter (limit, isolation, hashed keys), client-IP resolution (spoofing, CIDR, forwarded chain), seasonal icon boundaries, logger redaction (keys + token-shaped text), lead reference format/uniqueness, lead file mode 0600 |
-| unit | `tests/Unit/ValidationAndRoutingTest.php` | contact validation/normalisation/limits, router (match, HEAD, redirect, 410 prefix-boundary mechanism kept but unused by routes, 405, 404), path normalisation |
-| feature | `tests/Feature/SiteTest.php` | home (headers, SEO, no inline script/style), no dead `#` links, safe 404, legacy 301 and honest 404 (never 410) for preserved paths, 405 + `Allow`, HTTPS redirect trust model + HSTS, trailing-slash canonicalisation (single hop), contact: form tokens, valid submission end-to-end, client cannot choose reference, CSRF failure/missing, honeypot, too-fast/stale/forged timestamp, validation errors escaped, rate limit (429), oversize (413), notifier failure keeps lead, exception never leaks detail |
+| Suite | Covers |
+|---|---|
+| `tests/Unit` | validators, router (redirects, `{param}` routes, 405/404), path normalisation, support classes |
+| `tests/Feature/SiteTest` | home (headers, SEO, no Hester/Avrora, cache-busted assets), legacy redirects, https/proxy rules, hire/contact flow (CSRF, honeypot, form age, rate limit, size, notifier failures, no leaks), Mapbox CSP only with a token |
+| `CareersTest` | list/job/team, escaping, logo-name containment, bad slugs → 404, SQL injection, empty state, database failure → generic 503, legacy redirects |
+| `DownloadsTest` | every configured file exists and is linked, missing documents are honest, no dead links/inline handlers |
+| `AuthTest` | register → login → logout against the real MariaDB schema (skipped without `DB_HOST`): Argon2id, session regeneration, identical failure messages, CSRF, duplicates, SQLi, honeypot, server-side session expiry |
+| `ApiTest` | `_api` allow-list (unknown paths 404, no CORS), domain-tool validation/rate limit, server-side Valentine notification with fixed text, no secrets in the bundle |
 
-Static analysis: `vendor/bin/phpstan analyse` (level 8, must be clean). Style: `vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes`. CI (`.github/workflows/ci.yml`) runs lint (8.3, 8.4), composer validate, PHPUnit, PHPStan, CS and a production Docker build.
+## Browser checks (required for UI work)
 
-## Stack/E2E checks performed (Phase 2)
+PHPUnit green does not mean a page works. `scripts/visual/` (Playwright):
 
-Against nginx + php-fpm from `compose.yaml`: status codes for public paths; **every private path returns 404** (`/.env`, `/.git/config`, `/composer.json`, `/app/…`, `/config/…`, `/vendor/…`, `/storage/…`, `/tests/…`, `/docker/…`, traversal); security headers; HEAD sends no body. Playwright/Chromium: menu toggle + Escape, "Hire us" navigation, full contact submission (server reference shown, lead file mode 0600, pseudonymised `who`), validation-error rendering, flash cleared on reload, 404 page, first Tab stop = "Skip to content".
+```bash
+cd scripts/visual && npm i
+node states.mjs http://localhost:8080 / /tmp/shots                     # main page states at 4 viewports
+node pages.mjs  http://localhost:8080 /tmp/shots /careers /contact /downloads /home/auth /home/_api/UI/
+scripts/visual/legacy-baseline.sh up                                    # sanitised ./aev-new on :8099 for side-by-side
+```
 
-## Visual regression (Phase 3 baseline → Phase 7)
-
-`scripts/visual/` rebuilds a **sanitised** copy of the legacy site (stub `functions.php`: no credentials, `notify()` is a no-op, absolute production URLs rewritten to localhost), serves it with `php -S` (6 workers — the legacy homepage requests itself), and screenshots pages at desktop 1440, tablet 820, phone 390, phone-landscape 844×390 in light/dark colour schemes. Curated baselines are in `docs/visual-baseline/`. Never submit forms or run `cron.php` in the legacy copy.
-
-Known baseline limits: third-party hosts (Cloudflare challenge, Google Analytics, widgetbot, Mapbox/crypto APIs) are not reachable/consistent, so those regions differ; animated regions (globe, toasts, marquee) are compared structurally, not pixel-for-pixel.
-
-## Pending
-
-Spotlight, launcher, globe (WebGL fallback), PWA, sitemap/robots — tests are added as each ships (Phases 4–5).
+Viewports: 1440×900, 820×1180, 390×844, 844×390. Reports horizontal overflow, console errors and failed requests per page. Never submit the baseline's forms.

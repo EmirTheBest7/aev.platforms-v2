@@ -53,3 +53,4 @@ Rule for this phase: **record, don't delete.** A licence question never causes r
 | jQuery 3.1.0 / 2.1.3, jQuery UI 1.11.2, underscore 1.8.3 | jquery.org, jqueryui.com, underscorejs.org | MIT | `public/assets/vendor/{jquery,jquery-legacy,underscore}/` |
 | Mapbox GL JS 2.4.1 | mapbox.com | **Mapbox Terms of Service (not open source)** — self-hosting terms **unverified**; needs a token | `public/assets/vendor/mapbox-gl/` |
 | Unicons 4.0.8 font files | npm `@iconscout/unicons` via jsDelivr | IconScout Simple License (as above) | `public/assets/vendor/unicons/` |
+| Intergram widget (`widget.js`) | idoco/intergram (served from intergram.xyz) | MPL-2.0 (upstream; **not yet re-verified here**) | `public/assets/vendor/intergram/widget.js` |

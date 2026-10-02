@@ -11,11 +11,11 @@ pages are preserved; the code, security and infrastructure underneath are new.
 | Page | URL | Status |
 |---|---|---|
 | Main page | `/` | working |
-| Careers | `/careers`, `/careers/{slug}` | next |
-| Contact | `/contact` | basic form works; original page design to be ported |
-| Downloads | `/downloads` | planned |
-| Auth | `/home/auth` | planned (reuses `core/auth`) |
-| `_api` | `/home/_api/` | retained static bundle, planned (keeps its trailing slash) |
+| Careers | `/careers`, `/careers/{slug}`, `/careers/team` | working (needs jobs: dev seed or `scripts/import-jobs.php`) |
+| Contact | `/contact` | working (map needs `MAPBOX_TOKEN`) |
+| Downloads | `/downloads` | working |
+| Auth | `/home/auth` | working, enabled with `AUTH_ENABLED=true` |
+| `_api` | `/home/_api/` | static bundle + allow-listed endpoints; legacy pages to be modernized |
 
 Not part of the project: social network, messenger, wallet/finance, AI assistants, games as apps,
 music platform. Their pages, code and assets are not carried over.

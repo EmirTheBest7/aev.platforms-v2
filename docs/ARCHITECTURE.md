@@ -1,8 +1,6 @@
 # Architecture
 
-Status: **approved by the owner**; the foundation (steps 1–2 of §13) is implemented. The retained pages are
-migrated one at a time; §5 and §11 show what is done and what is still to come, and §14 records the
-decisions taken.
+Status: **implemented**. The foundation and all retained pages (Main, Careers, Contact, Downloads, Auth, `_api`) are migrated; §11 lists what is deliberately left and §14 the open decisions.
 
 ## 1. What this project is
 
@@ -36,31 +34,31 @@ directory unnecessary (no `apps/{social,messenger,wallet,…}`, no `packages/`, 
 .
 ├── app/                       website application, namespace App\
 │   ├── Application.php        composition root — the only place that wires objects
-│   ├── Http/                  Request, Response, Router, HttpException
-│   ├── Controllers/           one class per page/area: Home, Hire, Careers, Contact, Downloads,
-│   │                          Auth, Api, Widget, Error
-│   ├── Models/                data access: JobRepository (PDO, prepared statements). Nothing else yet.
-│   ├── Services/              Notifier/, LeadStore, Market/ (price providers), Http/ (curl client)
+│   ├── Http/                  Request, Response, Router ({param} routes), HttpException
+│   ├── Controllers/           Home, Hire, Careers, Contact, Downloads, Auth, Api, Widget, Error
+│   ├── Models/                JobRepository (PDO, prepared statements) — the only model
+│   ├── Services/              Notifier/ (Telegram, Log), LeadStore, DomainLookup, Market/ (price providers), Http/
 │   ├── Security/              FormGuard, SecurityHeaders, RateLimiter, Signer, ClientIp
 │   ├── Validation/            ContactValidator, HireValidator, Text
-│   ├── Support/               Env, Config, Logger, View, AppCatalog, SeasonalIcons
+│   ├── Support/               Env, Config, Logger, View (+asset()), AppCatalog, SeasonalIcons
 │   └── Views/                 plain-PHP templates
-│       ├── layouts/           shell (main page chrome), page (inner pages), widget, error
-│       ├── pages/             home.php today; one file (or folder, when a page has parts) per page
-│       ├── partials/          shared fragments (shell/…, widgets/…)
-│       └── errors/            403 404 405 429 500 …
+│       ├── layouts/           shell (main page), page (inner pages), widget, base (error pages)
+│       ├── pages/             home, contact, downloads, careers/, auth/
+│       ├── partials/          shell/, page/, contact/, widgets/, rail
+│       └── errors/
 ├── core/auth/                 shared account core, namespace Core\Auth\ — reused, never duplicated
-├── config/                    app, security, notify, integrations, apps, market (read env, return arrays)
+├── config/                    app, security, notify, database, integrations, apps, market, downloads (env → arrays / static lists)
 ├── routes/                    web.php (public routes), legacy.php (301s from historical URLs)
-├── database/migrations/       001_auth, 002_user_roles, 003_jobs …  (applied by scripts/migrate.php)
+├── database/migrations/       001_auth, 002_user_roles, 003_jobs  (applied by scripts/migrate.php)
+├── database/seeds/            dev-jobs.sql — fictional sample jobs, development only (SEED_DEV_DATA)
 ├── public/                    DOCUMENT ROOT — the only web-reachable directory
 │   ├── index.php              single PHP entry point
 │   ├── .htaccess              rewrite rules for hosts without the vhost file
-│   ├── robots.txt sitemap.xml manifest.webmanifest favicon.ico
+│   ├── manifest.webmanifest favicon.ico   (robots.txt / sitemap.xml wait for the production domain)
 │   ├── assets/{css,js,fonts,images,icons,brand,vendor}
 │   ├── downloads/             files offered on /downloads
 │   └── home/_api/{UI,Docs}/   retained static bundle (see §6)
-├── resources/                 NOT served: licence-restricted fonts, legacy reference styles, email templates
+├── resources/                 NOT served: licence-restricted fonts (SF Pro, DotlineBold), legacy 3D-room style reference
 ├── storage/                   runtime only, never committed: logs/ cache/ leads/ ratelimit/
 ├── docker/                    apache/ (vhost, security, api-csp), php.ini, entrypoint.sh, nginx.example.conf
 ├── Dockerfile  compose.yaml  .dockerignore  .env.example
@@ -99,7 +97,7 @@ when `APP_ENV≠production` **and** `APP_DEBUG=true`) → `SecurityHeaders` on e
 | Careers list / job / team | `/careers`, `/careers/{slug}`, `/careers/team` | `CareersController` → `layouts/page` | `JobRepository` (MariaDB) |
 | Contact | `/contact` | `ContactController` | `LeadStore`, `Notifier` |
 | Downloads | `/downloads` | `DownloadsController` | files in `public/downloads/` |
-| Auth | `/home/auth`, `/home/auth/reset` | `AuthController` | `core/auth` |
+| Auth | `/home/auth`, `/home/auth/reset` (+ POST login/register/logout) | `AuthController` → `layouts/page` | `core/auth` |
 | `_api` | `/api/*` (PHP, allow-list) and `/home/_api/{UI,Docs}/` (static) | `ApiController` | see §6 |
 | Widgets | `/widgets/{clock,calculator}` | `WidgetController` → `layouts/widget` | none |
 | Errors | any | `ErrorController` → `layouts/error` | none |
@@ -117,20 +115,12 @@ Rules for the table:
 
 ## 6. URLs, trailing slashes and the `_api` bundle
 
-- **Canonical form for application routes has no trailing slash** (`/careers`, `/contact`,
-  `/home/auth`). `Application::handle()` 301s `/x/` → `/x` in one hop.
-- **`/home/_api/` is exempt** from that rule. The retained bundle is static HTML/JS that uses
-  relative asset paths, so it needs the trailing slash (`/home/_api/UI/`, `/home/_api/Docs/`).
-  Bare `/home/_api` and `/home/_api/` redirect (301) to `/home/_api/UI/`.
-- The bundle currently has **no `index.html`** (its PHP entry points were not copied), so those URLs
-  return 404 today. Providing an `index.html` for `UI/` and `Docs/` is part of the `_api` step.
-- PHP-served API endpoints are an **allow-list** in `ApiController` (unknown → 404): no dynamic
-  function dispatch from the URL, ever. Admin-only tools (`resume`, `antitup`) require the `admin` role.
-- A path-scoped, relaxed CSP applies only under `/home/_api/` (`docker/apache/api-csp.conf`); the rest
-  of the site keeps `default-src 'self'`.
-- Historical URLs (`/page/main/`, `/page/contact/`, `/page/careers/list/` …) are 301 in
-  `routes/legacy.php` and documented in `docs/URL-MIGRATION.md`. Work that is being preserved
-  never answers 410.
+- **Application routes have no trailing slash** (`/careers`, `/contact`, `/home/auth`); `Application::handle()` 301s `/x/` → `/x` in one hop.
+- **`/home/_api/` is exempt**: the retained bundle is static HTML/JS with relative paths, so its URLs keep the slash. `GET /home/_api/` → 302 `/home/_api/UI/`; no alias for the bare `/home/_api`.
+- **Static bundle** (`public/home/_api/`): `UI/` (windowed desktop), `UI/terminal/` (web terminal + `Tools/` currency, crypto, editor, qr, math, domain + `Page/` 4ukraine, donate, valentine), `Docs/`. Apache serves a directory that ships an `index.html` at its slash URL (`docker/apache/vhost.conf`); everything else under `public/` that is a directory (e.g. `/downloads`) belongs to the application.
+- **PHP endpoints** are an explicit allow-list in `routes/web.php` → `ApiController` (`hello`, `info`, `me`, `updates`, `csrf`, `tools/domain`, `valentine/yes`). Unknown paths 404; no dynamic function dispatch, no URL credentials, no CORS, `no-store`; POSTs need the CSRF header and are rate limited. Telegram/e-mail style notifications go through the `Notifier` (environment-configured), never from the browser.
+- **CSP**: the strict site policy applies to everything except the static bundle, which gets `docker/apache/api-csp.conf` (inline + the CDNs it still uses — a documented allow-list). Self-hosting those dependencies is the first `_api` modernization item.
+- Historical URLs are 301 in `routes/legacy.php` (`URL-MIGRATION.md`). Removed products answer 404, never 410.
 
 ## 7. Security architecture
 
@@ -178,24 +168,17 @@ self-hosted; the only third-party origin on the page is the optional Intergram f
 - Entrypoint installs Composer deps in dev and runs `scripts/migrate.php` (idempotent) before Apache.
 - `docker/nginx.example.conf` documents the equivalent nginx + php-fpm setup for hosts that prefer it.
 
-## 11. Present state vs target
+## 11. What is deliberately left
 
-Done: HesterGPT removed everywhere (card, menu, launcher, CSS, assets); `website/` placeholder removed;
-one shared session/CSRF in `Application`; `View::asset()`; the `/home/_api/` slash rule; migrations are
-tracked in git; docs of the original ecosystem moved to `docs/history/`.
+Everything listed in the earlier plan is done (old `apps/`, `api/`, `website/`, `core/autoload.php`, empty `resources/views`, HesterGPT, Avrora, games, store, v2 terminal, etc. removed; see `CHANGE-LOG.md` §F). Remaining by design:
 
-Still to reconcile — each is **verified, then folded in or removed at the step that supersedes it, never earlier**:
-
-| Today | Disposition | At step |
-|---|---|---|
-| `apps/account/*` (manual test pages for `core/auth`) | superseded by `AuthController` + `pages/auth`; remove | Auth |
-| `core/autoload.php` (maps `Core\Auth\` → `core/Auth/`, breaks on case-sensitive Linux; Composer PSR-4 replaces it; referenced only by `apps/account`) | remove with `apps/account` | Auth |
-| `api/terminal/` (a standalone `index.html` terminal; differs from `aev-new/home/_api/UI/terminal`) | compare, keep as the `_api` terminal if it is the intended one, otherwise remove | `_api` |
-| `public/home/_api/{UI,Docs}` have no entry documents (their PHP entry points were not copied) | add `index.html`; Apache serves directories there | `_api` |
-| `resources/views/{emails,components}` | keep `emails/` for password reset; drop `components/` if unused | Auth |
-| `app/Services/Notifier`, `Market` | keep (two implementations / real consumers) | — |
-| Remaining ecosystem-era docs (`MAIN-PAGE`, `DESIGN-SYSTEM`, `SECURITY`, `ROUTES`, `DEPLOYMENT`, `DEVELOPMENT`, `TESTING`, `MIGRATION`, `URL-MIGRATION`, `WIDGETS`, `OPERATIONS`, `CHANGE-LOG`) | rewrite for the current project | Documentation |
-| `Avrora` card in the Works slider (an AI-artist teaser, "[SOON]", never built) | owner to decide: it is the same kind of AI showcase as the removed Hester card | open |
+| Item | Why it stays |
+|---|---|
+| `public/home/_api` third-party CDNs and inline scripts | legacy pages; contained by a path-scoped CSP; to be modernized later |
+| `layouts/base` + `site.css` + `nav.js` | skin of the error pages |
+| PWA / seasonal icon sets, `resources/fonts`, generic launcher icons, `LooksGood.png` | brand assets kept on purpose, see `MIGRATION.md` |
+| `docs/history/` | records of the original project, not current scope |
+| `Dreamers` / `Cerebro` / `Cortex` / `EROS` slider cards | showcase items; owner to confirm they belong to the agency |
 
 ## 12. Testing
 
@@ -205,29 +188,17 @@ injected notifier/HTTP client), PHPStan level 8, php-cs-fixer, and a Playwright 
 baseline (`scripts/visual/legacy-baseline.sh`). PHPUnit green does not mean a page works: every UI
 change is also checked in a browser (console clean, no failed requests, no horizontal overflow).
 
-## 13. Build order
+## 13. Build order (done)
 
-1. ✅ Architecture foundation: layout reconciled, `View::asset()`, shared session/CSRF, slash rule, docs.
-2. ✅ Docker foundation verified from a clean clone: `docker compose up --build`, migrations applied.
-3. Careers → Contact → Downloads → Auth → `_api`, one at a time. For each: port markup + legacy CSS,
-   make it work, add tests, check it in the browser, document it.
-4. Hardening and documentation pass (`SECURITY`, `ROUTES`, `TESTING`, `MIGRATION`, `README`).
+1. Architecture foundation · 2. Docker foundation (verified from a clean clone) · 3. Careers · 4. Contact · 5. Downloads · 6. Auth · 7. `_api` · 8. cleanup and documentation. Each step shipped with tests and a browser check at four viewports.
 
 ## 14. Decisions
 
-Taken by the owner:
+Taken by the owner: HesterGPT and Avrora removed (no replacement); URL structure `/`, `/careers`, `/careers/{slug}`, `/contact`, `/downloads` without trailing slashes, `/home/_api/` with one.
 
-1. **HesterGPT is removed completely** and not replaced by another AI feature. A future iframe/integration
-   can be added later through a normal route + template; nothing is prepared for it beyond the architecture
-   being small enough to take one.
-2. **URLs**: `/`, `/careers`, `/careers/{slug}`, `/contact`, `/downloads`; application routes have no trailing
-   slash; `/home/_api/` keeps its trailing slash (static bundle compatibility). No extra aliases or redirects
-   beyond what historical-URL compatibility requires.
-
-Still open:
-
-3. The **Avrora** card in the Works slider (see §11).
-4. **Domain**: `aliev.io` is unregistered, which blocks production `APP_URL`, canonical/OG/sitemap values and
-   the `hello@aliev.io` address.
-5. Two credentials were found embedded in retained files and **stripped, not copied**: a Telegram bot token
-   (valentine page script) and a Mapbox token (`contact.js`). Both must be treated as compromised and revoked.
+Open:
+1. The four remaining Works-slider cards (§11).
+2. **Domain**: `aliev.io` is unregistered — blocks production `APP_URL`, canonical/OG/sitemap values and the `hello@aliev.io` address.
+3. **Revoke** the Telegram bot token and Mapbox token that were embedded in legacy files (removed from the tree, never committed).
+4. Provide: real job postings (`scripts/import-jobs.php`), Privacy Policy text, SMTP if password reset by e-mail is wanted, a new Mapbox token, the Intergram chat ID, `AUTH_ENABLED=true` when accounts should go live.
+5. Ndot-55 licence, Mapbox GL self-hosting terms.

@@ -67,3 +67,21 @@ The project owner's direction changed during the revival. Where an earlier instr
 
 ### C-013 Staged (uncommitted) main-page port
 - Present in the working tree but **not committed and not wired**: `public/assets/css/{main,core,fonts}.css`, `widgets/*.css`, `images/**`, `vendor/{three,unicons}`, Roboto Thin, `app/Views/partials/shell/*`. Provenance and edits are described in `MIGRATION.md` §2 and the file headers.
+
+## F. Agency rebuild migration (2026-10)
+
+Each entry: original → problem → new → visual / functional impact.
+
+- **Main page**: nothing initialised (script missing) / loader never ended → scripts ported, per-feature guards, loader fail-safe → none visible; page works.
+- **Unicons fonts**: 16 of 21 files corrupt → re-fetched, URLs versioned → icons render.
+- **Re:Search field**: `readonly` attribute collided with the spotlight's `[readonly]` rule → removed → field sits in the menu grid.
+- **Menu on short screens**: first block shrank to 0 px → `flex-shrink:0` → landscape phones can scroll the whole menu.
+- **HesterGPT / Avrora**: removed with CSS, images, entries → slider re-slotted, spacing unchanged.
+- **Careers**: raw SQL on `$_GET`, `die(mysqli_error())`, raw echo → `JobRepository` (prepared, validated slugs), escaped output, generic 503 → identical look; `/careers/{slug}`.
+- **Contact**: unauthenticated `notify()` of raw POST, hard-coded Mapbox token → FormGuard pipeline, env token → identical look; locations now fly the map.
+- **Downloads**: `window.open` buttons, E.COM downloaded the wrong file, wallpaper-maker link pointed at a missing folder → real links, config-driven list, honest "not available" → identical look.
+- **Auth**: md5 passwords, SQL string building, session fixation, wallet panel → Argon2id on `core/auth`, CSRF, limits, one failure message; hidden Sign Up face restored → flip card unchanged.
+- **`_api`**: dynamic function dispatch with URL credentials, reflected XSS in the domain tool, browser-side bot token, games/store → allow-list, validated tool, server-side notification, bundle pruned → terminal/Docs look unchanged.
+- **Profile panel** (`aev-profile-options`): restyled with the supplied SaaS Widget; the two identical "Sign In" links became one button.
+- **Assets removed** (verified unreferenced or tied to removed products): maps/messenger/timeline/video/finance launcher icons, six never-used home images, `images/mail/unnamed.png`, `header.css`.
+

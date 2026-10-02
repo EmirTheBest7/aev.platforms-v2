@@ -28,7 +28,7 @@ Goal: **same ALIEV.IO design and UI/UX, better functionality, security and maint
 
 ## Architecture (full detail in `docs/ARCHITECTURE.md`)
 
-PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`**. Minimal MVC: `route → controller → (model | service) → view`. `app/Application.php` is the only wiring point (explicit, no container). Layers: `app/{Http,Controllers,Models,Services,Security,Validation,Support,Views}`, `config/`, `routes/`, `database/migrations/`, `storage/` (runtime, not committed), `resources/` (not served), `docker/`, `scripts/`, `tests/{Unit,Feature}`, `docs/`. `core/auth` is the account system — **reuse it**; one session manager and one CSRF implementation, built once in `Application`. Do not add an abstraction without a second consumer.
+PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → `core/auth/`). Web root is **`public/`**. Minimal MVC: `route → controller → (model | service) → view`. `app/Application.php` is the only wiring point (explicit, no container). Layers: `app/{Http,Controllers,Models,Services,Security,Validation,Support,Views}`, `config/`, `routes/`, `database/{migrations,seeds}/`, `storage/` (runtime, not committed), `resources/` (not served), `docker/`, `scripts/`, `tests/{Unit,Feature}`, `docs/`. `core/auth` is the account system — **reuse it**; one session manager and one CSRF implementation, built once in `Application`. Do not add an abstraction without a second consumer.
 
 ## Coding standards
 
@@ -72,7 +72,7 @@ scripts/visual/legacy-baseline.sh up   # sanitised legacy copy for visual compar
 
 ## Open owner decisions (do not assume)
 
-See `docs/ARCHITECTURE.md` §14: the HesterGPT card in the Works slider, canonical URL forms, job URL shape, and the unregistered `aliev.io` domain. Also open: whether to keep/licence Ndot-55, the "Functional key" intent, destinations for unset social links, Intergram chat ID, SMTP for password reset, history purge of the public legacy repo.
+See `docs/ARCHITECTURE.md` §14: the remaining Works-slider cards, the unregistered `aliev.io` domain, credentials to revoke, content the owner must provide. Also open: whether to keep/licence Ndot-55, the "Functional key" intent, destinations for unset social links, Intergram chat ID, SMTP for password reset, history purge of the public legacy repo.
 
 ## Verification rule
 

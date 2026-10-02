@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Audit of the original main-page widgets; current notes are in [`../MAIN-PAGE.md`](../MAIN-PAGE.md).
+
 # Widgets and page components
 
 Every widget and component of the legacy main page is **KEPT**. "Repair" and "Modernize" describe internal work only; the visual result stays.

@@ -1,7 +1,6 @@
 # ALIEV.IO V2 — Authentication Module (`core/auth/`)
 
-Developer documentation for using the authentication core from `api/`,
-`apps/`, or any other part of the platform.
+Developer documentation for the authentication core. In this project it is used through `App\Controllers\AuthController` and `Application` (shared session, CSRF and PDO) — see `ARCHITECTURE.md` §7.
 
 - [1. Overview](#1-overview)
 - [2. Requirements](#2-requirements)
