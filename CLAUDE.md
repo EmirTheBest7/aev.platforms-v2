@@ -1,6 +1,6 @@
 # CLAUDE.md — ALIEV.IO
 
-Permanent instructions for Claude Code sessions in this repository. Read this first, then `docs/ARCHITECTURE.md`. `docs/PROJECT-VISION.md` is background on the original project, not current scope.
+Permanent instructions for Claude Code sessions in this repository. Read this first, then `docs/ARCHITECTURE.md`. `docs/history/PROJECT-VISION.md` is background on the original project, not current scope.
 
 ## Project identity and scope
 
@@ -24,7 +24,7 @@ Goal: **same ALIEV.IO design and UI/UX, better functionality, security and maint
 
 ## Classifying problems (use these words)
 
-`BROKEN` (exists, doesn't work → fix) · `INCOMPLETE` (started/announced → preserve, complete without changing the concept) · `LEGACY IMPLEMENTATION` (works, code should improve → rewrite internally) · `EXPERIMENTAL` (preserve, document) · `OBSOLETE` (external dependency gone → investigate alternatives before removing anything) · `DUPLICATE` (document; defer deletion unless clearly safe) · `SECURITY RISK` (fix the implementation now; keep the feature). The inventory is `docs/HISTORICAL-FEATURES.md`.
+`BROKEN` (exists, doesn't work → fix) · `INCOMPLETE` (started/announced → preserve, complete without changing the concept) · `LEGACY IMPLEMENTATION` (works, code should improve → rewrite internally) · `EXPERIMENTAL` (preserve, document) · `OBSOLETE` (external dependency gone → investigate alternatives before removing anything) · `DUPLICATE` (document; defer deletion unless clearly safe) · `SECURITY RISK` (fix the implementation now; keep the feature). The inventory is `docs/history/HISTORICAL-FEATURES.md`.
 
 ## Architecture (full detail in `docs/ARCHITECTURE.md`)
 
@@ -47,7 +47,7 @@ PHP **8.3+**, no framework, Composer PSR-4 (`App\` → `app/`, `Core\Auth\` → 
 
 ## Security specifics
 
-Secrets only via environment (`.env.example` placeholders). Treat every credential in the legacy tree as compromised and never copy it (`SECRET_EXPOSURE_01…09` in `docs/AUDIT.md`). Third-party scripts only when the owner wants the integration (Intergram: self-hosted pinned copy, `disableLoadmill: true`); never load scripts that can redirect or script visitors remotely (Web4Ukraine). Strict CSP is the default; each exception is documented in `docs/SECURITY.md`.
+Secrets only via environment (`.env.example` placeholders). Treat every credential in the legacy tree as compromised and never copy it (`SECRET_EXPOSURE_01…09` in `docs/history/AUDIT.md`). Third-party scripts only when the owner wants the integration (Intergram: self-hosted pinned copy, `disableLoadmill: true`); never load scripts that can redirect or script visitors remotely (Web4Ukraine). Strict CSP is the default; each exception is documented in `docs/SECURITY.md`.
 
 ## URL rules
 

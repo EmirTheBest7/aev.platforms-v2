@@ -1,172 +1,91 @@
+# ALIEV.IO
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/e18ad66f-8af5-4b0b-af63-995c4494b4b2"  alt="ALIEV.IO" width="120"> v2
+The website of **ΛΞV / Λ L I Ξ V Platforms** — a digital studio. PHP 8.3, no framework, Apache in Docker,
+MariaDB for accounts and job postings.
 
-</p>
+This is a fresh rebuild of the original ALIEV.IO site. The design, UI/UX and behaviour of the original
+pages are preserved; the code, security and infrastructure underneath are new.
 
-<p align="center">
-  <strong>// One digital platform to rule them all. //</strong>
-</p>
+## Scope
 
-<p align="center">
-  Build. Automate. Deploy. Scale.
-</p>
+| Page | URL | Status |
+|---|---|---|
+| Main page | `/` | working |
+| Careers | `/careers`, `/careers/{slug}` | next |
+| Contact | `/contact` | basic form works; original page design to be ported |
+| Downloads | `/downloads` | planned |
+| Auth | `/home/auth` | planned (reuses `core/auth`) |
+| `_api` | `/home/_api/` | retained static bundle, planned (keeps its trailing slash) |
 
-<p align="center">
-  <a href="https://docs.aliev.io"><strong>Documentation</strong></a>
-  ·
-  <a href="https://aliev.io">Website</a>
-  ·
-  <a href="https://github.com/EmirTheBest7/aliev.io/discussions">Community</a>
-  ·
-  <a href="https://github.com/EmirTheBest7/aliev.io/issues">Issues</a>
-</p>
+Not part of the project: social network, messenger, wallet/finance, AI assistants, games as apps,
+music platform. Their pages, code and assets are not carried over.
 
----
+## Quick start
 
-
-## What this is
-
-ALIEV.IO is a long-running personal project: an **ecosystem** with a public face (studio, lead generation, careers, investors, events), a registered-user platform (accounts, Space, Studio, Messenger, Videos, Wallet, Store), a developer layer (terminal tools, Docs, API keys, the HesterGPT assistant) and user hosting. This repository (v2) is its **revival**: the original experience and identity are preserved and the engineering underneath is rebuilt securely.
-
-Start with [`docs/PROJECT-VISION.md`](docs/PROJECT-VISION.md) (why the project is what it is) and [`docs/HISTORICAL-FEATURES.md`](docs/HISTORICAL-FEATURES.md) (everything it had). The original is kept, read-only, as `aev.platforms-master` (git-ignored; public mirror `EmirTheBest7/aev.platforms`).
-
-## Current state
-
-| Area | State |
-|---|---|
-| Foundation | PHP 8.3 front controller in `public/`, routing, security headers (strict CSP), Notifier, structured logging, secure contact flow, Docker (dev + prod), CI — **done, 44 tests, PHPStan level 8** |
-| Account system | `core/auth` (PDO, Argon2id, CSRF, sessions, lockout, roles) + `apps/account` test pages |
-| Main page (`page/main`) | Audited and mapped (`docs/MAIN-PAGE.md`); assets/CSS staged; **port in progress** |
-| Other public pages, platform apps, terminal, docs, hosting | Inventoried (`docs/HISTORICAL-FEATURES.md`); scheduled in `docs/MIGRATION.md` |
-
-## Run locally
+Requires Docker with Compose.
 
 ```bash
-docker compose build
-docker compose run --rm app composer install
-docker compose up -d          # http://localhost:8080  (WEB_PORT=8088 docker compose up -d to change the port)
+docker compose up --build        # → http://localhost:8080
+WEB_PORT=8088 docker compose up --build   # if 8080 is taken
+docker compose down              # stop        ·  docker compose down -v   # also reset the database
 ```
 
-Configuration is environment-based; see `.env.example` (placeholders only — never commit `.env`). Generate a key with `php scripts/generate-key.php`.
+Two containers: `app` (PHP 8.3 + Apache, document root `public/`) and `db` (MariaDB, not published to the
+host). On start the app container installs Composer dependencies (development) and applies
+`database/migrations/*.sql`. The development database password in `compose.yaml` is a local-only default.
 
-## Quality
+## Layout
+
+```
+app/            website application (App\): Http, Controllers, Services, Security, Validation, Support, Views
+core/auth/      shared account core (Core\Auth\): sessions, CSRF, Argon2id, roles, brute-force guard
+config/         settings read from the environment
+routes/         web.php (routes) · legacy.php (301s from historical URLs)
+database/       migrations
+public/         the only web-reachable directory (index.php, assets/, downloads/, home/_api/)
+resources/      not served (licence-restricted fonts, reference styles)
+storage/        runtime files (logs, cache, leads, rate limits) — not committed
+docker/         Apache vhost, php.ini, entrypoint · Dockerfile, compose.yaml at the root
+tests/          Unit/ and Feature/
+docs/           documentation (docs/history/ = records of the original project)
+```
+
+Where things go and why: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+
+## Configuration
+
+Everything comes from environment variables; copy `.env.example` to `.env` for local overrides. The file
+contains placeholders only — **never commit `.env` or any secret**. Production secrets (`APP_KEY`,
+`DB_PASSWORD`, notifier tokens) belong in the deployment environment.
+
+## Development
 
 ```bash
-docker compose run --rm app vendor/bin/phpunit
-docker compose run --rm app vendor/bin/phpstan analyse --memory-limit=512M
-docker compose run --rm app vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes
+docker compose exec app vendor/bin/phpunit                                   # tests
+docker compose exec app vendor/bin/phpstan analyse --memory-limit=512M       # static analysis (level 8)
+docker compose exec app vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes   # code style
+cd scripts/visual && npm i && node states.mjs http://localhost:8080 / shots  # browser states at 4 viewports
 ```
 
-Visual comparison with the original: `scripts/visual/legacy-baseline.sh` serves a sanitised copy of the legacy site (never submit its forms) and `scripts/visual/shoot.mjs` captures screenshots; reference images are in `docs/visual-baseline/`.
+Passing tests is not enough for UI work: open the page in a browser at 1440×900, 820×1180, 390×844 and
+844×390, check the console, failed requests and horizontal overflow, and try the controls. The original
+pages (`./aev-new`, not committed) are the visual reference; `scripts/visual/legacy-baseline.sh` serves a
+sanitised copy for side-by-side comparison.
 
 ## Deployment
 
-Docker-first and host-agnostic: build `docker/Dockerfile` (final stage `prod`), serve with nginx or Apache using **`public/` as the document root**, PHP 8.3+, persistent `storage/`, secrets via environment. See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+Build the `prod` target of the `Dockerfile`, provide the environment variables, mount a persistent
+`storage/`, and put a TLS-terminating proxy in front. Apache's master process runs as root (to bind the
+port); workers run as `www-data`. See `docs/DEPLOYMENT.md`.
+
+## Security
+
+Strict CSP (no inline scripts or styles), CSRF and rate limiting on every form, prepared statements only,
+secrets only from the environment, no stack traces to visitors. See `docs/SECURITY.md` and `SECURITY.md`.
 
 ## Documentation
 
-| Topic | Document |
-|---|---|
-| History, vision, inventory | `PROJECT-VISION`, `HISTORICAL-FEATURES`, `AUDIT` |
-| Main page | `MAIN-PAGE`, `APPLICATIONS`, `WIDGETS` |
-| Design | `DESIGN-SYSTEM`, `BRAND-ASSETS` |
-| Engineering | `ARCHITECTURE`, `ROUTES`, `URL-MIGRATION`, `DEVELOPMENT`, `TESTING`, `OPERATIONS`, `DEPLOYMENT` |
-| Security | `SECURITY` (incl. owner actions and the history-purge task) |
-| Migration | `MIGRATION`, `LEGACY-REMOVAL` (ledger — nothing is deleted), `CHANGE-LOG` |
+`docs/ARCHITECTURE.md` (start here) · `CLAUDE.md` (rules for AI-assisted work) · `docs/LICENSES.md`
+(third-party assets and fonts) · `docs/history/` (the original project's records, not current scope).
 
-## Contributing
-
-Read [`CLAUDE.md`](CLAUDE.md): the standing rules apply to humans too — **preserve the identity, don't delete things because they are old, fix security without removing capability, understand before changing, document, test behaviour.**
-
-## Target architecture (owner's plan)
-
-```
-aliev.io/
-
-├── apps/                       # Main user-facing platform modules
-│   ├── social/                 # Profiles, timeline, posts, communities
-│   ├── messenger/              # Private messages and communication
-│   ├── forum/                  # Discussions and communities
-│   ├── store/                  # Marketplace and products
-│   ├── wallet/                 # Payments and user finances
-│   ├── studio/                 # User content creation
-│   └── terminal/               # Developer playground and mini-app launcher
-│
-├── core/                       # Shared platform engine
-│   ├── auth/                   # Authentication
-│   ├── users/                  # User management
-│   ├── database/               # Database layer
-│   ├── security/               # Security services
-│   ├── routing/                # Application routing
-│   ├── permissions/            # Roles and access control
-│   ├── validation/             # Input validation
-│   ├── cache/                  # Cache system
-│   ├── logging/                # Logs
-│   └── helpers/                # Shared utilities
-│
-├── api/                        # Backend communication layer
-│   ├── v2/                     # Public API version 2
-│   ├── internal/               # Internal services
-│   └── terminal/               # Terminal app API
-│
-├── website/                    # Public company pages
-│   ├── home/                   # Landing page
-│   ├── careers/                # Jobs
-│   ├── contact/                # Contact pages
-│   ├── legal/                  # Legal documents
-│   ├── investors/              # Investor information
-│   └── downloads/              # Public downloads
-│
-├── resources/                  # Shared frontend resources
-│   ├── views/                  # Templates
-│   ├── css/                    # Styles
-│   ├── js/                     # JavaScript
-│   ├── images/                 # Shared images
-│   ├── icons/                  # Icons
-│   ├── fonts/                  # Fonts
-│   └── languages/              # Translations
-│
-├── public/                     # Public web root
-│   └── build/                  # Compiled frontend files
-│
-├── storage/                    # Runtime data (not committed)
-│   ├── uploads/                # User files
-│   ├── cache/
-│   ├── sessions/
-│   ├── logs/
-│   └── temporary/
-│
-├── database/
-│   ├── migrations/
-│   ├── seeds/
-│   └── schema/
-│
-├── config/                     # Configuration files
-│
-├── scripts/                    # Automation
-│   ├── cron/
-│   ├── maintenance/
-│   └── deployment/
-│
-├── tests/                      # Automated testing
-│
-├── docker/                     # Development environment
-│
-├── docs/                       # Documentation
-│   ├── architecture.md
-│   ├── database.md
-│   ├── security.md
-│   ├── api.md
-│   └── decisions/
-│
-├── .github/                    # GitHub automation
-│   └── workflows/
-│
-├── README.md
-├── CLAUDE.md
-├── CONTRIBUTING.md
-├── SECURITY.md
-├── CHANGELOG.md
-└── .gitignore
-```
+License: see `LICENSE`.

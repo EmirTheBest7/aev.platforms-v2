@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # Legacy ledger — what was *not* carried into v2, and why
 
 **Nothing has been deleted.** `aev.platforms-master` is untouched and remains the historical reference. This ledger replaces the earlier "removal record": its job is to make it impossible to lose track of anything. Default status is **KEEP**; deletion needs the owner's explicit approval, and is only proposed for items that are accidental, proven duplicate, malicious, or hold sensitive material.

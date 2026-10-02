@@ -83,7 +83,7 @@ jobs:
     uses: ./.github/workflows/_reusable-docker-build.yml
     with:
       push: false
-      dockerfile: docker/Dockerfile   # last stage = production image
+      dockerfile: Dockerfile   # last stage = production image
 
   # Single required status check for branch protection rules: point
   # "Require status checks to pass" at this job instead of every individual

@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # ALIEV.IO — project timeline (factual, from repository evidence)
 
 Sources: git history of `EmirTheBest7/aev.platforms` (branch `master`, **211 commits, 2024-03-10 → 2026-07-30**, read from a scratch clone; short hashes are real), the files at `HEAD`, the owner's release notes (`page/updates`), planning notes (`home/_api/UI/terminal/Page/antitup/{plan,hidden,old}.md`) and the owner's other public repositories. Statements marked **(inferred)** are reconstructions the evidence supports but does not state. Where git cannot answer, this says so.

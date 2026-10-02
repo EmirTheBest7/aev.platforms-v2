@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # ALIEV.IO — project history and vision (technical reconstruction)
 
 Status: **understanding phase.** This document reconstructs what ALIEV.IO was trying to be from evidence in the repository, its git history and the owner's own public texts. It is not marketing copy. Nothing in the legacy tree is deleted or reclassified as "unnecessary" here; where the repository cannot establish a purpose the entry says **`Purpose unclear — requires owner review`**.

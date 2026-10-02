@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # ALIEV.IO — legacy repository audit
 
 > Source audited: `./aev.platforms-master` (git-ignored local copy of `EmirTheBest7/aev.platforms`; never committed here). History read from a scratch clone of the public repository (211 commits).

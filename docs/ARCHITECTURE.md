@@ -1,9 +1,8 @@
 # Architecture
 
-Status: **proposal for owner review** — nothing in this document has been moved or deleted yet.
-It describes the target layout and the rules the next phase (clean architecture → Docker foundation →
-retained pages one by one) will follow. Where the repository differs today, section 11 lists the
-difference and the step that removes it.
+Status: **approved by the owner**; the foundation (steps 1–2 of §13) is implemented. The retained pages are
+migrated one at a time; §5 and §11 show what is done and what is still to come, and §14 records the
+decisions taken.
 
 ## 1. What this project is
 
@@ -47,7 +46,7 @@ directory unnecessary (no `apps/{social,messenger,wallet,…}`, no `packages/`, 
 │   ├── Support/               Env, Config, Logger, View, AppCatalog, SeasonalIcons
 │   └── Views/                 plain-PHP templates
 │       ├── layouts/           shell (main page chrome), page (inner pages), widget, error
-│       ├── pages/<page>/      home, careers, contact, downloads, auth
+│       ├── pages/             home.php today; one file (or folder, when a page has parts) per page
 │       ├── partials/          shared fragments (shell/…, widgets/…)
 │       └── errors/            403 404 405 429 500 …
 ├── core/auth/                 shared account core, namespace Core\Auth\ — reused, never duplicated
@@ -111,7 +110,7 @@ Rules for the table:
   pages use a plain **page** layout and load only their own legacy stylesheet — the home chrome is not
   forced onto them.
 - **Router** stays exact-match. The one place that needs a parameter is `/careers/{slug}`; add
-  single-segment `{param}` matching (≈15 lines) when Careers is ported and nothing more. The legacy
+  single-segment `{param}` matching (≈15 lines) when Careers is ported and nothing more (exact routes win, so `team` is reserved and never a slug). The legacy
   `page/careers/desc/?job_url=…` URL gets a 301 to it in `routes/legacy.php`.
 - Auth, careers and the API are separate controllers because they have different guards (session +
   CSRF, public read-only, token/role), not because of a pattern.
@@ -181,21 +180,22 @@ self-hosted; the only third-party origin on the page is the optional Intergram f
 
 ## 11. Present state vs target
 
-Everything already in the tree that this proposal keeps is not listed. Items to reconcile — each is
-**verified, then folded in or removed at the step that supersedes it, never earlier**:
+Done: HesterGPT removed everywhere (card, menu, launcher, CSS, assets); `website/` placeholder removed;
+one shared session/CSRF in `Application`; `View::asset()`; the `/home/_api/` slash rule; migrations are
+tracked in git; docs of the original ecosystem moved to `docs/history/`.
+
+Still to reconcile — each is **verified, then folded in or removed at the step that supersedes it, never earlier**:
 
 | Today | Disposition | At step |
 |---|---|---|
 | `apps/account/*` (manual test pages for `core/auth`) | superseded by `AuthController` + `pages/auth`; remove | Auth |
-| `api/terminal/` (a standalone `index.html` terminal; differs from `aev-new/home/_api/UI/terminal`) | compare, keep as the `_api` terminal if it is the intended one, otherwise remove | `_api` |
-| `website/home/index.html` (static placeholder) | unreferenced; remove | cleanup, now safe |
 | `core/autoload.php` (maps `Core\Auth\` → `core/Auth/`, breaks on case-sensitive Linux; Composer PSR-4 replaces it; referenced only by `apps/account`) | remove with `apps/account` | Auth |
+| `api/terminal/` (a standalone `index.html` terminal; differs from `aev-new/home/_api/UI/terminal`) | compare, keep as the `_api` terminal if it is the intended one, otherwise remove | `_api` |
+| `public/home/_api/{UI,Docs}` have no entry documents (their PHP entry points were not copied) | add `index.html`; Apache serves directories there | `_api` |
 | `resources/views/{emails,components}` | keep `emails/` for password reset; drop `components/` if unused | Auth |
-| `public/home/_api/*` has no entry documents | add `index.html` | `_api` |
 | `app/Services/Notifier`, `Market` | keep (two implementations / real consumers) | — |
-| `docs/*` describing the ecosystem phase (APPLICATIONS, WIDGETS, HISTORICAL-FEATURES, PROJECT-VISION, PROJECT-TIMELINE, ROADMAP, URL-MIGRATION…) | move to `docs/history/` with a banner | Documentation |
-| `CLAUDE.md` still states the ecosystem scope | rewritten together with this file | now |
-| Docker file location (CLAUDE.md says `docker/`) | `Dockerfile` is at the root; `docker/` holds the configs | now |
+| Remaining ecosystem-era docs (`MAIN-PAGE`, `DESIGN-SYSTEM`, `SECURITY`, `ROUTES`, `DEPLOYMENT`, `DEVELOPMENT`, `TESTING`, `MIGRATION`, `URL-MIGRATION`, `WIDGETS`, `OPERATIONS`, `CHANGE-LOG`) | rewrite for the current project | Documentation |
+| `Avrora` card in the Works slider (an AI-artist teaser, "[SOON]", never built) | owner to decide: it is the same kind of AI showcase as the removed Hester card | open |
 
 ## 12. Testing
 
@@ -207,15 +207,27 @@ change is also checked in a browser (console clean, no failed requests, no horiz
 
 ## 13. Build order
 
-1. Reconcile layout (§11 items marked "now"), add `View::asset()`, update `CLAUDE.md`.
-2. Docker foundation re-verified from a clean clone: `docker compose up --build`, health, migrations.
+1. ✅ Architecture foundation: layout reconciled, `View::asset()`, shared session/CSRF, slash rule, docs.
+2. ✅ Docker foundation verified from a clean clone: `docker compose up --build`, migrations applied.
 3. Careers → Contact → Downloads → Auth → `_api`, one at a time. For each: port markup + legacy CSS,
    make it work, add tests, check it in the browser, document it.
 4. Hardening and documentation pass (`SECURITY`, `ROUTES`, `TESTING`, `MIGRATION`, `README`).
 
-## 14. Decisions for the owner
+## 14. Decisions
 
-1. **HesterGPT card** in the main page's "Selected work" slider is still present (unlinked). Remove it, or keep it as a showcase item?
-2. **Canonical URLs** as in §6 (no trailing slash for app pages, trailing slash for `_api`) — OK?
-3. **Job URLs**: clean `/careers/{slug}` with a redirect from the legacy `?job_url=` form — OK?
-4. **Domain**: `aliev.io` is unregistered, which blocks production `APP_URL`, canonical/OG/sitemap values and the `hello@aliev.io` address.
+Taken by the owner:
+
+1. **HesterGPT is removed completely** and not replaced by another AI feature. A future iframe/integration
+   can be added later through a normal route + template; nothing is prepared for it beyond the architecture
+   being small enough to take one.
+2. **URLs**: `/`, `/careers`, `/careers/{slug}`, `/contact`, `/downloads`; application routes have no trailing
+   slash; `/home/_api/` keeps its trailing slash (static bundle compatibility). No extra aliases or redirects
+   beyond what historical-URL compatibility requires.
+
+Still open:
+
+3. The **Avrora** card in the Works slider (see §11).
+4. **Domain**: `aliev.io` is unregistered, which blocks production `APP_URL`, canonical/OG/sitemap values and
+   the `hello@aliev.io` address.
+5. Two credentials were found embedded in retained files and **stripped, not copied**: a Telegram bot token
+   (valentine page script) and a Mapbox token (`contact.js`). Both must be treated as compromised and revoked.

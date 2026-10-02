@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # What we had — historical feature inventory
 
 Default answer for every row is **PRESERVE**. Nothing here is slated for deletion. Rows tagged **POSSIBLE DEPRECATION** are only *flagged for the owner's decision* with the reason; they stay in the legacy tree (`aev.platforms-master`, the historical reference) and are not blocked from being ported.

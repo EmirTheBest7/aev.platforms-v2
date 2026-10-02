@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # Applications (the launcher)
 
 The launcher is the **ecosystem's app switcher** (see `PROJECT-VISION.md` §5). Two legacy lists exist and both are preserved:

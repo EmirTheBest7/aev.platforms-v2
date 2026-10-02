@@ -1,3 +1,5 @@
+> **Historical record — not current scope.** Written for the original ALIEV.IO ecosystem / earlier phases of the rebuild. The current project is the digital-studio site described in [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Kept for context; do not treat anything here as a requirement.
+
 # Revival roadmap — classification of every system
 
 **These labels are scheduling and risk classifications. None is a deletion decision.** Every system stays part of the documented scope of ALIEV.IO. The owner sets the order beyond the first target.

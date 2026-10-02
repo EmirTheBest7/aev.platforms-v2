@@ -78,6 +78,7 @@ logs/
 *.db
 *.sql
 !init.sql
+!database/migrations/*.sql
 
 # CACHING
 .cache/
