@@ -37,7 +37,7 @@ Each set contains `favicon.ico` and `apple-touch-icon` 57 – 180 px. The legacy
 | File | Licence | Where | Status |
 |---|---|---|---|
 | `Doto-latin.woff2` (v2) | SIL OFL 1.1 (`Doto-OFL.txt`) | Display/dot-matrix role | **Interim** stand-in for Ndot-55 |
-| `Ndot-55.otf` (legacy `_assets/fonts`) | Nothing brand notice — restricted | Settings heading, clock date readout | **Kept untouched in the legacy tree.** Owner decides (license / permission / replace) |
+| `Ndot-55.otf` (`resources/fonts/`, published as `/build/fonts/Ndot-55.otf`) | Nothing brand notice — restricted | Settings heading, clock date readout | **Currently committed and served.** Licence unresolved — owner decides (permission / replace with Doto); see `docs/LICENSES.md` |
 | `DotlineBold.ttf` (legacy) | Unknown | Unreferenced — possible link to the "my own font" idea | Kept; `Purpose unclear — requires owner review` |
 | `SF-Pro.ttf` (legacy) | Apple — web self-hosting not permitted | Committed deliberately (2024-09-09); only `font-family` fallback names reference it | Kept in the legacy tree; not shipped by v2; owner review |
 | `Roboto-Thin-latin.woff2` (v2, staged) | per publisher (Apache-2.0 or OFL; not independently verified) | Calculator widget (the legacy widget loaded it from Google Fonts) | Staged for the widget port |

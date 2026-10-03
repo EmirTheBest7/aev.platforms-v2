@@ -29,7 +29,7 @@ Point the vhost document root at `public/` (preferred). `public/.htaccess` suppl
 
 ## Configuration (environment)
 
-See `.env.example`. Required in production: `APP_ENV=production`, `APP_URL` (https), `APP_KEY` (≥ 32 random characters — `php scripts/generate-key.php`), and the database settings `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`. Optional: `TRUSTED_PROXIES`, `NOTIFY_DRIVER=telegram` with `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID`, `LOG_CHANNEL`, `LOG_LEVEL`. Secrets live in the platform's secret store, never in the image or repository. **Use freshly created Telegram credentials; the legacy ones are compromised.**
+See `.env.example`. Required in production: `APP_ENV=production`, `APP_URL` (https), `APP_KEY` (≥ 32 random characters — `php scripts/generate-key.php`), and the database settings `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`. Required before launch: `LEGAL_OPERATOR_NAME`, `LEGAL_OPERATOR_ADDRESS`, `LEGAL_REGISTRATION_ID` (Imprint, `docs/LEGAL.md`). Required when TLS is terminated by a proxy: `TRUSTED_PROXIES` (otherwise `FORCE_HTTPS` redirects forever). Optional: `TRUSTED_PROXIES`, `NOTIFY_DRIVER=telegram` with `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID`, `LOG_CHANNEL`, `LOG_LEVEL`. Secrets live in the platform's secret store, never in the image or repository. **Use freshly created Telegram credentials; the legacy ones are compromised.**
 
 ## Release checklist
 

@@ -5,6 +5,7 @@
  * @var callable(mixed): string $e
  * @var \Core\Helpers\View $view
  * @var list<array{symbol: string, icon: string}> $ticker
+ * @var list<array{name: string, title: string, image: string, description: string, position: string|null}> $works
  * @var string $telegram
  * @var string $telegramNews
  * @var string $instagram
@@ -88,50 +89,20 @@
                       </p>
                     </a>
                   </li>
-                  <li class="slider--item slider--item-right">
+<?php foreach ($works as $work): ?>
+                  <li class="slider--item<?= $work['position'] !== null ? ' slider--item-' . $e($work['position']) : '' ?>">
                     <a>
                       <div class="slider--item-image">
-                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Dreamers">
+                        <img src="<?= $e($work['image']) ?>" alt="<?= $e($work['name']) ?>">
                       </div>
-                      <p class="slider--item-title">Dreamers</p>
+                      <p class="slider--item-title"><?= $e($work['title']) ?></p>
                       <p class="slider--item-description">
-                        Next station? Web3.0!
+                        <?= $e($work['description']) ?>
+
                       </p>
                     </a>
                   </li>
-                  <li class="slider--item">
-                    <a>
-                      <div class="slider--item-image">
-                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Cerebro Blockchain">
-                      </div>
-                      <p class="slider--item-title">Cerebro Blockchain</p>
-                      <p class="slider--item-description">
-                        Blockchain powered dApps
-                      </p>
-                    </a>
-                  </li>
-                  <li class="slider--item">
-                    <a>
-                      <div class="slider--item-image">
-                        <img src="/build/home/images/home/work-alex-nowak.jpg" alt="Cortex Browser">
-                      </div>
-                      <p class="slider--item-title">Cortex Browser</p>
-                      <p class="slider--item-description">
-                        We're on a mission man, internet free state.
-                      </p>
-                    </a>
-                  </li>
-                  <li class="slider--item slider--item-left">
-                    <a>
-                      <div class="slider--item-image">
-                        <img src="/build/home/images/home/IMG_7781.jpg" alt="EROS">
-                      </div>
-                      <p class="slider--item-title">EROS 💻</p>
-                      <p class="slider--item-description">
-                        Family of operating systems that use the EROS kernel and are open source
-                      </p>
-                    </a>
-                  </li>
+<?php endforeach; ?>
                 </ul>
                 <div class="slider--prev" role="button" tabindex="0" aria-label="Previous project">
                   <svg version="1.1" id="Layer_1" 

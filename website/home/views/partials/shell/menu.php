@@ -101,7 +101,7 @@ $docsAttrs = static fn(string $name): string => $docsSoon
             <li><a href="/downloads">Downloads</a></li>
           </ul>
           <ul>
-            <li><a<?= $pending('Privacy Policy') ?>>Privacy Policy</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
             <li><a href="/contact">Contact</a></li>
             <li>
               <a class="u-log-in" href="<?= $e($user['authenticated'] ? '/home/_api/UI/' : $signInHref) ?>"<?= $authEnabled ? '' : ' data-soon="Accounts"' ?>><span class="ripple-button"><?= $user['authenticated'] ? 'Dashboard' : 'Log In' ?></span></a>

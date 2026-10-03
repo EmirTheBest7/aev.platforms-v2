@@ -7,6 +7,9 @@ Rationale for each change: `docs/CHANGE-LOG.md`.
 ### Structure
 - Canonical layout (`core/`, `website/`, `api/`, `resources/`), build step to `public/build`, shared navbar/head/form components; see `docs/ARCHITECTURE.md` and `docs/CHANGE-LOG.md` §G.
 
+### Production readiness
+- `/privacy` and `/imprint` placeholders (`website/legal`), Works slider moved to `config/works.php`, `.env` inline-comment fix, documented `.env.example`; see `docs/CHANGE-LOG.md` §H and `docs/LEGAL.md`.
+
 ### Understanding phase (archaeology first)
 - `docs/PROJECT-VISION.md`, `docs/HISTORICAL-FEATURES.md` added; `AUDIT`, `APPLICATIONS`, `WIDGETS`, `LEGACY-REMOVAL` (now a ledger — nothing deleted), `URL-MIGRATION`, `MIGRATION`, `DESIGN-SYSTEM`, `SECURITY`, `CLAUDE.md`, `README.md` rewritten around "preserve the project; fix the engineering"; `docs/MAIN-PAGE.md` added (dependency map, feature trace, integration plan).
 - New security findings recorded: `SECRET_EXPOSURE_07` (Gemini key), `_08` (Valentine page bot token), `_09`, SQL injection in `careers/desc`, Web4Ukraine remote redirector, Intergram hidden tracker.

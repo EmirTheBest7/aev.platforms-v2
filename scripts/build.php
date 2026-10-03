@@ -28,7 +28,7 @@ $targets = [];
 foreach (['css', 'js', 'images', 'icons', 'fonts', 'vendor'] as $dir) {
     $targets[] = ["$root/resources/$dir", "$root/public/build/$dir", $web];
 }
-foreach (['home', 'careers', 'contact', 'downloads'] as $page) {
+foreach (['home', 'careers', 'contact', 'downloads', 'legal'] as $page) {
     $targets[] = ["$root/website/$page/assets", "$root/public/build/$page", $web];
 }
 $targets[] = ["$root/core/auth/web/assets", "$root/public/build/auth", $web];

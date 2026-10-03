@@ -65,6 +65,7 @@ final class HomeController
             'instagram' => $this->config->string('integrations.destinations.instagram'),
             'services' => HireValidator::SERVICES,
             'ticker' => $this->ticker(),
+            'works' => $this->works(),
             'telegramNews' => $this->config->string('integrations.destinations.telegram_news'),
             'docsHref' => $this->config->string('integrations.destinations.docs'),
             'docsSoon' => $this->config->string('integrations.destinations.docs') === '',
@@ -85,6 +86,28 @@ final class HomeController
 
         // The only third-party origin on the page: Intergram's chat iframe (its widget script is self-hosted).
         return $intergram === null ? $response : $response->withCsp(['frame-src' => "'self' " . $intergram['server']]);
+    }
+
+    /**
+     * Cards of the "Selected work" slider (config/works.php).
+     *
+     * @return list<array{name: string, title: string, image: string, description: string, position: string|null}>
+     */
+    private function works(): array
+    {
+        $works = [];
+        foreach ((array) $this->config->get('works.items', []) as $item) {
+            $position = $item['position'] ?? null;
+            $works[] = [
+                'name' => (string) ($item['name'] ?? ''),
+                'title' => (string) ($item['title'] ?? $item['name'] ?? ''),
+                'image' => (string) ($item['image'] ?? ''),
+                'description' => (string) ($item['description'] ?? ''),
+                'position' => is_string($position) && $position !== '' ? $position : null,
+            ];
+        }
+
+        return $works;
     }
 
     /**

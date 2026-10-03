@@ -9,6 +9,7 @@ All routes live in `routes/web.php` (current) and `routes/legacy.php` (historica
 | GET `/careers` | `CareersController::index` | Job list |
 | GET `/careers/team` | `CareersController::team` | Team page (exact route wins over the slug route) |
 | GET `/careers/{slug}` | `CareersController::show` | One posting; slug `[A-Za-z0-9_-]{1,32}`, else 404 |
+| GET `/privacy`, `/imprint` | `LegalController` | Privacy Policy / Imprint — placeholders until `config/legal.php` + `LEGAL_*` are filled (`docs/LEGAL.md`) |
 | GET/POST `/contact` | `ContactController` | Page + form |
 | GET `/downloads` | `DownloadsController::index` | Logos, wallpaper maker, documents (`config/downloads.php`) |
 | GET `/home/auth` | `AuthController::show` | Log In / Sign Up (404 unless `AUTH_ENABLED=true`) |

@@ -31,6 +31,9 @@ return static function (Router $router, array $make): void {
 
     $router->get('/downloads', static fn(Request $r) => $make['downloads']()->index($r));
 
+    $router->get('/privacy', static fn(Request $r) => $make['legal']()->privacy($r));
+    $router->get('/imprint', static fn(Request $r) => $make['legal']()->imprint($r));
+
     // Retained `_api` (the static UI/Docs bundle under /home/_api/ is served by Apache; these are its PHP endpoints).
     $router->get('/home/_api/', static fn(Request $r) => $make['terminal']()->root($r));
     $router->get('/home/_api/hello', static fn(Request $r) => $make['terminal']()->hello($r));

@@ -52,6 +52,7 @@ use Website\Home\HireController;
 use Website\Home\HireValidator;
 use Website\Home\HomeController;
 use Website\Home\WidgetController;
+use Website\Legal\LegalController;
 
 /**
  * Composition root: reads configuration, wires services explicitly (no magic container),
@@ -103,6 +104,7 @@ final class Application
             'careers' => $root . '/website/careers/views',
             'contact' => $root . '/website/contact/views',
             'downloads' => $root . '/website/downloads/views',
+            'legal' => $root . '/website/legal/views',
             'auth' => $root . '/core/auth/web/views',
         ], $this->config->string('app.url'), $root . '/public');
         $this->errors = new ErrorController($this->view);
@@ -195,6 +197,7 @@ final class Application
             'widgets' => fn(): WidgetController => new WidgetController($this->view),
             'auth' => fn(): AuthController => new AuthController($this->config->bool('integrations.auth_enabled'), $this->view, $this->auth(), $this->guard(), $this->logger, $this->config->string('integrations.destinations.email')),
             'downloads' => fn(): DownloadsController => new DownloadsController($this->view, $this->config),
+            'legal' => fn(): LegalController => new LegalController($this->view, $this->config),
             'careers' => fn(): CareersController => new CareersController($this->view, new JobRepository($this->pdo()), $this->logger, $this->config->string('integrations.destinations.email')),
         ]);
     }

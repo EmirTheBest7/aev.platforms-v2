@@ -50,6 +50,16 @@ final class SupportTest extends TestCase
         putenv('APP_A');
     }
 
+    public function testAnInlineCommentIsNeverAValue(): void
+    {
+        file_put_contents($this->tmp . '/.env', "APP_ONLY=   # just a note\nAPP_KEEP=ab#cd\nAPP_TAIL=value  # note\n");
+        Env::load($this->tmp . '/.env');
+
+        self::assertSame('none', Env::get('APP_ONLY', 'none'));
+        self::assertSame('ab#cd', Env::get('APP_KEEP'));
+        self::assertSame('value', Env::get('APP_TAIL'));
+    }
+
     public function testEnvTypedGetters(): void
     {
         Env::set('X_BOOL', 'true');

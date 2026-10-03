@@ -1,6 +1,6 @@
 # Main page (`/`)
 
-Template: `resources/views/layouts/shell.php` (chrome) + `website/home/views/home.php` (five sections). Controller: `HomeController`. Behaviour: classic scripts under `public/build/home/js/home/`, loaded with `defer` in this order — jQuery 3.1.0, underscore, three.js r128, `planet.js` (globe), `sections.js` (Hammer + section scroller/slider, byte-identical to the original `functions-min.js`), `notify.js` (notifications), `spotlight.js`, `room.js` (3D room tilt), `app.js` (everything else). Styles: `main.css`, `core.css`, `widgets/3droom.css`, `utilities.css` (generated from the original inline `style=""`), `shell.css`, `profile-widget.css`.
+The "Selected work" slider is rendered from `config/works.php` (every card flagged as awaiting owner confirmation). Template: `resources/views/layouts/shell.php` (chrome) + `website/home/views/home.php` (five sections). Controller: `HomeController`. Behaviour: classic scripts under `public/build/home/js/home/`, loaded with `defer` in this order — jQuery 3.1.0, underscore, three.js r128, `planet.js` (globe), `sections.js` (Hammer + section scroller/slider, byte-identical to the original `functions-min.js`), `notify.js` (notifications), `spotlight.js`, `room.js` (3D room tilt), `app.js` (everything else). Styles: `main.css`, `core.css`, `widgets/3droom.css`, `utilities.css` (generated from the original inline `style=""`), `shell.css`, `profile-widget.css`.
 
 | Part | Behaviour | Source of truth |
 |---|---|---|

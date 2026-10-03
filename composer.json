@@ -29,6 +29,7 @@
             "Website\\Careers\\": "website/careers/",
             "Website\\Contact\\": "website/contact/",
             "Website\\Downloads\\": "website/downloads/",
+            "Website\\Legal\\": "website/legal/",
             "Api\\Internal\\": "api/internal/",
             "Api\\Terminal\\": "api/terminal/"
         },

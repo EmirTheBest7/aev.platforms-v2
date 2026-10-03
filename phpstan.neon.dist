@@ -15,3 +15,4 @@ parameters:
         - website/careers/views
         - website/contact/views
         - website/downloads/views
+        - website/legal/views

@@ -38,7 +38,7 @@ host). On start the app container installs Composer dependencies (development) a
 
 ```
 core/           shared engine (Core\): Application, auth, routing, security, validation, logging, helpers, database, services
-website/        one folder per page (home, careers, contact, downloads): controller, views/, assets/
+website/        one folder per page (home, careers, contact, downloads, legal): controller, views/, assets/
 api/            internal/ (site JSON endpoints) · terminal/ (the _api allow-list + static bundle)
 config/         settings read from the environment
 routes/         web.php (routes) · legacy.php (301s from historical URLs)

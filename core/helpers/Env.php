@@ -80,7 +80,7 @@ final class Env
             return $end === false ? substr($raw, 1) : substr($raw, 1, $end - 1);
         }
 
-        // Unquoted: strip trailing inline comment ("value   # note").
-        return trim((string) preg_replace('/\s+#.*$/', '', $raw));
+        // Unquoted: strip an inline comment ("value   # note"), including a value that is only a comment ("   # note" = empty).
+        return trim((string) preg_replace('/(^|\s)#.*$/', '', $raw));
     }
 }
