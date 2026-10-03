@@ -34,7 +34,7 @@ PHP **8.3+**, no framework, Composer PSR-4 (`Core\` → `core/<lowercase dir>/`,
 
 - **PHP:** `declare(strict_types=1)`; PER-CS 2.0 (`php-cs-fixer`); PHPStan level 8 clean (view templates are excluded; they're covered by feature tests); typed code; `final` by default; constructor injection with explicit wiring in `Application`; no globals.
 - **Templates:** every dynamic value through `$e()`. No inline `<script>`, `<style>`, `style=""`, `on*=` — the CSP forbids them (legacy inline styles are extracted into generated utility classes).
-- **JavaScript:** keep the original behaviour. The main page runs the original jQuery-based scripts (self-hosted, single copy) plus `assets/js/home/app.js`; wire behaviour through `data-*` hooks and delegation, never inline handlers. Every optional feature starts inside its own guard so it can never block the page. New code: defensive DOM access, keyboard access, `prefers-reduced-motion`.
+- **JavaScript:** keep the original behaviour. The main page runs the original jQuery-based scripts (self-hosted, single copy) plus `website/home/assets/js/home/app.js`; wire behaviour through `data-*` hooks and delegation, never inline handlers. Every optional feature starts inside its own guard so it can never block the page. New code: defensive DOM access, keyboard access, `prefers-reduced-motion`.
 - **CSS:** reuse the legacy classes/tokens (`resources/css/core.css` and `website/home/assets/css/main.css` are ported with mechanical edits only — see their headers). Additions of the port live in `shell.css` (accessibility/plumbing, button resets); extracted inline styles are the generated `utilities.css`.
 - **HTML:** semantic landmarks, labelled controls, real `<button>`/`<a>` (never `href="#"` as a control), meaningful `alt`.
 - **Naming:** `PascalCase` classes, `camelCase` methods, BEM-ish CSS, lowercase-kebab routes.
@@ -72,7 +72,7 @@ scripts/visual/legacy-baseline.sh up   # sanitised legacy copy for visual compar
 
 ## Open owner decisions (do not assume)
 
-See `docs/ARCHITECTURE.md` §14: the remaining Works-slider cards, the unregistered `aliev.io` domain, credentials to revoke, content the owner must provide. Also open: whether to keep/licence Ndot-55, the "Functional key" intent, destinations for unset social links, Intergram chat ID, SMTP for password reset, history purge of the public legacy repo.
+See `docs/ARCHITECTURE.md` §9: the remaining Works-slider cards, the unregistered `aliev.io` domain, credentials to revoke, content the owner must provide. Also open: whether to keep/licence Ndot-55, the "Functional key" intent, destinations for unset social links, Intergram chat ID, SMTP for password reset, history purge of the public legacy repo.
 
 ## Verification rule
 
