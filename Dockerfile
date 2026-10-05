@@ -10,7 +10,7 @@ COPY website ./website
 COPY api ./api
 RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
 
-FROM php:8.3-apache AS base
+FROM php:8.5-apache AS base
 RUN docker-php-ext-install -j"$(nproc)" pdo_mysql opcache \
  && a2enmod rewrite headers expires \
  && a2dismod -f autoindex status >/dev/null 2>&1 || true
