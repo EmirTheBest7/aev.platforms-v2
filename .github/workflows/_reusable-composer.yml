@@ -76,7 +76,7 @@ jobs:
 
       - name: "Cache Composer dependencies"
         if: steps.check.outputs.exists == 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           # Cache key includes the lock file hash so it invalidates whenever
